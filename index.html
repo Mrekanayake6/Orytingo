@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ORYTINGO — Software &amp; Networking Solutions</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <meta name="description"
+    content="ORYTINGO builds custom software and reliable networking infrastructure for modern businesses.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="new.css">
+</head>
+
+<body>
+
+  <div class="bg-field" aria-hidden="true">
+    <div class="glow glow-blue"></div>
+    <div class="glow glow-violet"></div>
+    <div class="grid-overlay"></div>
+  </div>
+
+  <!-- NAV -->
+  <header class="nav-bar" id="navBar">
+    <div class="nav-inner">
+      <a href="#home" class="logo">
+        <img src="logo.png" alt="" class="logo-mark-img" width="42" height="24">
+        <span class="logo-text">ORYTINGO</span>
+      </a>
+
+      <nav class="nav-links" id="navLinks">
+        <a href="#home">Home</a>
+        <a href="#software">Software</a>
+        <a href="#networking">Networking</a>
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <a href="#contact" class="btn btn-primary nav-cta">Start a Project</a>
+
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false"
+        aria-controls="mobileMenu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="#home">Home</a>
+      <a href="#software">Software</a>
+      <a href="#networking">Networking</a>
+      <a href="#about">About</a>
+      <a href="#services">Services</a>
+      <a href="#contact">Contact</a>
+      <a href="#contact" class="btn btn-primary">Start a Project</a>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- HERO -->
+    <section class="hero" id="home">
+      <div class="hero-inner">
+        <div class="hero-copy">
+          <p class="hero-kicker">Software &amp; Networking, under one roof</p>
+          <h1 class="hero-headline">
+            Building software.<br>Connecting possibilities.
+          </h1>
+          <p class="hero-desc">
+            ORYTINGO delivers innovative software solutions and reliable networking
+            infrastructure for modern businesses — engineered as one dependable
+            system, from the first line of code to the last cable run.
+          </p>
+          <div class="hero-actions">
+            <a href="#software" class="btn btn-blue">
+              <i class="fa-solid fa-code"></i> Explore Software
+            </a>
+            <a href="#networking" class="btn btn-violet">
+              <i class="fa-solid fa-network-wired"></i> Explore Networking
+            </a>
+          </div>
+
+          <div class="hero-stats">
+            <div class="stat"><span class="stat-num">120+</span><span class="stat-label">Systems delivered</span></div>
+            <div class="stat"><span class="stat-num">40+</span><span class="stat-label">Networks deployed</span></div>
+            <div class="stat"><span class="stat-num">99.9%</span><span class="stat-label">Uptime supported</span></div>
+          </div>
+        </div>
+
+        <div class="hero-visual reveal">
+
+          <svg viewBox="0 0 560 520" class="hero-svg" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+
+            <defs>
+
+              <linearGradient id="edgeBlue" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#ff813e" />
+
+                <stop offset="1" stop-color="#ff9c67" />
+              </linearGradient>
+
+
+              <linearGradient id="edgeViolet" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#ff9c67" />
+
+                <stop offset="1" stop-color="#ff813e" />
+              </linearGradient>
+
+            </defs>
+
+
+            <!-- NETWORK LINES -->
+
+            <g class="net-lines" stroke="url(#edgeViolet)" stroke-width="1.4">
+
+              <line x1="330" y1="120" x2="440" y2="80" />
+
+              <line x1="330" y1="120" x2="470" y2="180" />
+
+              <line x1="330" y1="120" x2="400" y2="230" />
+
+              <line x1="400" y1="230" x2="470" y2="180" />
+
+              <line x1="400" y1="230" x2="440" y2="320" />
+
+              <line x1="470" y1="180" x2="500" y2="290" />
+
+              <line x1="440" y1="320" x2="500" y2="290" />
+
+              <line x1="440" y1="320" x2="380" y2="400" />
+
+            </g>
+
+
+            <!-- NETWORK NODES -->
+
+            <g class="net-nodes" fill="#0e1014" stroke="url(#edgeViolet)" stroke-width="1.6">
+
+              <circle cx="330" cy="120" r="7" />
+
+              <circle cx="440" cy="80" r="5" />
+
+              <circle cx="470" cy="180" r="6" />
+
+              <circle cx="400" cy="230" r="6" />
+
+              <circle cx="500" cy="290" r="5" />
+
+              <circle cx="440" cy="320" r="6" />
+
+              <circle cx="380" cy="400" r="5" />
+
+            </g>
+
+
+            <!-- CODE PANEL -->
+
+            <rect x="60" y="140" width="270" height="230" rx="16" class="code-panel" />
+
+
+            <!-- CODE DOTS -->
+
+            <circle cx="83" cy="163" r="4" fill="#ff813e" class="code-dot" />
+
+            <circle cx="97" cy="163" r="4" fill="#ff9c67" class="code-dot" />
+
+            <circle cx="111" cy="163" r="4" fill="#6d727d" class="code-dot" />
+
+
+            <!-- CODE -->
+
+            <text x="82" y="198" class="code-text orange">
+              const
+            </text>
+
+            <text x="125" y="198" class="code-text">
+              solution =
+            </text>
+
+            <text x="82" y="220" class="code-text">
+              build("smart");
+            </text>
+
+            <text x="82" y="250" class="code-text orange">
+              network
+            </text>
+
+            <text x="138" y="250" class="code-text">
+              .connect();
+            </text>
+
+            <text x="82" y="282" class="code-text">
+              system.status
+            </text>
+
+            <text x="190" y="282" class="code-text orange">
+              = "online";
+            </text>
+
+            <text x="82" y="320" class="code-text">
+              security.enable();
+            </text>
+
+            <text x="82" y="350" class="code-text orange">
+              // ORYTINGO
+            </text>
+
+
+            <!-- ANIMATED BRIDGE -->
+
+            <path d="
+                                    M 300 250
+                                    C 340 260,
+                                      340 200,
+                                      380 210
+                                " stroke="url(#edgeBlue)" stroke-width="2" fill="none" class="bridge-line" />
+
+
+            <circle cx="380" cy="210" r="4" fill="#ff9c67" />
+
+
+            <!-- PULSE DOTS -->
+
+            <circle cx="120" cy="430" r="3" fill="#ff813e" class="pulse-dot" />
+
+            <circle cx="200" cy="450" r="3" fill="#ff9c67" class="pulse-dot"
+              style="animation-delay:.6s;-webkit-animation-delay:.6s" />
+
+            <circle cx="470" cy="410" r="3" fill="#ff9c67" class="pulse-dot"
+              style="animation-delay:1.1s;-webkit-animation-delay:1.1s" />
+
+          </svg>
+
+
+          <div class="floating-card one">
+
+            <div class="floating-card-title">
+
+              <span class="status-dot"></span>
+
+              Network Online
+
+            </div>
+
+          </div>
+
+
+          <div class="floating-card two">
+
+            <div class="floating-card-title">
+
+              <span class="status-dot"></span>
+
+              Systems Connected
+
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+      <div class="scroll-cue" aria-hidden="true"><span></span></div>
+    </section>
+
+    <!-- TWO PILLARS -->
+    <section class="pillars" id="services">
+      <div class="section-inner">
+        <div class="pillar-grid">
+
+          <article class="pillar-card pillar-software" id="software">
+            <div class="pillar-icon"><i class="fa-solid fa-laptop-code"></i></div>
+            <h2>Software Solutions</h2>
+            <p>Custom-built applications and systems designed around how your business actually operates.</p>
+            <ul class="pillar-list">
+              <li><i class="fa-solid fa-check"></i> Custom Software</li>
+              <li><i class="fa-solid fa-check"></i> Web Applications</li>
+              <li><i class="fa-solid fa-check"></i> Mobile Apps</li>
+              <li><i class="fa-solid fa-check"></i> UI/UX Design</li>
+              <li><i class="fa-solid fa-check"></i> Business Systems</li>
+            </ul>
+            <a href="#software-services" class="btn btn-blue-outline">Explore Software</a>
+          </article>
+
+          <article class="pillar-card pillar-networking" id="networking">
+            <div class="pillar-icon"><i class="fa-solid fa-server"></i></div>
+            <h2>Networking Solutions</h2>
+            <p>Infrastructure that keeps every device, system and location connected and secure.</p>
+            <ul class="pillar-list">
+              <li><i class="fa-solid fa-check"></i> Network Installation</li>
+              <li><i class="fa-solid fa-check"></i> Wi-Fi Solutions</li>
+              <li><i class="fa-solid fa-check"></i> CCTV &amp; Security</li>
+              <li><i class="fa-solid fa-check"></i> Servers &amp; Infrastructure</li>
+              <li><i class="fa-solid fa-check"></i> Network Security</li>
+            </ul>
+            <a href="#networking-services" class="btn btn-violet-outline">Explore Networking</a>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- WHY CHOOSE -->
+    <section class="why">
+      <div class="section-inner">
+        <div class="section-head">
+          <h2>Why businesses choose ORYTINGO</h2>
+          <p>One team accountable for both what runs on your screens and what carries it there.</p>
+        </div>
+        <div class="why-grid">
+          <div class="why-card">
+            <i class="fa-solid fa-lightbulb"></i>
+            <h3>Innovative Solutions</h3>
+            <p>Modern architectures and current tools, chosen for the problem rather than habit.</p>
+          </div>
+          <div class="why-card">
+            <i class="fa-solid fa-signal"></i>
+            <h3>Reliable Technology</h3>
+            <p>Systems built to stay up, built with redundancy and monitoring in mind from day one.</p>
+          </div>
+          <div class="why-card">
+            <i class="fa-solid fa-headset"></i>
+            <h3>Professional Support</h3>
+            <p>Direct access to the people who built your system, not a rotating support queue.</p>
+          </div>
+          <div class="why-card">
+            <i class="fa-solid fa-shield-halved"></i>
+            <h3>Secure Systems</h3>
+            <p>Security considered at the network layer and the application layer, together.</p>
+          </div>
+          <div class="why-card">
+            <i class="fa-solid fa-layer-group"></i>
+            <h3>Scalable Infrastructure</h3>
+            <p>Architecture that grows with your team, your traffic and your locations.</p>
+          </div>
+          <div class="why-card">
+            <i class="fa-solid fa-code-branch"></i>
+            <h3>Modern Development</h3>
+            <p>Version-controlled, tested, documented work — built to be maintained, not just shipped.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SOFTWARE SERVICES -->
+    <section class="services-block services-software" id="software-services">
+      <div class="section-inner">
+        <div class="section-head left">
+          <p class="eyebrow-blue">Software Solutions</p>
+          <h2>Software built around your workflow</h2>
+        </div>
+        <div class="service-grid">
+          <div class="service-card">
+            <i class="fa-solid fa-cubes"></i>
+            <h3>Custom Software Development</h3>
+            <p>Purpose-built systems that match your exact processes, not the other way around.</p>
+          </div>
+          <div class="service-card">
+            <i class="fa-solid fa-globe"></i>
+            <h3>Web Development</h3>
+            <p>Fast, responsive web platforms built for growth and everyday use.</p>
+          </div>
+          <div class="service-card">
+            <i class="fa-solid fa-mobile-screen"></i>
+            <h3>Mobile App Development</h3>
+            <p>Native-feeling iOS and Android apps that stay reliable at scale.</p>
+          </div>
+          <div class="service-card">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <h3>E-Commerce</h3>
+            <p>Online stores built to convert, with secure checkout and inventory built in.</p>
+          </div>
+          <div class="service-card">
+            <i class="fa-solid fa-pen-ruler"></i>
+            <h3>UI/UX Design</h3>
+            <p>Interfaces designed to be understood in seconds, not explained in a manual.</p>
+          </div>
+          <div class="service-card">
+            <i class="fa-solid fa-building-columns"></i>
+            <h3>Business Systems</h3>
+            <p>Internal tools and management systems that remove manual, repetitive work.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NETWORKING SERVICES -->
+    <section class="services-block services-networking" id="networking-services">
+      <div class="section-inner">
+        <div class="section-head left">
+          <p class="eyebrow-violet">Networking Solutions</p>
+          <h2>Infrastructure that keeps you connected</h2>
+        </div>
+        <div class="service-grid">
+          <div class="service-card">
+            <i class="fa-solid fa-network-wired"></i>
+            <h3>Network Infrastructure</h3>
+            <p>Structured cabling and network installation built for reliability, not just speed on day one.</p>
+          </div>
+          <div class="service-card">
+            <i class="fa-solid fa-wifi"></i>
+            <h3>Wi-Fi Solutions</h3>
+            <p>Wireless coverage engineered for every room, floor and device on your network.</p>
+          </div>
+          <div class="service-card">
+            <i class="fa-solid fa-video"></i>
+            <h3>CCTV Systems</h3>
+            <p>Camera and security systems monitored and maintained, not just installed.</p>
+          </div>
+          <div class="service-card">
+            <i class="fa-solid fa-database"></i>
+            <h3>Server Management</h3>
+            <p>Server setup, monitoring and maintenance that keeps critical systems running.</p>
+          </div>
+          <div class="service-card">
+            <i class="fa-solid fa-lock"></i>
+            <h3>Network Security</h3>
+            <p>Firewalls, access control and monitoring built to keep threats outside the perimeter.</p>
+          </div>
+          <div class="service-card">
+            <i class="fa-solid fa-screwdriver-wrench"></i>
+            <h3>IT Support</h3>
+            <p>Ongoing technical support and maintenance for your entire IT environment.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW WE WORK -->
+    <section class="process">
+      <div class="section-inner">
+        <div class="section-head">
+          <h2>How we work</h2>
+          <p>The same five-stage process, whether we're shipping software or running cable.</p>
+        </div>
+        <ol class="timeline">
+          <li>
+            <span class="tl-num">01</span>
+            <h3>Discover</h3>
+            <p>We learn how your business runs today, and where software or infrastructure is holding it back.</p>
+          </li>
+          <li>
+            <span class="tl-num">02</span>
+            <h3>Plan</h3>
+            <p>A clear scope and architecture, whether that's an application blueprint or a network layout.</p>
+          </li>
+          <li>
+            <span class="tl-num">03</span>
+            <h3>Design</h3>
+            <p>Interfaces, systems and network topologies designed before a single line is built.</p>
+          </li>
+          <li>
+            <span class="tl-num">04</span>
+            <h3>Develop / Deploy</h3>
+            <p>Software gets built and tested; infrastructure gets installed and configured.</p>
+          </li>
+          <li>
+            <span class="tl-num">05</span>
+            <h3>Support</h3>
+            <p>Ongoing maintenance and support, so systems and networks stay dependable long after launch.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- TECHNOLOGY -->
+    <section class="tech">
+      <div class="section-inner">
+        <div class="section-head">
+          <h2>Technology we work with</h2>
+        </div>
+        <div class="tech-badges">
+          <span>HTML</span><span>CSS</span><span>JavaScript</span><span>React</span>
+          <span>Next.js</span><span>PHP</span><span>Laravel</span><span>Node.js</span>
+          <span>Java</span><span>MySQL</span><span>Firebase</span><span>Cloud</span>
+          <span>Networking</span><span>Security</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="about" id="about">
+      <div class="section-inner about-inner">
+        <div class="about-visual" aria-hidden="true">
+          <div class="about-badge">
+            <img src="logo-full.png" alt="" class="about-logo-img">
+          </div>
+        </div>
+        <div class="about-copy">
+          <p class="eyebrow-blue">About ORYTINGO</p>
+          <h2>Two disciplines. One accountable team.</h2>
+          <p>ORYTINGO is a technology solutions company focused on building innovative
+            software and reliable IT infrastructure. We help businesses grow through
+            powerful digital solutions, intelligent systems, and secure connected
+            technologies — designed and maintained by one team, so nothing falls
+            through the gap between "the app" and "the network."</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta" id="contact">
+      <div class="cta-inner">
+        <h2>Have a project in mind?</h2>
+        <p>Whether you need powerful software or reliable networking infrastructure, ORYTINGO is ready to build your
+          next solution.</p>
+        <div class="cta-actions">
+          <a href="#contact" class="btn btn-primary">Start a Project</a>
+          <a href="mailto:hello@orytingo.com" class="btn btn-ghost">Contact Us</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="section-inner footer-inner">
+      <div class="footer-brand">
+        <a href="#home" class="logo">
+          <img src="logo.png" alt="" class="logo-mark-img" width="38" height="22">
+          <span class="logo-text">ORYTINGO</span>
+        </a>
+        <p>Software solutions and networking infrastructure, built by one team.</p>
+        <div class="socials">
+          <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+          <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#contact">Contact</a>
+      </div>
+
+      <div class="footer-col">
+        <h4>Software Services</h4>
+        <a href="#software-services">Custom Software</a>
+        <a href="#software-services">Web Applications</a>
+        <a href="#software-services">Mobile Apps</a>
+        <a href="#software-services">UI/UX Design</a>
+      </div>
+
+      <div class="footer-col">
+        <h4>Networking Services</h4>
+        <a href="#networking-services">Network Installation</a>
+        <a href="#networking-services">Wi-Fi Solutions</a>
+        <a href="#networking-services">CCTV &amp; Security</a>
+        <a href="#networking-services">Network Security</a>
+      </div>
+
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <a href="mailto:hello@orytingo.com"><i class="fa-solid fa-envelope"></i> hello@orytingo.com</a>
+        <a href="tel:+10000000000"><i class="fa-solid fa-phone"></i> +1 (000) 000-0000</a>
+        <a href="#"><i class="fa-solid fa-location-dot"></i> Remote &amp; on-site</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; <span id="year"></span> ORYTINGO. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+
+      /* =========================
+         Footer Year
+      ========================= */
+
+      const year = document.getElementById("year");
+
+      if (year) {
+        year.textContent = new Date().getFullYear();
+      }
+
+
+      /* =========================
+         Mobile Menu
+      ========================= */
+
+      const hamburger = document.getElementById("hamburger");
+      const mobileMenu = document.getElementById("mobileMenu");
+
+      if (hamburger && mobileMenu) {
+
+        hamburger.addEventListener("click", () => {
+
+          const open = mobileMenu.classList.toggle("open");
+
+          hamburger.classList.toggle("open", open);
+
+          hamburger.setAttribute("aria-expanded", open);
+
+        });
+
+
+        mobileMenu.querySelectorAll("a").forEach((link) => {
+
+          link.addEventListener("click", () => {
+
+            mobileMenu.classList.remove("open");
+
+            hamburger.classList.remove("open");
+
+            hamburger.setAttribute("aria-expanded", "false");
+
+          });
+
+        });
+
+      }
+
+
+      /* =========================
+         Navbar Scroll
+      ========================= */
+
+      const navBar = document.getElementById("navBar");
+
+      if (navBar) {
+
+        let navTicking = false;
+
+        const updateNavbar = () => {
+
+          navBar.classList.toggle(
+            "scrolled",
+            window.scrollY > 12
+          );
+
+          navTicking = false;
+
+        };
+
+
+        window.addEventListener("scroll", () => {
+
+          if (!navTicking) {
+
+            requestAnimationFrame(updateNavbar);
+
+            navTicking = true;
+
+          }
+
+        }, {passive: true});
+
+
+        /* Page load ekedi already scroll wela nam */
+        updateNavbar();
+
+      }
+
+
+      /* =========================
+         Scroll Reveal Animation
+      ========================= */
+
+      const revealEls = document.querySelectorAll(
+        ".pillar-card, .why-card, .service-card, .timeline li"
+      );
+
+
+      /* Animation disable wela nam */
+      if (
+        window.matchMedia(
+          "(prefers-reduced-motion: reduce)"
+        ).matches
+      ) {
+
+        revealEls.forEach((el) => {
+          el.classList.add("in-view");
+        });
+
+        return;
+
+      }
+
+
+      /* IntersectionObserver supported */
+      if ("IntersectionObserver" in window) {
+
+        const observer = new IntersectionObserver(
+          (entries, obs) => {
+
+            entries.forEach((entry) => {
+
+              if (entry.isIntersecting) {
+
+                entry.target.classList.add("in-view");
+
+                obs.unobserve(entry.target);
+
+              }
+
+            });
+
+          },
+          {
+            threshold: 0.05,
+
+            /* Mobile walata trigger wenna lesi */
+            rootMargin: "0px 0px -20px 0px"
+          }
+        );
+
+
+        revealEls.forEach((el) => {
+
+          observer.observe(el);
+
+        });
+
+      } else {
+
+        /* Old browser fallback */
+
+        revealEls.forEach((el) => {
+
+          el.classList.add("in-view");
+
+        });
+
+      }
+
+    });
+  </script>
+
+</body>
+
+</html>
