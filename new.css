@@ -1204,7 +1204,7 @@ section {
   }
 
   .hero-visual {
-      order: -1;
+      order: 2;
     max-width: 420px;
     margin: 0 auto 20px;
   }
