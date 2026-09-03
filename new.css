@@ -479,6 +479,7 @@ button {
   stroke: rgba(255, 255, 255, 0.12);
   stroke-width: 1;
 }
+
 .code-panel {
   fill: rgba(255, 255, 255, 0.035);
   stroke: rgba(255, 255, 255, 0.12);
@@ -548,6 +549,37 @@ button {
 
   font-size: 11px;
   font-weight: 700;
+}
+
+/* Floating card animation */
+.floating-card {
+  animation: floatingBounce 3s ease-in-out infinite;
+}
+
+/* Top card */
+.floating-card.one {
+  top: 7%;
+  right: 0;
+  animation-delay: 0s;
+}
+
+/* Bottom card */
+.floating-card.two {
+  bottom: 5%;
+  left: 3%;
+  animation-delay: 1.2s;
+}
+
+@keyframes floatingBounce {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-12px);
+  }
 }
 
 .status-dot {
@@ -1204,7 +1236,7 @@ section {
   }
 
   .hero-visual {
-      order: 2;
+    order: 2;
     max-width: 420px;
     margin: 0 auto 20px;
   }
