@@ -422,7 +422,10 @@ button {
   font-weight: 700;
   margin-bottom: 22px;
 }
-
+.hlp {
+  color: #ff813e;
+  font-weight: 900;
+}
 .hero-desc {
   max-width: 52ch;
   font-size: 1.06rem;
