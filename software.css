@@ -1,0 +1,938 @@
+/* =========================================================
+   ORYTINGO — SOFTWARE PAGE
+   ========================================================= */
+
+:root {
+    --software-accent: var(--orange);
+    --software-accent-light: var(--orange-light);
+}
+
+
+/* =========================================================
+   SOFTWARE HERO
+   ========================================================= */
+
+.software-hero {
+    position: relative;
+    min-height: calc(100vh - 80px);
+    display: flex;
+    align-items: center;
+    padding: 150px 0 100px;
+}
+
+.software-hero-inner {
+    display: grid;
+    grid-template-columns: 1.05fr .95fr;
+    align-items: center;
+    gap: 70px;
+}
+
+.software-hero-copy {
+    max-width: 680px;
+}
+
+.software-hero-copy .hero-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    margin: 0 0 22px;
+}
+
+.software-hero-copy .hero-kicker i {
+    color: var(--software-accent-light);
+}
+
+.software-hero-copy h1 {
+    margin: 0;
+    max-width: 720px;
+    font-size: clamp(3rem, 5.3vw, 5.2rem);
+    line-height: .98;
+    letter-spacing: -0.055em;
+    font-weight: 700;
+}
+
+.software-hero-copy h1 span {
+    display: block;
+    background: linear-gradient(
+        110deg,
+        var(--software-accent-light),
+        var(--software-accent)
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.software-hero-desc {
+    max-width: 620px;
+    margin: 28px 0 0;
+    color: var(--text-muted);
+    font-size: 1.05rem;
+    line-height: 1.8;
+}
+
+.software-hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 34px;
+}
+
+.software-mini-stats {
+    display: flex;
+    align-items: center;
+    gap: 42px;
+    margin-top: 48px;
+}
+
+.software-mini-stats > div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.software-mini-stats strong {
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 1.45rem;
+    line-height: 1;
+}
+
+.software-mini-stats span {
+    color: var(--text-faint);
+    font-size: .72rem;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+}
+
+
+/* =========================================================
+   SOFTWARE VISUAL
+   ========================================================= */
+
+.software-visual {
+    position: relative;
+    width: min(500px, 100%);
+    aspect-ratio: 1;
+    margin-inline: auto;
+    display: grid;
+    place-items: center;
+}
+
+.code-orbit {
+    position: absolute;
+    border: 1px solid rgba(255, 129, 62, .16);
+    border-radius: 50%;
+}
+
+.code-orbit.orbit-one {
+    width: 72%;
+    height: 72%;
+    transform: rotate(-20deg);
+}
+
+.code-orbit.orbit-two {
+    width: 88%;
+    height: 46%;
+    transform: rotate(55deg);
+    border-color: rgba(255, 156, 103, .12);
+}
+
+.software-core {
+    position: relative;
+    z-index: 5;
+    width: 170px;
+    height: 170px;
+    border: 1px solid rgba(255, 129, 62, .28);
+    border-radius: 50%;
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(255, 129, 62, .14),
+            rgba(18, 21, 27, .96) 65%
+        );
+    box-shadow:
+        0 0 70px rgba(255, 129, 62, .12),
+        inset 0 0 40px rgba(255, 255, 255, .025);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.software-core .core-icon {
+    width: 54px;
+    height: 54px;
+    display: grid;
+    place-items: center;
+    margin-bottom: 13px;
+    border-radius: 15px;
+    background: rgba(255, 129, 62, .12);
+    border: 1px solid rgba(255, 129, 62, .2);
+}
+
+.software-core .core-icon i {
+    color: var(--software-accent-light);
+    font-size: 21px;
+}
+
+.software-core span {
+    font-family: "Space Grotesk", sans-serif;
+    font-size: .78rem;
+    font-weight: 700;
+    letter-spacing: .15em;
+}
+
+.software-core small {
+    margin-top: 4px;
+    color: var(--text-faint);
+    font-size: .55rem;
+    letter-spacing: .16em;
+}
+
+
+/* =========================================================
+   SOFTWARE NODES
+   ========================================================= */
+
+.software-node {
+    position: absolute;
+    z-index: 7;
+    min-width: 105px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: rgba(18, 21, 27, .9);
+    box-shadow: 0 18px 45px rgba(0, 0, 0, .3);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+.software-node i {
+    color: var(--software-accent-light);
+    font-size: .82rem;
+}
+
+.software-node span {
+    color: var(--text-muted);
+    font-size: .68rem;
+    font-weight: 600;
+}
+
+.software-node-1 {
+    top: 11%;
+    left: 5%;
+}
+
+.software-node-2 {
+    top: 8%;
+    right: 7%;
+}
+
+.software-node-3 {
+    right: -2%;
+    top: 47%;
+}
+
+.software-node-4 {
+    bottom: 12%;
+    right: 12%;
+}
+
+.software-node-5 {
+    bottom: 9%;
+    left: 4%;
+}
+
+
+/* =========================================================
+   INTRO
+   ========================================================= */
+
+.software-intro {
+    padding: 100px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+}
+
+.software-intro-grid {
+    display: grid;
+    grid-template-columns: .95fr 1.05fr;
+    gap: 90px;
+    align-items: start;
+}
+
+.software-intro h2 {
+    max-width: 540px;
+    margin: 15px 0 0;
+    font-size: clamp(2rem, 4vw, 3.4rem);
+    line-height: 1.05;
+    letter-spacing: -.04em;
+}
+
+.software-intro-grid > div:last-child {
+    padding-top: 34px;
+}
+
+.software-intro-grid p {
+    max-width: 650px;
+    color: var(--text-muted);
+    line-height: 1.85;
+    margin: 0 0 20px;
+}
+
+
+/* =========================================================
+   SERVICES
+   ========================================================= */
+
+.software-services {
+    padding: 120px 0;
+}
+
+.software-service-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-top: 55px;
+}
+
+.software-service-card {
+    position: relative;
+    min-height: 390px;
+    padding: 30px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, .045),
+            rgba(255, 255, 255, .018)
+        );
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(25px);
+    transition:
+        opacity .65s ease,
+        transform .65s ease,
+        border-color .3s ease,
+        background .3s ease;
+}
+
+.software-service-card.in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.software-service-card:hover {
+    border-color: rgba(255, 129, 62, .28);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 129, 62, .06),
+            rgba(255, 255, 255, .02)
+        );
+    transform: translateY(-5px);
+}
+
+.software-service-icon {
+    width: 52px;
+    height: 52px;
+    display: grid;
+    place-items: center;
+    border-radius: 14px;
+    background: rgba(255, 129, 62, .09);
+    border: 1px solid rgba(255, 129, 62, .16);
+}
+
+.software-service-icon i {
+    color: var(--software-accent-light);
+    font-size: 18px;
+}
+
+.software-service-card .service-number {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    color: var(--text-faint);
+    font-family: "Space Grotesk", sans-serif;
+    font-size: .7rem;
+    letter-spacing: .12em;
+}
+
+.software-service-card h3 {
+    margin: 28px 0 12px;
+    font-size: 1.2rem;
+    letter-spacing: -.02em;
+}
+
+.software-service-card > p {
+    color: var(--text-muted);
+    line-height: 1.7;
+    font-size: .88rem;
+    min-height: 75px;
+}
+
+.software-service-card ul {
+    list-style: none;
+    margin: 24px 0 0;
+    padding: 0;
+    display: grid;
+    gap: 10px;
+}
+
+.software-service-card li {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    color: var(--text-muted);
+    font-size: .77rem;
+}
+
+.software-service-card li i {
+    color: var(--software-accent-light);
+    font-size: .65rem;
+}
+
+
+/* =========================================================
+   PACKAGES
+   ========================================================= */
+
+.software-packages {
+    padding: 120px 0;
+    border-top: 1px solid var(--border);
+}
+
+.package-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-top: 55px;
+}
+
+.package-card {
+    position: relative;
+    padding: 34px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: rgba(255, 255, 255, .025);
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    transform: translateY(25px);
+    transition:
+        opacity .65s ease,
+        transform .65s ease,
+        border-color .3s ease;
+}
+
+.package-card.in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.package-card:hover {
+    border-color: rgba(255, 129, 62, .25);
+}
+
+.package-card.featured {
+    border-color: rgba(255, 129, 62, .38);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 129, 62, .07),
+            rgba(255, 255, 255, .02)
+        );
+}
+
+.package-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.package-top span {
+    color: var(--text-faint);
+    font-size: .67rem;
+    font-weight: 600;
+    letter-spacing: .14em;
+}
+
+.package-top i {
+    color: var(--software-accent-light);
+}
+
+.package-card h3 {
+    margin: 25px 0 10px;
+    font-size: 1.4rem;
+}
+
+.package-card > p {
+    color: var(--text-muted);
+    line-height: 1.7;
+    font-size: .86rem;
+    min-height: 72px;
+}
+
+.package-price {
+    margin: 30px 0;
+    padding: 20px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+}
+
+.package-price small {
+    display: block;
+    color: var(--text-faint);
+    font-size: .67rem;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    margin-bottom: 7px;
+}
+
+.package-price strong {
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 1.45rem;
+}
+
+.package-card ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 12px;
+}
+
+.package-card li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-muted);
+    font-size: .78rem;
+}
+
+.package-card li i {
+    color: var(--software-accent-light);
+    font-size: .65rem;
+}
+
+.package-card .btn {
+    margin-top: 30px;
+    width: 100%;
+    justify-content: center;
+}
+
+.popular-badge {
+    position: absolute;
+    top: -1px;
+    right: 24px;
+    padding: 7px 12px;
+    border-radius: 0 0 8px 8px;
+    background: var(--software-accent);
+    color: #fff;
+    font-size: .58rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+}
+
+.pricing-note {
+    margin: 25px auto 0;
+    max-width: 700px;
+    text-align: center;
+    color: var(--text-faint);
+    font-size: .72rem;
+}
+
+
+/* =========================================================
+   WHY ORYTINGO
+   ========================================================= */
+
+.software-why {
+    padding: 120px 0;
+}
+
+.software-benefits {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-top: 55px;
+}
+
+.benefit-card {
+    padding: 28px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+        opacity .6s ease,
+        transform .6s ease,
+        border-color .3s ease;
+}
+
+.benefit-card.in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.benefit-card:hover {
+    border-color: rgba(255, 129, 62, .24);
+}
+
+.benefit-card > i {
+    color: var(--software-accent-light);
+    font-size: 20px;
+}
+
+.benefit-card h3 {
+    margin: 20px 0 10px;
+    font-size: 1rem;
+}
+
+.benefit-card p {
+    color: var(--text-muted);
+    font-size: .8rem;
+    line-height: 1.7;
+    margin: 0;
+}
+
+
+/* =========================================================
+   PROCESS
+   ========================================================= */
+
+.software-process {
+    padding: 120px 0;
+    border-top: 1px solid var(--border);
+}
+
+.software-process-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1px;
+    margin-top: 55px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--border);
+}
+
+.software-process-grid > div {
+    position: relative;
+    padding: 30px 24px;
+    background: var(--card);
+    min-height: 235px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+        opacity .6s ease,
+        transform .6s ease,
+        background .3s ease;
+}
+
+.software-process-grid > div.in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.software-process-grid > div:hover {
+    background: var(--card-light);
+}
+
+.software-process-grid span {
+    display: block;
+    color: var(--text-faint);
+    font-family: "Space Grotesk", sans-serif;
+    font-size: .68rem;
+    letter-spacing: .12em;
+}
+
+.software-process-grid i {
+    display: block;
+    margin-top: 28px;
+    color: var(--software-accent-light);
+    font-size: 19px;
+}
+
+.software-process-grid h3 {
+    margin: 18px 0 9px;
+    font-size: .98rem;
+}
+
+.software-process-grid p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: .75rem;
+    line-height: 1.65;
+}
+
+
+/* =========================================================
+   TECHNOLOGY
+   ========================================================= */
+
+.software-tech {
+    padding: 120px 0;
+}
+
+.software-tech-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 12px;
+    margin-top: 50px;
+}
+
+.software-tech-grid > div {
+    min-height: 115px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--surface);
+    opacity: 0;
+    transform: translateY(18px);
+    transition:
+        opacity .5s ease,
+        transform .5s ease,
+        border-color .3s ease,
+        background .3s ease;
+}
+
+.software-tech-grid > div.in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.software-tech-grid > div:hover {
+    border-color: rgba(255, 129, 62, .25);
+    background: rgba(255, 129, 62, .035);
+}
+
+.software-tech-grid i {
+    color: var(--software-accent-light);
+    font-size: 22px;
+}
+
+.software-tech-grid span {
+    color: var(--text-muted);
+    font-size: .7rem;
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   CTA
+   ========================================================= */
+
+.software-cta {
+    margin-top: 20px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1200px) {
+
+    .software-hero-inner {
+        gap: 40px;
+    }
+
+    .software-service-grid,
+    .package-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .software-benefits {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .software-process-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .software-tech-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+}
+
+
+@media (max-width: 992px) {
+
+    .software-hero {
+        padding: 130px 0 80px;
+    }
+
+    .software-hero-inner {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .software-hero-copy {
+        max-width: 760px;
+        margin-inline: auto;
+    }
+
+    .software-hero-copy h1 {
+        margin-inline: auto;
+    }
+
+    .software-hero-desc {
+        margin-inline: auto;
+    }
+
+    .software-hero-actions {
+        justify-content: center;
+    }
+
+    .software-mini-stats {
+        justify-content: center;
+    }
+
+    .software-visual {
+        width: min(450px, 90vw);
+        margin-top: 20px;
+    }
+
+    .software-intro-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .software-intro-grid > div:last-child {
+        padding-top: 0;
+    }
+
+}
+
+
+@media (max-width: 768px) {
+
+    .software-hero {
+        padding: 110px 0 70px;
+    }
+
+    .software-hero-copy h1 {
+        font-size: clamp(2.5rem, 11vw, 4rem);
+    }
+
+    .software-hero-desc {
+        font-size: .92rem;
+    }
+
+    .software-hero-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .software-hero-actions .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .software-mini-stats {
+        gap: 22px;
+        flex-wrap: wrap;
+    }
+
+    .software-service-grid,
+    .package-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .software-benefits {
+        grid-template-columns: 1fr;
+    }
+
+    .software-process-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .software-process-grid > div {
+        min-height: auto;
+    }
+
+    .software-tech-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .software-intro,
+    .software-services,
+    .software-packages,
+    .software-why,
+    .software-process,
+    .software-tech {
+        padding: 85px 0;
+    }
+
+}
+
+
+@media (max-width: 480px) {
+
+    .software-hero {
+        padding-top: 100px;
+    }
+
+    .software-mini-stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+    }
+
+    .software-mini-stats strong {
+        font-size: 1.1rem;
+    }
+
+    .software-mini-stats span {
+        font-size: .57rem;
+    }
+
+    .software-visual {
+        width: 330px;
+    }
+
+    .software-core {
+        width: 130px;
+        height: 130px;
+    }
+
+    .software-node {
+        min-width: auto;
+        padding: 9px 10px;
+    }
+
+    .software-node span {
+        font-size: .58rem;
+    }
+
+    .software-node-1 {
+        left: 0;
+    }
+
+    .software-node-3 {
+        right: -3%;
+    }
+
+    .software-service-card,
+    .package-card,
+    .benefit-card {
+        padding: 24px;
+    }
+
+    .software-tech-grid > div {
+        min-height: 95px;
+    }
+
+}
