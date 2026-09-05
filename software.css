@@ -949,3 +949,374 @@
     }
 
 }
+/* =========================================================
+   SOFTWARE PAGE — ANIMATIONS
+   ========================================================= */
+
+/* ---------- SERVICE CARDS ---------- */
+
+.software-service-card {
+    opacity: 0;
+    transform: translateY(35px);
+    transition:
+        opacity .7s ease,
+        transform .7s cubic-bezier(.22, 1, .36, 1),
+        border-color .3s ease,
+        background .3s ease;
+}
+
+.software-service-card.in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.software-service-card:nth-child(1) {
+    transition-delay: .05s;
+}
+
+.software-service-card:nth-child(2) {
+    transition-delay: .12s;
+}
+
+.software-service-card:nth-child(3) {
+    transition-delay: .19s;
+}
+
+.software-service-card:nth-child(4) {
+    transition-delay: .26s;
+}
+
+.software-service-card:nth-child(5) {
+    transition-delay: .33s;
+}
+
+.software-service-card:nth-child(6) {
+    transition-delay: .40s;
+}
+
+
+/* ---------- PACKAGE CARDS ---------- */
+
+.package-card {
+    opacity: 0;
+    transform: translateY(35px);
+    transition:
+        opacity .7s ease,
+        transform .7s cubic-bezier(.22, 1, .36, 1),
+        border-color .3s ease;
+}
+
+.package-card.in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.package-card:nth-child(1) {
+    transition-delay: .05s;
+}
+
+.package-card:nth-child(2) {
+    transition-delay: .15s;
+}
+
+.package-card:nth-child(3) {
+    transition-delay: .25s;
+}
+
+
+/* ---------- BENEFIT CARDS ---------- */
+
+.benefit-card {
+    opacity: 0;
+    transform: translateY(30px);
+    transition:
+        opacity .65s ease,
+        transform .65s cubic-bezier(.22, 1, .36, 1),
+        border-color .3s ease;
+}
+
+.benefit-card.in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.benefit-card:nth-child(1) {
+    transition-delay: .05s;
+}
+
+.benefit-card:nth-child(2) {
+    transition-delay: .12s;
+}
+
+.benefit-card:nth-child(3) {
+    transition-delay: .19s;
+}
+
+.benefit-card:nth-child(4) {
+    transition-delay: .26s;
+}
+
+
+/* ---------- PROCESS ---------- */
+
+.software-process-grid > div {
+    opacity: 0;
+    transform: translateY(25px);
+    transition:
+        opacity .65s ease,
+        transform .65s cubic-bezier(.22, 1, .36, 1),
+        background .3s ease;
+}
+
+.software-process-grid > div.in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.software-process-grid > div:nth-child(1) {
+    transition-delay: .05s;
+}
+
+.software-process-grid > div:nth-child(2) {
+    transition-delay: .12s;
+}
+
+.software-process-grid > div:nth-child(3) {
+    transition-delay: .19s;
+}
+
+.software-process-grid > div:nth-child(4) {
+    transition-delay: .26s;
+}
+
+.software-process-grid > div:nth-child(5) {
+    transition-delay: .33s;
+}
+
+
+/* ---------- TECHNOLOGY ---------- */
+
+.software-tech-grid > div {
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+        opacity .55s ease,
+        transform .55s cubic-bezier(.22, 1, .36, 1),
+        border-color .3s ease,
+        background .3s ease;
+}
+
+.software-tech-grid > div.in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.software-tech-grid > div:nth-child(1) {
+    transition-delay: .03s;
+}
+
+.software-tech-grid > div:nth-child(2) {
+    transition-delay: .08s;
+}
+
+.software-tech-grid > div:nth-child(3) {
+    transition-delay: .13s;
+}
+
+.software-tech-grid > div:nth-child(4) {
+    transition-delay: .18s;
+}
+
+.software-tech-grid > div:nth-child(5) {
+    transition-delay: .23s;
+}
+
+.software-tech-grid > div:nth-child(6) {
+    transition-delay: .28s;
+}
+
+.software-tech-grid > div:nth-child(7) {
+    transition-delay: .33s;
+}
+
+.software-tech-grid > div:nth-child(8) {
+    transition-delay: .38s;
+}
+
+
+/* =========================================================
+   HERO ANIMATION
+   ========================================================= */
+
+.software-hero-copy {
+    animation: softwareHeroLeft .9s cubic-bezier(.22, 1, .36, 1) both;
+}
+
+.software-visual {
+    animation: softwareHeroRight 1s cubic-bezier(.22, 1, .36, 1) .12s both;
+}
+
+@keyframes softwareHeroLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-35px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes softwareHeroRight {
+    from {
+        opacity: 0;
+        transform: translateX(35px) scale(.96);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+}
+
+
+/* =========================================================
+   ORBIT ANIMATION
+   ========================================================= */
+
+.code-orbit.orbit-one {
+    animation: softwareOrbitOne 18s linear infinite;
+}
+
+.code-orbit.orbit-two {
+    animation: softwareOrbitTwo 24s linear infinite;
+}
+
+@keyframes softwareOrbitOne {
+    from {
+        transform: rotate(-20deg);
+    }
+
+    to {
+        transform: rotate(340deg);
+    }
+}
+
+@keyframes softwareOrbitTwo {
+    from {
+        transform: rotate(55deg);
+    }
+
+    to {
+        transform: rotate(-305deg);
+    }
+}
+
+
+/* =========================================================
+   CORE FLOAT
+   ========================================================= */
+
+.software-core {
+    animation: softwareCoreFloat 4s ease-in-out infinite;
+}
+
+@keyframes softwareCoreFloat {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+
+/* =========================================================
+   NODE FLOATING
+   ========================================================= */
+
+.software-node {
+    animation: softwareNodeFloat 4s ease-in-out infinite;
+}
+
+.software-node-1 {
+    animation-delay: 0s;
+}
+
+.software-node-2 {
+    animation-delay: .7s;
+}
+
+.software-node-3 {
+    animation-delay: 1.4s;
+}
+
+.software-node-4 {
+    animation-delay: 2.1s;
+}
+
+.software-node-5 {
+    animation-delay: 2.8s;
+}
+
+@keyframes softwareNodeFloat {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-7px);
+    }
+}
+
+
+/* =========================================================
+   HOVER
+   ========================================================= */
+
+.software-service-card:hover {
+    transform: translateY(-7px);
+}
+
+.package-card:hover {
+    transform: translateY(-6px);
+}
+
+.benefit-card:hover {
+    transform: translateY(-5px);
+}
+
+.software-tech-grid > div:hover {
+    transform: translateY(-4px);
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .software-hero-copy,
+    .software-visual,
+    .software-core,
+    .software-node,
+    .code-orbit.orbit-one,
+    .code-orbit.orbit-two {
+        animation: none !important;
+    }
+
+    .software-service-card,
+    .package-card,
+    .benefit-card,
+    .software-process-grid > div,
+    .software-tech-grid > div {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
+}
