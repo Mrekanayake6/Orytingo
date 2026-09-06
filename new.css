@@ -389,43 +389,37 @@ button {
 
 /* ============================================================
    MOBILE MENU ACTIVE
-============================================================ */
 
-/* ============================================================
-   MOBILE MENU ACTIVE
-============================================================ */
-
-
-
-/* ============================================================
-   MOBILE MENU ACTIVE
-============================================================ */
 .mobile-menu a {
+  position: relative;
   padding: 12px 4px;
   border-bottom: 1px solid var(--border-soft);
   color: var(--text-muted);
   font-weight: 500;
 }
+
+/* ACTIVE LINK */
 .mobile-menu a.active {
   color: var(--text);
+  border-bottom: 1px solid var(--border-soft);
 }
 
+/* TEXT UNDERLINE */
 .mobile-menu a.active::after {
   content: '';
   position: absolute;
   left: 4px;
-  bottom: 5px;
-  width: calc(100% - 8px);
+  bottom: 4px;
+  width: 35px; /* මේක underline එකේ දිග */
   height: 2px;
   background: var(--orange);
   border-radius: 999px;
 }
 
-/* Don't underline the CTA button */
+/* LAST BUTTON */
 .mobile-menu a:last-child::after {
   display: none;
 }
-
 /* ============================================================
    Hero
 ============================================================ */
