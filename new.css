@@ -381,6 +381,9 @@ button {
   font-weight: 500;
 }
 
+
+
+
 /* MOBILE MENU LINKS */
 .mobile-menu a {
   position: relative;
@@ -390,18 +393,24 @@ button {
   font-weight: 500;
 }
 
+/* NORMAL MENU LINKS - CONTENT WIDTH */
+.mobile-menu a:not(:last-child) {
+  display: inline-block;
+  width: fit-content;
+}
+
 /* ACTIVE */
 .mobile-menu a.active {
   color: var(--text);
 }
 
-/* TEXT SIZE UNDERLINE */
+/* UNDERLINE = CONTENT WIDTH */
 .mobile-menu a.active::after {
   content: '';
   position: absolute;
-  left: 4px;
+  left: 0;
   bottom: 5px;
-  width: 35px;
+  width: 100%;
   height: 2px;
   background: var(--orange);
   border-radius: 999px;
