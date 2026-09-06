@@ -397,7 +397,25 @@ button {
 
 
 
+.mobile-menu a.active {
+  color: var(--text);
+}
 
+
+.mobile-menu a {
+  position: relative;
+  padding: 12px 4px;
+}
+.mobile-menu a.active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 5px;
+  width: 100%;
+  height: 2px;
+  background: var(--orange);
+  border-radius: 999px;
+}
 
 /* ============================================================
    Hero
