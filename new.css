@@ -393,18 +393,10 @@ button {
 
 .mobile-menu a.active {
     color: var(--text);
-    font-weight: 700;
-    position: relative;
 }
 
 .mobile-menu a.active::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: -4px;
-    width: 30px;
-    height: 2px;
-    background: var(--text);
+     width: 100%;
 }
 
 /* ============================================================
