@@ -400,7 +400,12 @@ button {
 /* ============================================================
    MOBILE MENU ACTIVE
 ============================================================ */
-
+.mobile-menu a {
+  padding: 12px 4px;
+  border-bottom: 1px solid var(--border-soft);
+  color: var(--text-muted);
+  font-weight: 500;
+}
 .mobile-menu a.active {
   color: var(--text);
 }
