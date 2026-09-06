@@ -397,24 +397,28 @@ button {
 
 
 
+/* ============================================================
+   MOBILE MENU ACTIVE
+============================================================ */
+
 .mobile-menu a.active {
   color: var(--text);
 }
 
-
-.mobile-menu a {
-  position: relative;
-  padding: 12px 4px;
-}
 .mobile-menu a.active::after {
   content: '';
   position: absolute;
-  left: 0;
+  left: 4px;
   bottom: 5px;
-  width: 100%;
+  width: calc(100% - 8px);
   height: 2px;
   background: var(--orange);
   border-radius: 999px;
+}
+
+/* Don't underline the CTA button */
+.mobile-menu a:last-child::after {
+  display: none;
 }
 
 /* ============================================================
