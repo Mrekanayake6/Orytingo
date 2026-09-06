@@ -392,11 +392,22 @@ button {
 ============================================================ */
 
 .mobile-menu a.active {
-    color: var(--text);
+  color: var(--text);
 }
 
 .mobile-menu a.active::after {
-    width: 100%;
+  width: 100%;
+}
+
+.mobile-menu a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -5px;       /* text ekata yata gap eka */
+    width: 0;
+    height: 2px;
+    background: var(--orange);
+    transition: width 0.3s ease;
 }
 /* ============================================================
    Hero
@@ -433,10 +444,12 @@ button {
   font-weight: 700;
   margin-bottom: 22px;
 }
+
 .hlp {
   color: #ff813e;
   font-weight: 900;
 }
+
 .hero-desc {
   max-width: 52ch;
   font-size: 1.06rem;
