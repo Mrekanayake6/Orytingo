@@ -398,7 +398,15 @@ button {
 .mobile-menu a.active::after {
      width: 100%;
 }
-
+.mobile-menu a.active::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    width: 100%;
+    height: 2px;
+    background: var(--orange);
+}
 /* ============================================================
    Hero
 ============================================================ */
