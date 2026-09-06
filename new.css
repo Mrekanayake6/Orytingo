@@ -426,6 +426,7 @@ button {
 .mobile-menu a:last-child::after {
   display: none;
 }
+
 /* ============================================================
    Hero
 ============================================================ */
@@ -1471,7 +1472,31 @@ section {
   }
 
 }
+/* ================================
+   TABLET / iPAD AIR
+   ================================ */
+@media (min-width: 768px) and (max-width: 1024px) {
 
+    .mobile-menu {
+        width: 100%;
+        max-width: 420px;
+        margin: 0 auto;
+        padding: 20px 24px;
+    }
+
+    .mobile-menu a {
+        display: block;
+        width: 100%;
+        padding: 14px 8px;
+        text-align: center;
+        box-sizing: border-box;
+    }
+
+    .mobile-menu .btn-primary {
+        width: 100%;
+        margin-top: 14px;
+    }
+}
 
 /* ============================================================
    Reduce Motion
