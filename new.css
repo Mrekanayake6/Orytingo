@@ -391,24 +391,31 @@ button {
    MOBILE MENU ACTIVE
 ============================================================ */
 
+/* ============================================================
+   MOBILE MENU ACTIVE
+============================================================ */
+
+.mobile-menu a {
+  position: relative;
+  text-decoration: none;
+}
+
 .mobile-menu a.active {
   color: var(--text);
 }
 
 .mobile-menu a.active::after {
-  width: 100%;
+  content: '';
+  position: absolute;
+  left: 4px;
+  bottom: 4px;
+  width: calc(100% - 8px);
+  height: 2px;
+  background: var(--orange);
+  border-radius: 999px;
 }
 
-.mobile-menu a::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: -5px;       /* text ekata yata gap eka */
-    width: 0;
-    height: 2px;
-    background: var(--orange);
-    transition: width 0.3s ease;
-}
+
 /* ============================================================
    Hero
 ============================================================ */
