@@ -381,15 +381,7 @@ button {
   font-weight: 500;
 }
 
-.mobile-menu a:last-child {
-  border-bottom: none;
-  margin-top: 8px;
-  text-align: center;
-}
-
-
-/* active */
-
+/* MOBILE MENU LINKS */
 .mobile-menu a {
   position: relative;
   padding: 12px 4px;
@@ -398,25 +390,30 @@ button {
   font-weight: 500;
 }
 
-/* ACTIVE LINK */
+/* ACTIVE */
 .mobile-menu a.active {
   color: var(--text);
-  border-bottom: 1px solid var(--border-soft);
 }
 
-/* TEXT UNDERLINE */
+/* TEXT SIZE UNDERLINE */
 .mobile-menu a.active::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: 5px;
-    width: 100%;
-    height: 2px;
-    background: var(--orange);
-    border-radius: 999px;
+  content: '';
+  position: absolute;
+  left: 4px;
+  bottom: 5px;
+  width: 35px;
+  height: 2px;
+  background: var(--orange);
+  border-radius: 999px;
 }
 
 /* LAST BUTTON */
+.mobile-menu a:last-child {
+  border-bottom: none;
+  margin-top: 8px;
+  text-align: center;
+}
+
 .mobile-menu a:last-child::after {
   display: none;
 }
