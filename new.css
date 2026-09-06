@@ -388,6 +388,8 @@ button {
 }
 
 
+/* active */
+
 .mobile-menu a {
   position: relative;
   padding: 12px 4px;
@@ -408,7 +410,7 @@ button {
   position: absolute;
   left: 4px;
   bottom: 4px;
-  width: 35px; /* මේක underline එකේ දිග */
+  width: 100%; 
   height: 2px;
   background: var(--orange);
   border-radius: 999px;
