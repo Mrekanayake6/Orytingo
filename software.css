@@ -757,8 +757,17 @@
 
 @media (max-width: 1200px) {
 
+    .software-hero {
+        min-height: auto;
+        padding: 100px 0 70px;
+    }
+
     .software-hero-inner {
-        gap: 40px;
+        gap: 20px;
+    }
+
+    .software-visual {
+        width: min(450px, 100%);
     }
 
     .software-service-grid,
