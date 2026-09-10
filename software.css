@@ -21,10 +21,9 @@
 }
 
 .software-hero-inner {
-    display: grid;
-    grid-template-columns: 1.05fr 0.95fr;
+    grid-template-columns: 1fr 0.9fr;
     align-items: center;
-    gap: 70px;
+    gap: 35px;
 }
 
 .software-hero-copy {
