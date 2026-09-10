@@ -793,7 +793,8 @@
 @media (max-width: 992px) {
 
     .software-hero {
-        padding: 130px 0 80px;
+       padding: 92px 0 80px;
+        
     }
 
     .software-hero-inner {
