@@ -21,7 +21,7 @@
 .network-hero h1 {
     font-size: clamp(2.8rem, 5vw, 4.6rem);
     line-height: 1.03;
-    font-weight: 700;
+    font-weight: 900;
     max-width: 700px;
     margin-bottom: 25px;
 }
