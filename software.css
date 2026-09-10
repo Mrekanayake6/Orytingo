@@ -1322,3 +1322,63 @@
         transition: none !important;
     }
 }
+/* ============================================================
+   SOFTWARE HERO — MOBILE SPACING FIX
+   Match Networking Page
+============================================================ */
+
+@media (max-width: 992px) {
+
+    .software-hero {
+        padding: 60px 0 45px;
+        min-height: auto;
+    }
+
+    .software-hero-inner {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .software-hero-copy {
+        max-width: 680px;
+        margin: 0 auto;
+    }
+
+    .software-visual {
+        width: min(450px, 90vw);
+        margin: 0 auto;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .software-hero {
+        padding: 60px 0 45px;
+    }
+
+    .software-hero-inner {
+        gap: 20px;
+    }
+
+    .software-visual {
+        width: min(400px, 90vw);
+        margin: 0 auto;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .software-hero {
+        padding: 50px 0 35px;
+    }
+
+    .software-hero-inner {
+        gap: 10px;
+    }
+
+    .software-visual {
+        width: 330px;
+        margin-top: -10px;
+        margin-bottom: -25px;
+    }
+}
