@@ -52,8 +52,7 @@
 }
 
 .software-hero-copy h1 span {
-    display: block;
-    
+    display: block;  
     -webkit-background-clip: text;
     background-clip: text;
     color: var(--orange);
