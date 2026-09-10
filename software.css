@@ -53,11 +53,9 @@
 
 .software-hero-copy h1 span {
     display: block;
-    background: linear-gradient(
-        110deg,
-        var(--software-accent-light),
-        var(--software-accent)
-    );
+    background: linear-gradient(110deg,
+            var(--software-accent-light),
+            var(--software-accent));
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -85,7 +83,7 @@
     margin-top: 48px;
 }
 
-.software-mini-stats > div {
+.software-mini-stats>div {
     display: flex;
     flex-direction: column;
     gap: 5px;
@@ -145,11 +143,9 @@
     border: 1px solid rgba(255, 129, 62, .28);
     border-radius: 50%;
     background:
-        radial-gradient(
-            circle at center,
+        radial-gradient(circle at center,
             rgba(255, 129, 62, .14),
-            rgba(18, 21, 27, .96) 65%
-        );
+            rgba(18, 21, 27, .96) 65%);
     box-shadow:
         0 0 70px rgba(255, 129, 62, .12),
         inset 0 0 40px rgba(255, 255, 255, .025);
@@ -273,7 +269,7 @@
     letter-spacing: -.04em;
 }
 
-.software-intro-grid > div:last-child {
+.software-intro-grid>div:last-child {
     padding-top: 34px;
 }
 
@@ -307,11 +303,9 @@
     border: 1px solid var(--border);
     border-radius: var(--radius);
     background:
-        linear-gradient(
-            145deg,
+        linear-gradient(145deg,
             rgba(255, 255, 255, .045),
-            rgba(255, 255, 255, .018)
-        );
+            rgba(255, 255, 255, .018));
     overflow: hidden;
     opacity: 0;
     transform: translateY(25px);
@@ -330,11 +324,9 @@
 .software-service-card:hover {
     border-color: rgba(255, 129, 62, .28);
     background:
-        linear-gradient(
-            145deg,
+        linear-gradient(145deg,
             rgba(255, 129, 62, .06),
-            rgba(255, 255, 255, .02)
-        );
+            rgba(255, 255, 255, .02));
     transform: translateY(-5px);
 }
 
@@ -369,7 +361,7 @@
     letter-spacing: -.02em;
 }
 
-.software-service-card > p {
+.software-service-card>p {
     color: var(--text-muted);
     line-height: 1.7;
     font-size: .88rem;
@@ -442,11 +434,9 @@
 .package-card.featured {
     border-color: rgba(255, 129, 62, .38);
     background:
-        linear-gradient(
-            145deg,
+        linear-gradient(145deg,
             rgba(255, 129, 62, .07),
-            rgba(255, 255, 255, .02)
-        );
+            rgba(255, 255, 255, .02));
 }
 
 .package-top {
@@ -471,7 +461,7 @@
     font-size: 1.4rem;
 }
 
-.package-card > p {
+.package-card>p {
     color: var(--text-muted);
     line-height: 1.7;
     font-size: .86rem;
@@ -585,7 +575,7 @@
     border-color: rgba(255, 129, 62, .24);
 }
 
-.benefit-card > i {
+.benefit-card>i {
     color: var(--software-accent-light);
     font-size: 20px;
 }
@@ -623,7 +613,7 @@
     background: var(--border);
 }
 
-.software-process-grid > div {
+.software-process-grid>div {
     position: relative;
     padding: 30px 24px;
     background: var(--card);
@@ -636,12 +626,12 @@
         background .3s ease;
 }
 
-.software-process-grid > div.in-view {
+.software-process-grid>div.in-view {
     opacity: 1;
     transform: translateY(0);
 }
 
-.software-process-grid > div:hover {
+.software-process-grid>div:hover {
     background: var(--card-light);
 }
 
@@ -688,7 +678,7 @@
     margin-top: 50px;
 }
 
-.software-tech-grid > div {
+.software-tech-grid>div {
     min-height: 115px;
     display: flex;
     flex-direction: column;
@@ -707,12 +697,12 @@
         background .3s ease;
 }
 
-.software-tech-grid > div.in-view {
+.software-tech-grid>div.in-view {
     opacity: 1;
     transform: translateY(0);
 }
 
-.software-tech-grid > div:hover {
+.software-tech-grid>div:hover {
     border-color: rgba(255, 129, 62, .25);
     background: rgba(255, 129, 62, .035);
 }
@@ -794,7 +784,7 @@
 
     .software-hero {
         padding: 130px 0 80px;
-        
+
     }
 
     .software-hero-inner {
@@ -833,7 +823,7 @@
         gap: 20px;
     }
 
-    .software-intro-grid > div:last-child {
+    .software-intro-grid>div:last-child {
         padding-top: 0;
     }
 
@@ -882,7 +872,7 @@
         grid-template-columns: 1fr;
     }
 
-    .software-process-grid > div {
+    .software-process-grid>div {
         min-height: auto;
     }
 
@@ -954,11 +944,12 @@
         padding: 24px;
     }
 
-    .software-tech-grid > div {
+    .software-tech-grid>div {
         min-height: 95px;
     }
 
 }
+
 /* =========================================================
    SOFTWARE PAGE — ANIMATIONS
    ========================================================= */
@@ -1069,7 +1060,7 @@
 
 /* ---------- PROCESS ---------- */
 
-.software-process-grid > div {
+.software-process-grid>div {
     opacity: 0;
     transform: translateY(25px);
     transition:
@@ -1078,35 +1069,35 @@
         background .3s ease;
 }
 
-.software-process-grid > div.in-view {
+.software-process-grid>div.in-view {
     opacity: 1;
     transform: translateY(0);
 }
 
-.software-process-grid > div:nth-child(1) {
+.software-process-grid>div:nth-child(1) {
     transition-delay: .05s;
 }
 
-.software-process-grid > div:nth-child(2) {
+.software-process-grid>div:nth-child(2) {
     transition-delay: .12s;
 }
 
-.software-process-grid > div:nth-child(3) {
+.software-process-grid>div:nth-child(3) {
     transition-delay: .19s;
 }
 
-.software-process-grid > div:nth-child(4) {
+.software-process-grid>div:nth-child(4) {
     transition-delay: .26s;
 }
 
-.software-process-grid > div:nth-child(5) {
+.software-process-grid>div:nth-child(5) {
     transition-delay: .33s;
 }
 
 
 /* ---------- TECHNOLOGY ---------- */
 
-.software-tech-grid > div {
+.software-tech-grid>div {
     opacity: 0;
     transform: translateY(20px);
     transition:
@@ -1116,40 +1107,40 @@
         background .3s ease;
 }
 
-.software-tech-grid > div.in-view {
+.software-tech-grid>div.in-view {
     opacity: 1;
     transform: translateY(0);
 }
 
-.software-tech-grid > div:nth-child(1) {
+.software-tech-grid>div:nth-child(1) {
     transition-delay: .03s;
 }
 
-.software-tech-grid > div:nth-child(2) {
+.software-tech-grid>div:nth-child(2) {
     transition-delay: .08s;
 }
 
-.software-tech-grid > div:nth-child(3) {
+.software-tech-grid>div:nth-child(3) {
     transition-delay: .13s;
 }
 
-.software-tech-grid > div:nth-child(4) {
+.software-tech-grid>div:nth-child(4) {
     transition-delay: .18s;
 }
 
-.software-tech-grid > div:nth-child(5) {
+.software-tech-grid>div:nth-child(5) {
     transition-delay: .23s;
 }
 
-.software-tech-grid > div:nth-child(6) {
+.software-tech-grid>div:nth-child(6) {
     transition-delay: .28s;
 }
 
-.software-tech-grid > div:nth-child(7) {
+.software-tech-grid>div:nth-child(7) {
     transition-delay: .33s;
 }
 
-.software-tech-grid > div:nth-child(8) {
+.software-tech-grid>div:nth-child(8) {
     transition-delay: .38s;
 }
 
@@ -1233,6 +1224,7 @@
 }
 
 @keyframes softwareCoreFloat {
+
     0%,
     100% {
         transform: translateY(0);
@@ -1273,6 +1265,7 @@
 }
 
 @keyframes softwareNodeFloat {
+
     0%,
     100% {
         transform: translateY(0);
@@ -1300,7 +1293,7 @@
     transform: translateY(-5px);
 }
 
-.software-tech-grid > div:hover {
+.software-tech-grid>div:hover {
     transform: translateY(-4px);
 }
 
@@ -1323,8 +1316,8 @@
     .software-service-card,
     .package-card,
     .benefit-card,
-    .software-process-grid > div,
-    .software-tech-grid > div {
+    .software-process-grid>div,
+    .software-tech-grid>div {
         opacity: 1 !important;
         transform: none !important;
         transition: none !important;
