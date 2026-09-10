@@ -21,11 +21,11 @@
 }
 
 .software-hero-inner {
+    display: grid;
     grid-template-columns: 1fr 0.9fr;
     align-items: center;
     gap: 35px;
 }
-
 .software-hero-copy {
     max-width: 680px;
 }
@@ -108,7 +108,7 @@
 
 .software-visual {
     position: relative;
-    width: min(500px, 100%);
+    width: min(470px, 100%);
     aspect-ratio: 1;
     margin-inline: auto;
     display: grid;
