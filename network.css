@@ -195,31 +195,31 @@
 }
 
 .node-1 {
-    top: 25px;
-    right: 70px;
+    top: 5px;
+    right: 55px;
 }
 
 .node-2 {
-    right: -5px;
-    top: 195px;
+    right: -25px;
+    top: 205px;
     animation-delay: .5s;
 }
 
 .node-3 {
-    right: 75px;
-    bottom: 15px;
+    right: 55px;
+    bottom: 5px;
     animation-delay: 1s;
 }
 
 .node-4 {
-    left: 25px;
-    bottom: 70px;
+    left: 55px;
+    bottom: 5px;
     animation-delay: 1.5s;
 }
 
 .node-5 {
-    left: -35px;
-    top: 200px;
+    left: -25px;
+    top: 205px;
     animation-delay: 2s;
 }
 
