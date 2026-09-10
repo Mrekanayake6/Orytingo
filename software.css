@@ -782,13 +782,13 @@
 
 @media (max-width: 992px) {
 
-    .software-hero {
-        padding: 130px 0 80px;
-
+      .software-hero {
+        padding: 100px 0 70px;
     }
 
     .software-hero-inner {
         grid-template-columns: 1fr;
+        gap: 35px;
         text-align: center;
     }
 
@@ -797,10 +797,9 @@
         margin-inline: auto;
     }
 
-    .software-hero-copy h1 {
+   .software-hero-copy h1 {
         margin-inline: auto;
     }
-
     .software-hero-desc {
         margin-inline: auto;
     }
@@ -813,9 +812,9 @@
         justify-content: center;
     }
 
-    .software-visual {
+     .software-visual {
         width: min(450px, 90vw);
-        margin-top: 20px;
+        margin: 0 auto;
     }
 
     .software-intro-grid {
