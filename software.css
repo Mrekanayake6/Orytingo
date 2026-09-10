@@ -26,6 +26,7 @@
     align-items: center;
     gap: 35px;
 }
+
 .software-hero-copy {
     max-width: 680px;
 }
@@ -44,10 +45,9 @@
 .software-hero-copy h1 {
     margin: 0;
     max-width: 720px;
-     font-size: clamp(2.8rem, 5vw, 4.6rem);
-    line-height: .98;
-    
-    font-weight: 700;
+    font-size: clamp(2.8rem, 5vw, 4.6rem);
+    line-height: 1.03;
+    font-weight: 900;
 }
 
 .software-hero-copy h1 span {
@@ -746,7 +746,7 @@
 
 @media (max-width: 1200px) {
 
-      .software-hero {
+    .software-hero {
         min-height: auto;
         padding: 92px 0 70px;
     }
@@ -782,7 +782,7 @@
 
 @media (max-width: 992px) {
 
-      .software-hero {
+    .software-hero {
         padding: 100px 0 70px;
     }
 
@@ -797,9 +797,10 @@
         margin-inline: auto;
     }
 
-   .software-hero-copy h1 {
+    .software-hero-copy h1 {
         margin-inline: auto;
     }
+
     .software-hero-desc {
         margin-inline: auto;
     }
@@ -812,7 +813,7 @@
         justify-content: center;
     }
 
-     .software-visual {
+    .software-visual {
         width: min(450px, 90vw);
         margin: 0 auto;
     }
@@ -1322,6 +1323,7 @@
         transition: none !important;
     }
 }
+
 /* ============================================================
    SOFTWARE HERO — MOBILE SPACING FIX
    Match Networking Page
