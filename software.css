@@ -793,7 +793,7 @@
 @media (max-width: 992px) {
 
     .software-hero {
-       padding: 92px 0 80px;
+        padding: 130px 0 80px;
         
     }
 
@@ -843,7 +843,7 @@
 @media (max-width: 768px) {
 
     .software-hero {
-        padding: 110px 0 70px;
+       padding: 60px 0 45px;
     }
 
     .software-hero-copy h1 {
