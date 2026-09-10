@@ -746,13 +746,14 @@
 
 @media (max-width: 1200px) {
 
-    .software-hero {
+      .software-hero {
         min-height: auto;
-        padding: 100px 0 70px;
+        padding: 92px 0 70px;
     }
 
     .software-hero-inner {
-        gap: 20px;
+        grid-template-columns: 1fr 0.9fr;
+        gap: 35px;
     }
 
     .software-visual {
