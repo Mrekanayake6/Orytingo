@@ -48,17 +48,15 @@
     font-size: clamp(2.8rem, 5vw, 4.6rem);
     line-height: 1.03;
     font-weight: 900;
-    margin-bottom: 25px;
+    
 }
 
 .software-hero-copy h1 span {
     display: block;
-    background: linear-gradient(110deg,
-            var(--software-accent-light),
-            var(--software-accent));
+    
     -webkit-background-clip: text;
     background-clip: text;
-    color: transparent;
+    color: var(--orange);
 }
 
 .software-hero-desc {
