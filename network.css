@@ -100,7 +100,9 @@
 }
 
 @keyframes orbitPulse {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: scale(1);
         opacity: .55;
     }
@@ -224,7 +226,9 @@
 }
 
 @keyframes nodeFloat {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: translateY(0);
     }
 
@@ -256,7 +260,7 @@
     margin-top: 12px;
 }
 
-.network-intro-grid > div:last-child {
+.network-intro-grid>div:last-child {
     padding-top: 8px;
 }
 
@@ -265,7 +269,7 @@
     line-height: 1.8;
 }
 
-.network-intro-grid p + p {
+.network-intro-grid p+p {
     margin-top: 18px;
 }
 
@@ -276,12 +280,10 @@
 
 .network-services {
     background:
-        linear-gradient(
-            180deg,
+        linear-gradient(180deg,
             transparent,
             rgba(255, 156, 103, .035),
-            transparent
-        );
+            transparent);
 }
 
 .network-service-grid {
@@ -387,7 +389,7 @@
     margin-bottom: 9px;
 }
 
-.network-service-card > p {
+.network-service-card>p {
     font-size: .9rem;
     line-height: 1.7;
     margin-bottom: 22px;
@@ -421,12 +423,10 @@
 
 .network-packages {
     background:
-        linear-gradient(
-            180deg,
+        linear-gradient(180deg,
             transparent,
             rgba(255, 129, 62, .025),
-            transparent
-        );
+            transparent);
 }
 
 .package-grid {
@@ -474,11 +474,9 @@
     border-color: rgba(255, 129, 62, .4);
 
     background:
-        linear-gradient(
-            180deg,
+        linear-gradient(180deg,
             rgba(255, 129, 62, .07),
-            var(--card)
-        );
+            var(--card));
 
     box-shadow:
         0 25px 70px -35px rgba(255, 129, 62, .35);
@@ -528,7 +526,7 @@
     margin-bottom: 10px;
 }
 
-.package-card > p {
+.package-card>p {
     min-height: 54px;
     font-size: .88rem;
 }
@@ -628,7 +626,7 @@
     border-color: rgba(255, 156, 103, .3);
 }
 
-.benefit-card > i {
+.benefit-card>i {
     font-size: 1.25rem;
 
     color: var(--orange-light);
@@ -652,12 +650,10 @@
 
 .network-process {
     background:
-        linear-gradient(
-            180deg,
+        linear-gradient(180deg,
             transparent,
             rgba(255, 156, 103, .025),
-            transparent
-        );
+            transparent);
 }
 
 .network-process-grid {
@@ -666,7 +662,7 @@
     gap: 18px;
 }
 
-.network-process-grid > div {
+.network-process-grid>div {
     position: relative;
 
     padding: 28px 20px;
@@ -681,12 +677,12 @@
         transform .6s var(--ease);
 }
 
-.network-process-grid > div.in-view {
+.network-process-grid>div.in-view {
     opacity: 1;
     transform: translateY(0);
 }
 
-.network-process-grid > div::before {
+.network-process-grid>div::before {
     content: '';
 
     position: absolute;
@@ -913,4 +909,196 @@
         font-size: .7rem;
     }
 
+}
+
+.network-workers {
+    background:
+        linear-gradient(180deg,
+            transparent,
+            rgba(255, 156, 103, .035),
+            transparent);
+}
+
+.network-workers-heading {
+    max-width: 700px;
+    margin-bottom: 55px;
+}
+
+.network-workers-heading h2 {
+    margin: 0;
+    font-family: "Space Grotesk", sans-serif;
+    font-size: clamp(2.4rem, 5vw, 4.2rem);
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+    color: #f5f5f5;
+}
+
+.network-workers-heading h2 span {
+    display: block;
+    color: #ff813e;
+}
+
+.network-workers-heading>p:last-child {
+    margin-top: 22px;
+    color: #92959d;
+    font-family: "Inter", sans-serif;
+    font-size: 16px;
+    line-height: 1.8;
+}
+
+.network-workers-grid {
+    display: grid;
+    grid-template-columns: 1.25fr 1fr 1fr;
+    grid-template-rows: 260px 260px;
+    gap: 18px;
+}
+
+.network-workers.in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.worker-card {
+    position: relative;
+    min-height: 260px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: #101216;
+
+    opacity: 0;
+    transform: translateY(22px);
+
+    transition:
+        opacity .65s var(--ease),
+        transform .65s var(--ease),
+        border-color .3s ease;
+}
+
+.worker-card.in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.worker-card:hover {
+    border-color: rgba(255, 156, 103, 0.35);
+}
+
+.worker-large {
+    grid-row: span 2;
+}
+
+.worker-card img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.worker-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top,
+            rgba(8, 9, 11, 0.92),
+            rgba(8, 9, 11, 0.15) 65%,
+            transparent);
+}
+
+.worker-card:hover img {
+    transform: scale(1.05);
+}
+
+.worker-overlay {
+    position: absolute;
+    z-index: 2;
+    left: 22px;
+    right: 22px;
+    bottom: 20px;
+
+    display: flex;
+    align-items: flex-end;
+    gap: 15px;
+}
+
+.worker-overlay>span {
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid rgba(255, 129, 62, 0.5);
+    color: #ff813e;
+
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 12px;
+}
+
+.worker-overlay strong {
+    display: block;
+    color: #fff;
+
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 18px;
+}
+
+.worker-overlay small {
+    display: block;
+    margin-top: 4px;
+    color: #a7a9af;
+
+    font-family: "Inter", sans-serif;
+    font-size: 12px;
+}
+
+
+/* TABLET */
+
+@media (max-width: 900px) {
+
+    .network-workers {
+        padding: 85px 0;
+    }
+
+    .network-workers-grid {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 300px 240px 240px;
+    }
+
+    .worker-large {
+        grid-column: span 2;
+        grid-row: auto;
+    }
+}
+
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+
+    .network-workers {
+        padding: 70px 0;
+    }
+
+    .network-workers-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: none;
+        gap: 14px;
+    }
+
+    .worker-large,
+    .worker-card {
+        grid-column: auto;
+        grid-row: auto;
+        height: 270px;
+        min-height: 270px;
+    }
+
+    .worker-overlay {
+        left: 17px;
+        right: 17px;
+        bottom: 17px;
+    }
 }
