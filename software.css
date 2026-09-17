@@ -542,6 +542,7 @@
 .software-why {
     padding: 120px 0;
      border-top: 1px solid rgba(255,255,255,0.07);
+     border-bottom: 1px solid rgba(255,255,255,0.07);
 }
 
 .software-benefits {
