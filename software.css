@@ -1746,3 +1746,343 @@
     }
 
 }
+
+/* ============================================================
+   ORYTINGO — BUSINESS AUTOMATION / INDUSTRIES
+============================================================ */
+
+.business-automation {
+    padding: 96px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.business-automation-head {
+    max-width: 640px;
+    margin: 0 auto 48px;
+    text-align: center;
+}
+
+.business-automation-head h2 {
+    margin: 10px 0 0;
+    font-family: "Space Grotesk", sans-serif;
+    font-size: clamp(1.7rem, 2.8vw, 2.3rem);
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--text);
+}
+
+.business-automation-head h2 span {
+    color: var(--orange);
+}
+
+.business-automation-head > p {
+    max-width: 570px;
+    margin: 14px auto 0;
+    color: var(--text-muted);
+    font-size: 1rem;
+    line-height: 1.7;
+}
+
+
+/* ============================================================
+   MARQUEE
+============================================================ */
+
+.industry-marquee {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.industry-track {
+    display: flex;
+    width: max-content;
+    gap: 20px;
+
+    animation: industryScroll 42s linear infinite;
+
+    will-change: transform;
+}
+
+.industry-marquee:hover .industry-track {
+    animation-play-state: paused;
+}
+
+
+/* ============================================================
+   CARD
+============================================================ */
+
+.industry-card {
+    position: relative;
+
+    width: 280px;
+    height: 330px;
+
+    flex: 0 0 280px;
+
+    overflow: hidden;
+
+    background: var(--card);
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+
+    transition:
+        transform .3s var(--ease),
+        border-color .3s var(--ease);
+}
+
+.industry-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(255, 129, 62, .5);
+}
+
+
+/* ============================================================
+   IMAGE
+============================================================ */
+
+.industry-card img {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    transition:
+        transform .6s var(--ease);
+}
+
+.industry-card:hover img {
+    transform: scale(1.06);
+}
+
+
+/* ============================================================
+   OVERLAY
+============================================================ */
+
+.industry-overlay {
+    position: absolute;
+    inset: 0;
+
+    background: linear-gradient(
+        to top,
+        rgba(8, 9, 11, .97) 0%,
+        rgba(8, 9, 11, .78) 38%,
+        rgba(8, 9, 11, .25) 72%,
+        transparent 100%
+    );
+}
+
+
+/* ============================================================
+   CONTENT
+============================================================ */
+
+.industry-content {
+    position: absolute;
+
+    left: 22px;
+    right: 22px;
+    bottom: 22px;
+
+    z-index: 2;
+}
+
+.industry-number {
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 12px;
+
+    border: 1px solid rgba(255, 129, 62, .5);
+
+    color: var(--orange);
+
+    font-family: "Space Grotesk", sans-serif;
+    font-size: .7rem;
+    font-weight: 600;
+
+    background: rgba(8, 9, 11, .5);
+}
+
+.industry-content h3 {
+    margin: 0 0 7px;
+
+    font-family: "Space Grotesk", sans-serif;
+
+    font-size: 1.15rem;
+    font-weight: 600;
+
+    color: var(--text);
+}
+
+.industry-content p {
+    margin: 0;
+
+    color: rgba(245, 245, 245, .7);
+
+    font-family: "Inter", sans-serif;
+
+    font-size: .78rem;
+    line-height: 1.55;
+}
+
+
+/* ============================================================
+   SIDE FADE
+============================================================ */
+
+.industry-marquee::before,
+.industry-marquee::after {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    bottom: 0;
+
+    width: 55px;
+
+    z-index: 5;
+
+    pointer-events: none;
+}
+
+.industry-marquee::before {
+    left: 0;
+
+    background: linear-gradient(
+        to right,
+        var(--bg),
+        transparent
+    );
+}
+
+.industry-marquee::after {
+    right: 0;
+
+    background: linear-gradient(
+        to left,
+        var(--bg),
+        transparent
+    );
+}
+
+
+/* ============================================================
+   ANIMATION
+============================================================ */
+
+@keyframes industryScroll {
+
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(calc(-50% - 10px));
+    }
+
+}
+
+
+/* ============================================================
+   TABLET
+============================================================ */
+
+@media (max-width: 900px) {
+
+    .business-automation {
+        padding: 68px 0;
+    }
+
+    .industry-card {
+        width: 250px;
+        height: 300px;
+        flex-basis: 250px;
+    }
+
+    .industry-track {
+        gap: 16px;
+        animation-duration: 38s;
+    }
+
+}
+
+
+/* ============================================================
+   MOBILE
+============================================================ */
+
+@media (max-width: 600px) {
+
+    .business-automation {
+        padding: 68px 0;
+    }
+
+    .business-automation-head {
+        margin-bottom: 32px;
+    }
+
+    .business-automation-head h2 {
+        font-size: 1.8rem;
+    }
+
+    .business-automation-head > p {
+        font-size: .9rem;
+    }
+
+    .industry-card {
+        width: 220px;
+        height: 275px;
+        flex-basis: 220px;
+    }
+
+    .industry-track {
+        gap: 14px;
+        animation-duration: 32s;
+    }
+
+    .industry-content {
+        left: 18px;
+        right: 18px;
+        bottom: 18px;
+    }
+
+    .industry-content h3 {
+        font-size: 1.05rem;
+    }
+
+    .industry-content p {
+        font-size: .73rem;
+    }
+
+    .industry-marquee::before,
+    .industry-marquee::after {
+        width: 30px;
+    }
+
+}
+
+
+/* ============================================================
+   REDUCED MOTION
+============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .industry-track {
+        animation: none;
+        transform: none;
+    }
+
+}
