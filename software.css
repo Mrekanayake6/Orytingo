@@ -48,11 +48,11 @@
     font-size: clamp(2.8rem, 5vw, 4.6rem);
     line-height: 1.03;
     font-weight: 900;
-    
+
 }
 
 .software-hero-copy h1 span {
-    display: block;  
+    display: block;
     -webkit-background-clip: text;
     background-clip: text;
     color: var(--orange);
@@ -541,7 +541,7 @@
 
 .software-why {
     padding: 120px 0;
-     border-top: 1px solid rgba(255,255,255,0.07);
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
 }
 
 .software-benefits {
@@ -667,8 +667,8 @@
 
 .software-tech {
     padding: 120px 0;
-    border-top: 1px solid rgba(255,255,255,0.07);
-    
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+
 }
 
 .software-tech-grid {
@@ -725,8 +725,8 @@
 
 .software-cta {
     margin-top: 20px;
-    
-    
+
+
 }
 
 /* ============================================================
@@ -1387,14 +1387,15 @@
         margin-bottom: -25px;
     }
 }
+
 /* ============================================================
    ORYTINGO — SOFTWARE PROJECTS
 ============================================================ */
 
 .software-projects {
     padding: 110px 0;
-     border-top: 1px solid rgba(255,255,255,0.07);
-    
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+
 }
 
 .software-projects .section-head {
@@ -1404,7 +1405,7 @@
 
 
 
-.software-projects .section-head > p:last-child {
+.software-projects .section-head>p:last-child {
     margin-top: 20px;
     color: #92959d;
     font-family: "Inter", sans-serif;
@@ -1432,7 +1433,7 @@
 
     background: #101216;
 
-    border: 1px solid rgba(255,255,255,0.08);
+    border: 1px solid rgba(255, 255, 255, 0.08);
 
     opacity: 0;
     transform: translateY(25px);
@@ -1449,7 +1450,7 @@
 }
 
 .project-card:hover {
-    border-color: rgba(255,129,62,0.4);
+    border-color: rgba(255, 129, 62, 0.4);
 }
 
 /* ============================================================
@@ -1491,11 +1492,9 @@
     inset: 0;
 
     background:
-        linear-gradient(
-            to top,
-            rgba(8,9,11,0.65),
-            transparent 55%
-        );
+        linear-gradient(to top,
+            rgba(8, 9, 11, 0.65),
+            transparent 55%);
 
     pointer-events: none;
 }
@@ -1513,9 +1512,9 @@
 
     padding: 7px 11px;
 
-    background: rgba(8,9,11,0.85);
+    background: rgba(8, 9, 11, 0.85);
 
-    border: 1px solid rgba(255,129,62,0.35);
+    border: 1px solid rgba(255, 129, 62, 0.35);
 
     color: #ff813e;
 
@@ -1561,7 +1560,7 @@
 }
 
 
-.project-content > p {
+.project-content>p {
     min-height: 54px;
 
     margin: 0 0 20px;
@@ -1589,7 +1588,7 @@
 .project-tech span {
     padding: 6px 9px;
 
-    border: 1px solid rgba(255,255,255,0.08);
+    border: 1px solid rgba(255, 255, 255, 0.08);
 
     color: #a7a9af;
 
@@ -1644,7 +1643,7 @@
 /* VIEW PROJECT */
 
 .project-btn-secondary {
-    border: 1px solid rgba(255,255,255,0.12);
+    border: 1px solid rgba(255, 255, 255, 0.12);
 
     color: #d7d8dc;
 }
@@ -1669,7 +1668,7 @@
 
     padding-top: 35px;
 
-    border-top: 1px solid rgba(255,255,255,0.07);
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
 }
 
 .projects-bottom p {
@@ -1727,7 +1726,7 @@
         font-size: 22px;
     }
 
-    .project-content > p {
+    .project-content>p {
         min-height: auto;
     }
 
