@@ -1755,6 +1755,7 @@
     padding: 96px 0;
     position: relative;
     overflow: hidden;
+    border-top: 1px solid var(--border);
 }
 
 .business-automation-head {
