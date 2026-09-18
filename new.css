@@ -1223,10 +1223,13 @@ section {
 }
 
 .footer-col a {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   font-size: 0.9rem;
   color: var(--text-muted);
   padding: 6px 0;
-  transition: color .2s var(--ease);
+  white-space: nowrap;
 }
 
 .footer-col a:hover {
@@ -1234,8 +1237,8 @@ section {
 }
 
 .footer-col a i {
+  flex-shrink: 0;
   width: 14px;
-  margin-right: 6px;
   color: var(--text-faint);
 }
 
