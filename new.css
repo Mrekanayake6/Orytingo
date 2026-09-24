@@ -1486,7 +1486,18 @@ section {
    Reduce Motion
 ============================================================ */
 
+@media (prefers-reduced-motion: reduce) {
 
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+
+}
 
  /* =========================================================
    WHATSAPP FLOATING BUTTON
