@@ -1774,3 +1774,202 @@ section {
         font-size: 25px;
     }
 }
+/* new */
+
+.software-tech {
+  position: relative;
+  overflow: hidden;
+  padding: 110px 0;
+  
+}
+
+/* Orange eyebrow */
+.eyebrow-orange {
+  color: #ff813e;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  margin-bottom: 15px;
+}
+
+/* ========================================= MARQUEE WRAPPER ========================================= */
+.modern-tech-marquee {
+  position: relative;
+  margin-top: 65px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+}
+
+/* ========================================= ROW ========================================= */
+.tech-marquee-row {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  padding: 9px 0;
+}
+
+/* Edge fade */
+.tech-marquee-row::before,
+.tech-marquee-row::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 160px;
+  height: 100%;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.tech-marquee-row::before {
+  left: 0;
+  background: linear-gradient(90deg, #08090b 5%, transparent);
+}
+
+.tech-marquee-row::after {
+  right: 0;
+  background: linear-gradient(270deg, #08090b 5%, transparent);
+}
+
+/* ========================================= MOVING TRACK ========================================= */
+.tech-marquee-track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  animation: marqueeForward 32s linear infinite;
+}
+
+.tech-marquee-track.reverse {
+  animation-name: marqueeReverse;
+  animation-duration: 36s;
+}
+
+/* Pause */
+.modern-tech-marquee:hover .tech-marquee-track {
+  animation-play-state: paused;
+}
+
+/* ========================================= SERVICE ========================================= */
+.tech-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 19px;
+  white-space: nowrap;
+  color: rgba(245, 245, 245, 0.72);
+  font-size: 13px;
+  font-weight: 500;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.tech-item i {
+  font-size: 16px;
+  color: #ff813e;
+  filter: drop-shadow(0 0 7px rgba(255, 129, 62, 0.28));
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.tech-item:hover {
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.tech-item:hover i {
+  transform: scale(1.15);
+  filter: drop-shadow(0 0 12px rgba(255, 129, 62, 0.55));
+}
+
+/* ========================================= CONNECTING LINE ========================================= */
+.tech-line {
+  width: 42px;
+  height: 1px;
+  flex-shrink: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 129, 62, 0.32), transparent);
+  position: relative;
+}
+
+/* Tiny glowing point */
+.tech-line::after {
+  content: "";
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #ff813e;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 8px rgba(255, 129, 62, 0.6);
+}
+
+/* ========================================= ANIMATION ========================================= */
+@keyframes marqueeForward {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes marqueeReverse {
+  from {
+    transform: translateX(-50%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* ========================================= SUBTLE BACKGROUND GLOW ========================================= */
+.modern-tech-marquee::before {
+  content: "";
+  position: absolute;
+  width: 500px;
+  height: 180px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(ellipse, rgba(255, 129, 62, 0.045), transparent 70%);
+  pointer-events: none;
+}
+
+/* ========================================= MOBILE ========================================= */
+@media (max-width: 700px) {
+  .software-tech {
+    padding: 80px 0;
+  }
+
+  .modern-tech-marquee {
+    margin-top: 45px;
+    gap: 8px;
+  }
+
+  .tech-item {
+    padding: 11px 14px;
+    font-size: 12px;
+  }
+
+  .tech-item i {
+    font-size: 14px;
+  }
+
+  .tech-line {
+    width: 25px;
+  }
+
+  .tech-marquee-row::before,
+  .tech-marquee-row::after {
+    width: 70px;
+  }
+}
+
+/* Reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  .tech-marquee-track {
+    animation: none;
+  }
+}
