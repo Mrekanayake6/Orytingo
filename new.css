@@ -1990,9 +1990,11 @@ section {
   justify-content: center;
 
   background:
-    radial-gradient(circle at center,
+    radial-gradient(
+      circle at center,
       rgba(255, 129, 62, 0.055) 0%,
-      transparent 42%),
+      transparent 42%
+    ),
     #08090b;
 
   opacity: 1;
@@ -2001,6 +2003,12 @@ section {
   transition:
     opacity 0.8s cubic-bezier(.4, 0, .2, 1),
     visibility 0.8s;
+
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 #page-loader.loaded {
@@ -2016,12 +2024,22 @@ section {
 
 .loader-content {
   width: min(300px, 80vw);
+
   text-align: center;
 
   animation:
-    loaderContentIn 0.9s cubic-bezier(.4, 0, .2, 1) both;
+    loaderContentIn
+    0.9s
+    cubic-bezier(.4, 0, .2, 1)
+    both;
 
   will-change: transform, opacity;
+
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 
@@ -2040,12 +2058,24 @@ section {
   object-fit: contain;
 
   filter:
-    drop-shadow(0 0 18px rgba(255, 129, 62, 0.18));
+    drop-shadow(
+      0 0 18px
+      rgba(255, 129, 62, 0.18)
+    );
 
   animation:
-    loaderLogoIn 1s cubic-bezier(.4, 0, .2, 1) both;
+    loaderLogoIn
+    1s
+    cubic-bezier(.4, 0, .2, 1)
+    both;
 
   will-change: transform, opacity;
+
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 
@@ -2066,9 +2096,22 @@ section {
   margin-left: 0.24em;
 
   animation:
-    loaderBrandIn 1s 0.15s cubic-bezier(.4, 0, .2, 1) both;
+    loaderBrandIn
+    1s
+    0.15s
+    cubic-bezier(.4, 0, .2, 1)
+    both;
 
-  will-change: transform, opacity, letter-spacing;
+  will-change:
+    transform,
+    opacity,
+    letter-spacing;
+
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 
@@ -2089,6 +2132,9 @@ section {
   background: rgba(255, 255, 255, 0.08);
 
   border-radius: 999px;
+
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
 }
 
 .loader-line span {
@@ -2103,17 +2149,26 @@ section {
   border-radius: inherit;
 
   background:
-    linear-gradient(90deg,
+    linear-gradient(
+      90deg,
       #ff813e,
-      #ff9c67);
+      #ff9c67
+    );
 
   box-shadow:
-    0 0 12px rgba(255, 129, 62, 0.45);
+    0 0 12px
+    rgba(255, 129, 62, 0.45);
 
   animation:
-    loaderProgress 1.4s cubic-bezier(.4, 0, .2, 1) infinite;
+    loaderProgress
+    1.4s
+    cubic-bezier(.4, 0, .2, 1)
+    infinite;
 
   will-change: transform;
+
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
 }
 
 
@@ -2134,9 +2189,15 @@ section {
   margin-left: 0.28em;
 
   animation:
-    loaderStatusPulse 1.6s ease-in-out infinite;
+    loaderStatusPulse
+    1.6s
+    ease-in-out
+    infinite;
 
   will-change: opacity;
+
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
 }
 
 
@@ -2229,7 +2290,10 @@ section {
     max-width: 300px;
 
     animation:
-      loaderContentIn 0.9s cubic-bezier(.4, 0, .2, 1) both;
+      loaderContentIn
+      0.9s
+      cubic-bezier(.4, 0, .2, 1)
+      both;
   }
 
 
@@ -2239,7 +2303,10 @@ section {
     margin-bottom: 20px;
 
     animation:
-      loaderLogoIn 1s cubic-bezier(.4, 0, .2, 1) both;
+      loaderLogoIn
+      1s
+      cubic-bezier(.4, 0, .2, 1)
+      both;
   }
 
 
@@ -2251,7 +2318,11 @@ section {
     margin-left: 0.20em;
 
     animation:
-      loaderBrandInMobile 1s 0.15s cubic-bezier(.4, 0, .2, 1) both;
+      loaderBrandInMobile
+      1s
+      0.15s
+      cubic-bezier(.4, 0, .2, 1)
+      both;
   }
 
 
@@ -2266,7 +2337,10 @@ section {
 
   .loader-line span {
     animation:
-      loaderProgress 1.4s cubic-bezier(.4, 0, .2, 1) infinite;
+      loaderProgress
+      1.4s
+      cubic-bezier(.4, 0, .2, 1)
+      infinite;
   }
 
 
@@ -2278,7 +2352,10 @@ section {
     margin-left: 0.25em;
 
     animation:
-      loaderStatusPulse 1.6s ease-in-out infinite;
+      loaderStatusPulse
+      1.6s
+      ease-in-out
+      infinite;
   }
 
 }
@@ -2292,17 +2369,13 @@ section {
 
   from {
     opacity: 0;
-
     transform: translateY(8px);
-
     letter-spacing: 0.28em;
   }
 
   to {
     opacity: 1;
-
     transform: translateY(0);
-
     letter-spacing: 0.20em;
   }
 
@@ -2310,7 +2383,7 @@ section {
 
 
 /* =========================
-   SAFARI / MOBILE FIX
+   SAFARI / IOS FIX
 ========================= */
 
 #page-loader,
@@ -2320,16 +2393,20 @@ section {
 .loader-line,
 .loader-line span,
 .loader-status {
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
 
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
+
+  -webkit-perspective: 1000px;
+  perspective: 1000px;
 }
 
 
 /* =========================
-   IMPORTANT
-   Do NOT disable loader animations
-   on mobile devices.
+   REDUCE MOTION
+   Intentionally NOT included.
+   
+   This allows the OryTingo loader
+   animation to run even when
+   iPhone Reduce Motion is ON.
 ========================= */
