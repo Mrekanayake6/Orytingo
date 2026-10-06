@@ -1499,24 +1499,24 @@ section {
 
 }
 
- /* =========================================================
+/* =========================================================
    WHATSAPP FLOATING BUTTON
 ========================================================= */
 
 .whatsapp-float {
-    position: fixed;
-    right: 26px;
-    bottom: 26px;
+  position: fixed;
+  right: 26px;
+  bottom: 26px;
 
-    display: flex;
-    align-items: center;
-    gap: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 
-    text-decoration: none;
+  text-decoration: none;
 
-    z-index: 9999;
+  z-index: 9999;
 
-    font-family: "Inter", sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 
@@ -1525,55 +1525,55 @@ section {
 ========================================================= */
 
 .whatsapp-tooltip {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
 
-    padding: 11px 16px;
+  padding: 11px 16px;
 
-    background: rgba(14, 16, 20, 0.96);
+  background: rgba(14, 16, 20, 0.96);
 
-    border: 1px solid rgba(255, 255, 255, 0.09);
+  border: 1px solid rgba(255, 255, 255, 0.09);
 
-    border-radius: 12px;
+  border-radius: 12px;
 
-    box-shadow:
-        0 10px 35px rgba(0, 0, 0, 0.35);
+  box-shadow:
+    0 10px 35px rgba(0, 0, 0, 0.35);
 
-    white-space: nowrap;
+  white-space: nowrap;
 
-    opacity: 1;
-    visibility: visible;
+  opacity: 1;
+  visibility: visible;
 
-    transform: translateX(0);
+  transform: translateX(0);
 
-    transition:
-        transform 0.3s ease,
-        box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 
 /* Title */
 
 .whatsapp-tooltip strong {
-    color: #ffffff;
+  color: #ffffff;
 
-    font-size: 13px;
-    font-weight: 600;
+  font-size: 13px;
+  font-weight: 600;
 
-    line-height: 1.2;
+  line-height: 1.2;
 }
 
 
 /* Subtitle */
 
 .whatsapp-tooltip span {
-    color: #a6a9b0;
+  color: #a6a9b0;
 
-    font-size: 11px;
-    font-weight: 400;
+  font-size: 11px;
+  font-weight: 400;
 
-    line-height: 1.2;
+  line-height: 1.2;
 }
 
 
@@ -1582,29 +1582,29 @@ section {
 ========================================================= */
 
 .whatsapp-icon {
-    position: relative;
+  position: relative;
 
-    width: 58px;
-    height: 58px;
+  width: 58px;
+  height: 58px;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    border-radius: 50%;
+  border-radius: 50%;
 
-    background: #25d366;
+  background: #25d366;
 
-    color: #ffffff;
+  color: #ffffff;
 
-    font-size: 27px;
+  font-size: 27px;
 
-    box-shadow:
-        0 8px 25px rgba(37, 211, 102, 0.28);
+  box-shadow:
+    0 8px 25px rgba(37, 211, 102, 0.28);
 
-    transition:
-        transform 0.3s ease,
-        box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 
@@ -1613,18 +1613,18 @@ section {
 ========================================================= */
 
 .whatsapp-icon::before {
-    content: "";
+  content: "";
 
-    position: absolute;
+  position: absolute;
 
-    inset: -5px;
+  inset: -5px;
 
-    border: 2px solid rgba(37, 211, 102, 0.55);
+  border: 2px solid rgba(37, 211, 102, 0.55);
 
-    border-radius: 50%;
+  border-radius: 50%;
 
-    animation:
-        whatsappCallRing 2.2s ease-out infinite;
+  animation:
+    whatsappCallRing 2.2s ease-out infinite;
 }
 
 
@@ -1633,20 +1633,20 @@ section {
 ========================================================= */
 
 .whatsapp-icon::after {
-    content: "";
+  content: "";
 
-    position: absolute;
+  position: absolute;
 
-    inset: -5px;
+  inset: -5px;
 
-    border: 2px solid rgba(37, 211, 102, 0.35);
+  border: 2px solid rgba(37, 211, 102, 0.35);
 
-    border-radius: 50%;
+  border-radius: 50%;
 
-    animation:
-        whatsappCallRing 2.2s ease-out infinite;
+  animation:
+    whatsappCallRing 2.2s ease-out infinite;
 
-    animation-delay: 1.1s;
+  animation-delay: 1.1s;
 }
 
 
@@ -1656,19 +1656,19 @@ section {
 
 @keyframes whatsappCallRing {
 
-    0% {
-        transform: scale(0.95);
-        opacity: 0.8;
-    }
+  0% {
+    transform: scale(0.95);
+    opacity: 0.8;
+  }
 
-    50% {
-        opacity: 0.35;
-    }
+  50% {
+    opacity: 0.35;
+  }
 
-    100% {
-        transform: scale(1.55);
-        opacity: 0;
-    }
+  100% {
+    transform: scale(1.55);
+    opacity: 0;
+  }
 }
 
 
@@ -1677,42 +1677,42 @@ section {
 ========================================================= */
 
 .whatsapp-icon i {
-    position: relative;
+  position: relative;
 
-    z-index: 2;
+  z-index: 2;
 
-    animation:
-        whatsappShake 2.2s ease-in-out infinite;
+  animation:
+    whatsappShake 2.2s ease-in-out infinite;
 }
 
 
 @keyframes whatsappShake {
 
-    0%,
-    70%,
-    100% {
-        transform: rotate(0deg);
-    }
+  0%,
+  70%,
+  100% {
+    transform: rotate(0deg);
+  }
 
-    75% {
-        transform: rotate(-10deg);
-    }
+  75% {
+    transform: rotate(-10deg);
+  }
 
-    80% {
-        transform: rotate(10deg);
-    }
+  80% {
+    transform: rotate(10deg);
+  }
 
-    85% {
-        transform: rotate(-8deg);
-    }
+  85% {
+    transform: rotate(-8deg);
+  }
 
-    90% {
-        transform: rotate(6deg);
-    }
+  90% {
+    transform: rotate(6deg);
+  }
 
-    95% {
-        transform: rotate(0deg);
-    }
+  95% {
+    transform: rotate(0deg);
+  }
 }
 
 
@@ -1721,18 +1721,18 @@ section {
 ========================================================= */
 
 .whatsapp-float:hover .whatsapp-tooltip {
-    transform: translateX(-3px);
+  transform: translateX(-3px);
 
-    box-shadow:
-        0 12px 40px rgba(0, 0, 0, 0.45);
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.45);
 }
 
 
 .whatsapp-float:hover .whatsapp-icon {
-    transform: scale(1.08);
+  transform: scale(1.08);
 
-    box-shadow:
-        0 12px 35px rgba(37, 211, 102, 0.40);
+  box-shadow:
+    0 12px 35px rgba(37, 211, 102, 0.40);
 }
 
 
@@ -1742,45 +1742,46 @@ section {
 
 @media (max-width: 600px) {
 
-    .whatsapp-float {
-        right: 18px;
-        bottom: 18px;
+  .whatsapp-float {
+    right: 18px;
+    bottom: 18px;
 
-        gap: 9px;
-    }
-
-
-    .whatsapp-tooltip {
-        padding: 9px 12px;
-
-        border-radius: 10px;
-    }
+    gap: 9px;
+  }
 
 
-    .whatsapp-tooltip strong {
-        font-size: 12px;
-    }
+  .whatsapp-tooltip {
+    padding: 9px 12px;
+
+    border-radius: 10px;
+  }
 
 
-    .whatsapp-tooltip span {
-        font-size: 10px;
-    }
+  .whatsapp-tooltip strong {
+    font-size: 12px;
+  }
 
 
-    .whatsapp-icon {
-        width: 54px;
-        height: 54px;
+  .whatsapp-tooltip span {
+    font-size: 10px;
+  }
 
-        font-size: 25px;
-    }
+
+  .whatsapp-icon {
+    width: 54px;
+    height: 54px;
+
+    font-size: 25px;
+  }
 }
+
 /* new */
 
 .software-tech {
   position: relative;
   overflow: hidden;
   padding: 110px 0;
-  
+
 }
 
 /* Orange eyebrow */
@@ -1973,6 +1974,8 @@ section {
     animation: none;
   }
 }
+
+
 /* =========================
    PREMIUM PAGE LOADER
 ========================= */
@@ -1987,11 +1990,9 @@ section {
   justify-content: center;
 
   background:
-    radial-gradient(
-      circle at center,
+    radial-gradient(circle at center,
       rgba(255, 129, 62, 0.055) 0%,
-      transparent 42%
-    ),
+      transparent 42%),
     #08090b;
 
   opacity: 1;
@@ -2008,14 +2009,26 @@ section {
   pointer-events: none;
 }
 
+
+/* =========================
+   CONTENT
+========================= */
+
 .loader-content {
   width: min(300px, 80vw);
   text-align: center;
 
-  animation: loaderContentIn 0.9s cubic-bezier(.4, 0, .2, 1) both;
+  animation:
+    loaderContentIn 0.9s cubic-bezier(.4, 0, .2, 1) both;
+
+  will-change: transform, opacity;
 }
 
-/* Logo */
+
+/* =========================
+   LOGO
+========================= */
+
 .loader-logo {
   display: block;
 
@@ -2029,25 +2042,40 @@ section {
   filter:
     drop-shadow(0 0 18px rgba(255, 129, 62, 0.18));
 
-  animation: loaderLogoIn 1s cubic-bezier(.4, 0, .2, 1) both;
+  animation:
+    loaderLogoIn 1s cubic-bezier(.4, 0, .2, 1) both;
+
+  will-change: transform, opacity;
 }
 
-/* ORYTINGO */
+
+/* =========================
+   ORYTINGO
+========================= */
+
 .loader-brand {
   font-family: "Space Grotesk", sans-serif;
 
   font-size: 22px;
   font-weight: 700;
+
   letter-spacing: 0.24em;
 
   color: #f5f5f5;
 
   margin-left: 0.24em;
 
-  animation: loaderBrandIn 1s 0.15s cubic-bezier(.4, 0, .2, 1) both;
+  animation:
+    loaderBrandIn 1s 0.15s cubic-bezier(.4, 0, .2, 1) both;
+
+  will-change: transform, opacity, letter-spacing;
 }
 
-/* Loading line */
+
+/* =========================
+   LOADING LINE
+========================= */
+
 .loader-line {
   position: relative;
 
@@ -2065,6 +2093,7 @@ section {
 
 .loader-line span {
   position: absolute;
+
   left: 0;
   top: 0;
 
@@ -2073,21 +2102,25 @@ section {
 
   border-radius: inherit;
 
-  background: linear-gradient(
-    90deg,
-    #ff813e,
-    #ff9c67
-  );
+  background:
+    linear-gradient(90deg,
+      #ff813e,
+      #ff9c67);
 
   box-shadow:
     0 0 12px rgba(255, 129, 62, 0.45);
 
-  animation: loaderProgress 1.4s
-    cubic-bezier(.4, 0, .2, 1)
-    infinite;
+  animation:
+    loaderProgress 1.4s cubic-bezier(.4, 0, .2, 1) infinite;
+
+  will-change: transform;
 }
 
-/* Loading text */
+
+/* =========================
+   LOADING TEXT
+========================= */
+
 .loader-status {
   font-family: "Inter", sans-serif;
 
@@ -2100,7 +2133,10 @@ section {
 
   margin-left: 0.28em;
 
-  animation: loaderStatusPulse 1.6s ease-in-out infinite;
+  animation:
+    loaderStatusPulse 1.6s ease-in-out infinite;
+
+  will-change: opacity;
 }
 
 
@@ -2109,6 +2145,7 @@ section {
 ========================= */
 
 @keyframes loaderContentIn {
+
   from {
     opacity: 0;
     transform: translateY(12px);
@@ -2118,9 +2155,12 @@ section {
     opacity: 1;
     transform: translateY(0);
   }
+
 }
 
+
 @keyframes loaderLogoIn {
+
   from {
     opacity: 0;
     transform: scale(0.88);
@@ -2130,9 +2170,12 @@ section {
     opacity: 1;
     transform: scale(1);
   }
+
 }
 
+
 @keyframes loaderBrandIn {
+
   from {
     opacity: 0;
     transform: translateY(8px);
@@ -2144,9 +2187,12 @@ section {
     transform: translateY(0);
     letter-spacing: 0.24em;
   }
+
 }
 
+
 @keyframes loaderProgress {
+
   0% {
     transform: translateX(-120%);
   }
@@ -2154,9 +2200,12 @@ section {
   100% {
     transform: translateX(330%);
   }
+
 }
 
+
 @keyframes loaderStatusPulse {
+
   0%,
   100% {
     opacity: 0.45;
@@ -2165,6 +2214,7 @@ section {
   50% {
     opacity: 1;
   }
+
 }
 
 
@@ -2174,37 +2224,112 @@ section {
 
 @media (max-width: 600px) {
 
+  .loader-content {
+    width: 100%;
+    max-width: 300px;
+
+    animation:
+      loaderContentIn 0.9s cubic-bezier(.4, 0, .2, 1) both;
+  }
+
+
   .loader-logo {
     width: 68px;
+
     margin-bottom: 20px;
+
+    animation:
+      loaderLogoIn 1s cubic-bezier(.4, 0, .2, 1) both;
   }
+
 
   .loader-brand {
     font-size: 19px;
+
     letter-spacing: 0.20em;
+
+    margin-left: 0.20em;
+
+    animation:
+      loaderBrandInMobile 1s 0.15s cubic-bezier(.4, 0, .2, 1) both;
   }
+
 
   .loader-line {
     width: 155px;
+    height: 2px;
+
+    margin-top: 26px;
+    margin-bottom: 14px;
+  }
+
+
+  .loader-line span {
+    animation:
+      loaderProgress 1.4s cubic-bezier(.4, 0, .2, 1) infinite;
+  }
+
+
+  .loader-status {
+    font-size: 8px;
+
+    letter-spacing: 0.25em;
+
+    margin-left: 0.25em;
+
+    animation:
+      loaderStatusPulse 1.6s ease-in-out infinite;
   }
 
 }
 
 
 /* =========================
-   REDUCE MOTION
+   MOBILE BRAND ANIMATION
 ========================= */
 
-@media (prefers-reduced-motion: reduce) {
+@keyframes loaderBrandInMobile {
 
-  #page-loader,
-  .loader-content,
-  .loader-logo,
-  .loader-brand,
-  .loader-line span,
-  .loader-status {
-    animation: none !important;
-    transition: none !important;
+  from {
+    opacity: 0;
+
+    transform: translateY(8px);
+
+    letter-spacing: 0.28em;
+  }
+
+  to {
+    opacity: 1;
+
+    transform: translateY(0);
+
+    letter-spacing: 0.20em;
   }
 
 }
+
+
+/* =========================
+   SAFARI / MOBILE FIX
+========================= */
+
+#page-loader,
+.loader-content,
+.loader-logo,
+.loader-brand,
+.loader-line,
+.loader-line span,
+.loader-status {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+
+/* =========================
+   IMPORTANT
+   Do NOT disable loader animations
+   on mobile devices.
+========================= */
