@@ -270,7 +270,7 @@
       <div class="scroll-cue" aria-hidden="true"><span></span></div>
     </section>
 
-    
+
     <section class="software-tech">
       <div class="section-inner">
         <div class="section-head">
@@ -602,8 +602,7 @@
         </a>
         <p>Software solutions and networking infrastructure, built by one team.</p>
         <div class="socials">
-          <a href="https://www.facebook.com/OryTingo" aria-label="Facebook"><i
-              class="fa-brands fa-facebook-f"></i></a>
+          <a href="https://www.facebook.com/OryTingo" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
           <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
           <a href="https://www.instagram.com/orytingo_ns?stkn=dGhwMnRjMXlmbTFx" aria-label="Instagram"><i
               class="fa-brands fa-instagram"></i></a>
@@ -660,6 +659,24 @@
       <i class="fa-brands fa-whatsapp"></i>
     </span>
   </a>
+
+
+  <!-- Premium Page Loader -->
+  <div id="page-loader">
+    <div class="loader-content">
+
+      <img src="logo.png" alt="OryTingo" class="loader-logo">
+
+      <div class="loader-brand">ORYTINGO</div>
+
+      <div class="loader-line">
+        <span></span>
+      </div>
+
+      <div class="loader-status">LOADING</div>
+
+    </div>
+  </div>
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
@@ -824,6 +841,28 @@
 
       }
 
+    });
+
+
+    const loaderStart = Date.now();
+
+    window.addEventListener("load", function () {
+      const loader = document.getElementById("page-loader");
+
+      if (!loader) return;
+
+      const minimumTime = 1800; // 1.8 seconds
+      const elapsed = Date.now() - loaderStart;
+      const remaining = Math.max(0, minimumTime - elapsed);
+
+      setTimeout(() => {
+        loader.classList.add("loaded");
+
+        setTimeout(() => {
+          loader.remove();
+        }, 900);
+
+      }, remaining);
     });
   </script>
 
