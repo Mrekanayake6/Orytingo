@@ -394,7 +394,9 @@ button {
   color: var(--text-muted);
   font-weight: 500;
 }
-
+.mobile-menu .mobile-project-btn {
+  color:var(--bg)
+}
 /* NORMAL MENU LINKS - CONTENT WIDTH */
 .mobile-menu a:not(:last-child) {
   display: inline-block;
