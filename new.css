@@ -386,15 +386,12 @@ button {
 
 
 
-
-
-
 /* MOBILE MENU LINKS */
 .mobile-menu a {
   position: relative;
   padding: 12px 4px;
   border-bottom: 1px solid var(--border-soft);
-  color: var(--text-muted);
+  color: var(--bg);
   font-weight: 500;
 }
 
