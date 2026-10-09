@@ -11,6 +11,10 @@
   --border: rgba(255, 255, 255, 0.08);
   --border-soft: rgba(255, 255, 255, 0.05);
 
+  /* Missing CSS Variables Fixed */
+  --border-light: rgba(255, 255, 255, 0.12);
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+
   --text: #f5f5f5;
   --text-muted: #9499a4;
   --text-faint: #676b74;
@@ -18,8 +22,6 @@
   --orange: #ff813e;
   --orange-light: #ff9c67;
 
-  /* software pillar uses --orange, networking pillar uses --orange-light,
-     so the two service families stay distinguishable within one accent family */
   --blue: var(--orange);
   --cyan: var(--orange-light);
   --violet: var(--orange-light);
@@ -236,23 +238,15 @@ button {
   top: 0;
   z-index: 100;
   padding: 14px 0;
-
-  transition:
-    background .3s var(--ease),
-    border-color .3s var(--ease);
-
+  transition: background .3s var(--ease), border-color .3s var(--ease);
   border-bottom: 1px solid transparent;
 }
 
 .nav-bar.scrolled {
   padding: 14px 0;
-  /* scroll ekedi height wenas wenne na */
-
   background: rgba(8, 9, 11, 0.88);
-
   backdrop-filter: blur(16px) saturate(140%);
   -webkit-backdrop-filter: blur(16px) saturate(140%);
-
   border-bottom: 1px solid var(--border-soft);
 }
 
@@ -328,33 +322,23 @@ button {
 
 .hamburger {
   display: none;
-  align-items: center;
-  justify-content: center;
   flex-direction: column;
+  justify-content: center;
   gap: 5px;
   width: 38px;
   height: 38px;
-  padding: 0;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 10px;
   cursor: pointer;
-  box-sizing: border-box;
 }
 
 .hamburger span {
-  display: block;
   width: 16px;
   height: 1.5px;
-  margin: 0;
-  padding: 0;
-  flex: 0 0 auto;
+  margin: 0 auto;
   background: var(--text);
-  border-radius: 999px;
-  transform-origin: center;
-  transition:
-    transform 0.25s var(--ease),
-    opacity 0.25s var(--ease);
+  transition: transform .25s var(--ease), opacity .25s var(--ease);
 }
 
 .hamburger.open span:nth-child(1) {
@@ -384,51 +368,17 @@ button {
   padding: 14px 32px 22px;
 }
 
-
-
-/* MOBILE MENU LINKS */
 .mobile-menu a {
-  position: relative;
   padding: 12px 4px;
   border-bottom: 1px solid var(--border-soft);
   color: var(--text-muted);
   font-weight: 500;
 }
-.mobile-menu .mobile-project-btn {
-  color:var(--bg)
-}
-/* NORMAL MENU LINKS - CONTENT WIDTH */
-.mobile-menu a:not(:last-child) {
-  display: inline-block;
-  width: fit-content;
-}
 
-/* ACTIVE */
-.mobile-menu a.active {
-  color: var(--text);
-}
-
-/* UNDERLINE = CONTENT WIDTH */
-.mobile-menu a.active::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: 5px;
-  width: 100%;
-  height: 2px;
-  background: var(--orange);
-  border-radius: 999px;
-}
-
-/* LAST BUTTON */
 .mobile-menu a:last-child {
   border-bottom: none;
   margin-top: 8px;
   text-align: center;
-}
-
-.mobile-menu a:last-child::after {
-  display: none;
 }
 
 /* ============================================================
@@ -463,7 +413,7 @@ button {
 
 .hero-headline {
   font-size: clamp(2.3rem, 4.4vw, 3.6rem);
-  font-weight: 700;
+  font-weight: 900;
   margin-bottom: 22px;
 }
 
@@ -523,8 +473,7 @@ button {
   overflow: visible;
 }
 
-
-
+/* FIXED DUPLICATE .code-panel */
 .code-panel {
   fill: rgba(255, 255, 255, 0.035);
   stroke: rgba(255, 255, 255, 0.12);
@@ -555,64 +504,39 @@ button {
 }
 
 /* =========================================================
-           FLOATING CARD
-           ========================================================= */
-
+   FLOATING CARD
+========================================================= */
 .floating-card {
   position: absolute;
-
   padding: 12px 14px;
-
   border: 1px solid var(--border-light);
   border-radius: 12px;
-
-  background:
-    rgba(43, 46, 52, 0.92);
-
+  background: rgba(43, 46, 52, 0.92);
   box-shadow: var(--shadow);
-
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-}
-
-.floating-card.one {
-  top: 7%;
-  right: 0;
-}
-
-.floating-card.two {
-  bottom: 5%;
-  left: 3%;
-}
-
-.floating-card-title {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-
-  color: #e8e9ec;
-
-  font-size: 11px;
-  font-weight: 700;
-}
-
-/* Floating card animation */
-.floating-card {
   animation: floatingBounce 3s ease-in-out infinite;
 }
 
-/* Top card */
 .floating-card.one {
   top: 7%;
   right: 0;
   animation-delay: 0s;
 }
 
-/* Bottom card */
 .floating-card.two {
   bottom: 5%;
   left: 3%;
   animation-delay: 1.2s;
+}
+
+.floating-card-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #e8e9ec;
+  font-size: 11px;
+  font-weight: 700;
 }
 
 @keyframes floatingBounce {
@@ -630,13 +554,9 @@ button {
 .status-dot {
   width: 7px;
   height: 7px;
-
   border-radius: 50%;
-
   background: #42d889;
-
-  box-shadow:
-    0 0 10px rgba(66, 216, 137, 0.5);
+  box-shadow: 0 0 10px rgba(66, 216, 137, 0.5);
 }
 
 @keyframes dash {
@@ -921,6 +841,24 @@ section {
 }
 
 /* ============================================================
+   Scroll Reveal — Content Only
+============================================================ */
+.software-tech .modern-tech-marquee,
+.ot-team .ot-carousel,
+.tech .tech-badges {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.software-tech .modern-tech-marquee.in-view,
+.ot-team .ot-carousel.in-view,
+.tech .tech-badges.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============================================================
    Service blocks
 ============================================================ */
 .services-software {
@@ -1119,12 +1057,9 @@ section {
   font-size: 1.02rem;
 }
 
-
 /* ============================================================
    ORYTINGO — Team Social Links
-   Additive styles only; existing carousel remains unchanged
 ============================================================ */
-
 .ot-carousel__social {
   display: flex;
   align-items: center;
@@ -1148,11 +1083,7 @@ section {
   font-size: 14px;
   font-weight: 700;
   text-decoration: none;
-  transition:
-    color 0.25s ease,
-    background-color 0.25s ease,
-    border-color 0.25s ease,
-    transform 0.25s ease;
+  transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
 }
 
 .ot-carousel__social-link:hover {
@@ -1167,16 +1098,6 @@ section {
   outline-offset: 4px;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .ot-carousel__social-link {
-    transition: none;
-  }
-
-  .ot-carousel__social-link:hover {
-    transform: none;
-  }
-}
-
 .ot-team {
   --ot-team-orange: #ff813e;
   --ot-team-orange-light: #ff9c67;
@@ -1188,28 +1109,16 @@ section {
 
   position: relative;
   width: 100%;
-
   padding-top: 20px;
   padding-bottom: clamp(80px, 10vw, 150px);
-
   color: var(--ot-team-text);
   overflow: hidden;
 }
-
-
-/* ============================================================
-   INNER
-============================================================ */
 
 .ot-team__inner {
   width: min(1320px, calc(100% - 40px));
   margin: 0 auto;
 }
-
-
-/* ============================================================
-   HEADER
-============================================================ */
 
 .ot-team__header {
   display: grid;
@@ -1223,9 +1132,7 @@ section {
   display: flex;
   align-items: center;
   gap: 13px;
-
   margin: 0 0 24px;
-
   color: var(--ot-team-orange);
   font-size: 0.72rem;
   font-weight: 700;
@@ -1238,17 +1145,13 @@ section {
   width: 34px;
   height: 1px;
   flex: 0 0 auto;
-
   background: var(--ot-team-orange);
   box-shadow: 0 0 12px rgba(255, 129, 62, 0.45);
 }
 
-
 .ot-team__title {
   margin: 0;
-
   color: var(--ot-team-text);
-
   font-family: "Sora", "Manrope", system-ui, sans-serif;
   font-size: clamp(2.6rem, 6vw, 5.4rem);
   font-weight: 500;
@@ -1256,694 +1159,493 @@ section {
   letter-spacing: -0.045em;
 }
 
-
 .ot-team__lead {
   max-width: 340px;
   margin: 0 0 3px auto;
-
   color: var(--ot-team-muted);
-
   font-size: 0.98rem;
   line-height: 1.8;
 }
 
-
-/* ============================================================
-   CAROUSEL
-============================================================ */
-
 .ot-carousel {
   --ot-enter: 34px;
   --ot-leave: -34px;
-
   display: grid;
   grid-template-columns: 11fr 9fr;
-
   min-height: clamp(540px, 72vh, 720px);
-
   background: var(--ot-team-card);
-
   border: 1px solid var(--ot-team-line);
   border-radius: 6px;
-
   overflow: hidden;
-
   isolation: isolate;
 }
-
 
 .ot-carousel[data-direction="prev"] {
   --ot-enter: -34px;
   --ot-leave: 34px;
 }
 
-
-/* ============================================================
-   IMAGE AREA
-============================================================ */
-
 .ot-carousel__media {
   position: relative;
-
   min-width: 0;
   min-height: 540px;
-
   overflow: hidden;
-
   background: var(--ot-team-bg-2);
 }
 
-
-/* Dark image overlay */
-
 .ot-carousel__media::before {
   content: "";
-
   position: absolute;
   inset: 0;
-
   z-index: 5;
-
   pointer-events: none;
-
   background:
-    linear-gradient(to top,
-      rgba(8, 9, 11, 0.58),
-      transparent 38%),
-    linear-gradient(to right,
-      transparent 58%,
-      rgba(18, 21, 27, 0.48));
+    linear-gradient(to top, rgba(8, 9, 11, 0.58), transparent 38%),
+    linear-gradient(to right, transparent 58%, rgba(18, 21, 27, 0.48));
 }
-
-
-/* Orange accent */
 
 .ot-carousel__media::after {
   content: "";
-
   position: absolute;
-
   left: 28px;
   bottom: 28px;
-
   z-index: 6;
-
   width: 58px;
   height: 2px;
-
   background: var(--ot-team-orange);
-
-  box-shadow:
-    0 0 18px rgba(255, 129, 62, 0.45);
-
+  box-shadow: 0 0 18px rgba(255, 129, 62, 0.45);
   pointer-events: none;
 }
-
-
-/* ============================================================
-   PHOTO
-============================================================ */
 
 .ot-carousel__photo {
   position: absolute;
   inset: 0;
-
   margin: 0;
-
   opacity: 0;
-
   transform: scale(1.045);
-
   pointer-events: none;
-
-  transition:
-    opacity 0.75s cubic-bezier(0.22, 0.7, 0.2, 1),
-    transform 1.1s cubic-bezier(0.22, 0.7, 0.2, 1);
+  transition: opacity 0.75s cubic-bezier(0.22, 0.7, 0.2, 1), transform 1.1s cubic-bezier(0.22, 0.7, 0.2, 1);
 }
-
 
 .ot-carousel__photo.is-active {
   z-index: 2;
-
   opacity: 1;
-
   transform: scale(1);
-
   pointer-events: auto;
 }
 
-
 .ot-carousel__photo img {
   display: block;
-
   width: 100%;
   height: 100%;
-
   object-fit: cover;
-
-  filter:
-    saturate(0.92) contrast(1.03);
-
+  filter: saturate(0.92) contrast(1.03);
   user-select: none;
 }
 
-
-/* ============================================================
-   IMAGE FALLBACK
-============================================================ */
-
 .ot-carousel__fallback {
   display: none;
-
   position: absolute;
   inset: 0;
-
   place-items: center;
-
   color: rgba(255, 255, 255, 0.12);
-
   font-family: "Sora", sans-serif;
   font-size: clamp(4rem, 10vw, 8rem);
   font-weight: 500;
   letter-spacing: -0.06em;
 }
 
-
 .ot-carousel__photo.is-missing img {
   display: none;
 }
-
 
 .ot-carousel__photo.is-missing .ot-carousel__fallback {
   display: grid;
 }
 
-
-/* ============================================================
-   CONTENT PANEL
-============================================================ */
-
 .ot-carousel__panel {
   position: relative;
-
   display: flex;
   flex-direction: column;
-
   min-width: 0;
-
   padding: clamp(30px, 4.4vw, 70px);
-
-  background:
-    radial-gradient(65% 45% at 100% 0%,
-      rgba(255, 129, 62, 0.075),
-      transparent 72%),
-    var(--ot-team-card);
-
+  background: radial-gradient(65% 45% at 100% 0%, rgba(255, 129, 62, 0.075), transparent 72%), var(--ot-team-card);
   border-left: 1px solid var(--ot-team-line);
 }
 
-
-/* ============================================================
-   CONTENT SLIDES
-============================================================ */
-
 .ot-carousel__bodies {
   display: grid;
-
   flex: 1;
-
   align-content: center;
-
   min-height: 0;
 }
 
-
 .ot-carousel__body {
   grid-area: 1 / 1;
-
   opacity: 0;
   visibility: hidden;
-
-  transform:
-    translateX(var(--ot-enter));
-
-  transition:
-    opacity 0.75s cubic-bezier(0.22, 0.7, 0.2, 1),
-    transform 0.75s cubic-bezier(0.22, 0.7, 0.2, 1),
-    visibility 0s linear 0.75s;
+  transform: translateX(var(--ot-enter));
+  transition: opacity 0.75s cubic-bezier(0.22, 0.7, 0.2, 1), transform 0.75s cubic-bezier(0.22, 0.7, 0.2, 1), visibility 0s linear 0.75s;
 }
-
 
 .ot-carousel__body.is-leaving {
-  transform:
-    translateX(var(--ot-leave));
+  transform: translateX(var(--ot-leave));
 }
-
 
 .ot-carousel__body.is-active {
   opacity: 1;
   visibility: visible;
-
   transform: translateX(0);
-
-  transition-delay:
-    0.08s,
-    0.08s,
-    0s;
+  transition-delay: 0.08s, 0.08s, 0s;
 }
-
-
-/* ============================================================
-   MEMBER NUMBER
-============================================================ */
 
 .ot-carousel__count {
   display: flex;
   align-items: center;
   gap: 14px;
-
   margin: 0;
-
   color: var(--ot-team-muted);
-
   font-family: "Sora", sans-serif;
   font-size: 0.8rem;
-
   font-variant-numeric: tabular-nums;
 }
-
 
 .ot-carousel__count strong {
   color: var(--ot-team-text);
   font-weight: 500;
 }
 
-
 .ot-carousel__count::after {
   content: "";
-
   width: 55px;
   height: 1px;
-
-  background:
-    linear-gradient(to right,
-      var(--ot-team-orange),
-      transparent);
+  background: linear-gradient(to right, var(--ot-team-orange), transparent);
 }
-
-
-/* ============================================================
-   ROLE
-============================================================ */
 
 .ot-carousel__role {
   margin: clamp(26px, 4vw, 48px) 0 0;
-
   color: var(--ot-team-orange-light);
-
   font-size: 0.9rem;
   font-weight: 600;
   line-height: 1.5;
-
   letter-spacing: 0.02em;
 }
 
-
-/* ============================================================
-   NAME
-============================================================ */
-
 .ot-carousel__name {
   margin: 0.28em 0 0.55em;
-
   color: var(--ot-team-text);
-
-  font-family:
-    "Sora",
-    "Manrope",
-    system-ui,
-    sans-serif;
-
+  font-family: "Sora", "Manrope", system-ui, sans-serif;
   font-size: clamp(2.3rem, 4.5vw, 4.2rem);
   font-weight: 500;
   line-height: 1.02;
-
   letter-spacing: -0.045em;
 }
 
-
-/* ============================================================
-   BIO
-============================================================ */
-
 .ot-carousel__bio {
   max-width: 42ch;
-
   margin: 0;
-
   color: var(--ot-team-muted);
-
   font-size: 0.98rem;
   line-height: 1.8;
 }
 
-
-/* ============================================================
-   CONTROLS
-============================================================ */
-
 .ot-carousel__controls {
   display: flex;
   align-items: center;
-
   gap: 12px;
-
   margin-top: 34px;
   padding-top: 26px;
-
   border-top: 1px solid var(--ot-team-line);
 }
-
 
 .ot-carousel__btn {
   display: flex;
   align-items: center;
   justify-content: center;
-
   gap: 11px;
-
   min-width: 54px;
   height: 54px;
-
   padding: 0 15px;
-
   color: var(--ot-team-text);
-
   background: transparent;
-
   border: 1px solid rgba(255, 255, 255, 0.13);
   border-radius: 999px;
-
   cursor: pointer;
-
-  transition:
-    color 0.3s ease,
-    border-color 0.3s ease,
-    background 0.3s ease,
-    box-shadow 0.3s ease,
-    transform 0.3s ease;
+  transition: color 0.3s ease, border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
 }
-
 
 .ot-carousel__btn span {
   font-size: 1.25rem;
   line-height: 1;
 }
 
-
 .ot-carousel__btn small {
   color: inherit;
-
   font-size: 0.66rem;
   font-weight: 700;
-
   letter-spacing: 0.13em;
   text-transform: uppercase;
 }
 
-
 .ot-carousel__btn:hover {
   color: var(--ot-team-orange-light);
-
   border-color: var(--ot-team-orange);
-
-  background:
-    rgba(255, 129, 62, 0.035);
-
-  box-shadow:
-    0 0 0 4px rgba(255, 129, 62, 0.06),
-    0 0 22px rgba(255, 129, 62, 0.14);
+  background: rgba(255, 129, 62, 0.035);
+  box-shadow: 0 0 0 4px rgba(255, 129, 62, 0.06), 0 0 22px rgba(255, 129, 62, 0.14);
 }
-
 
 .ot-carousel__btn:first-child:hover {
   transform: translateX(-3px);
 }
 
-
 .ot-carousel__btn--next:hover {
   transform: translateX(3px);
 }
 
-
 .ot-carousel__btn:active {
   transform: scale(0.96);
 }
-
 
 .ot-carousel__btn:focus-visible {
   outline: 2px solid var(--ot-team-orange);
   outline-offset: 4px;
 }
 
-
-/* ============================================================
-   PROGRESS
-============================================================ */
-
 .ot-carousel__progress {
   display: flex;
-
   align-items: center;
-
   gap: 6px;
-
   margin-left: auto;
 }
-
 
 .ot-carousel__progress span {
   width: clamp(14px, 2.5vw, 28px);
   height: 2px;
-
   background: var(--ot-team-line);
-
-  transition:
-    background 0.5s cubic-bezier(0.22, 0.7, 0.2, 1),
-    box-shadow 0.5s ease,
-    width 0.5s ease;
+  transition: background 0.5s cubic-bezier(0.22, 0.7, 0.2, 1), box-shadow 0.5s ease, width 0.5s ease;
 }
-
 
 .ot-carousel__progress span.is-active {
   width: clamp(22px, 3.5vw, 36px);
-
   background: var(--ot-team-orange);
-
-  box-shadow:
-    0 0 10px rgba(255, 129, 62, 0.45);
+  box-shadow: 0 0 10px rgba(255, 129, 62, 0.45);
 }
-
 
 /* ============================================================
-   TABLET
+   ORYTINGO — VISION & MISSION
 ============================================================ */
+.ot-purpose {
+  --purpose-orange: #ff813e;
+  --purpose-orange-light: #ff9c67;
+  --purpose-text: #f5f5f5;
+  --purpose-muted: #9499a4;
+  --purpose-card: #101319;
+  --purpose-border: rgba(255, 255, 255, 0.10);
 
-@media (max-width: 900px) {
-
-  .ot-team__header {
-    grid-template-columns: 1fr;
-    gap: 22px;
-  }
-
-  .ot-team__lead {
-    margin: 0;
-    max-width: 520px;
-  }
-
-
-  .ot-carousel {
-    grid-template-columns: 1fr 0.88fr;
-
-    min-height: 560px;
-  }
-
-
-  .ot-carousel__media {
-    min-height: 560px;
-  }
-
-
-  .ot-carousel__panel {
-    padding: 42px;
-  }
-
-
-  .ot-carousel__name {
-    font-size: clamp(2.1rem, 5vw, 3.5rem);
-  }
-
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 90px 0 100px;
+  color: var(--purpose-text);
+  background:
+    radial-gradient(ellipse at 0% 20%, rgba(255, 129, 62, 0.065), transparent 35%),
+    radial-gradient(ellipse at 100% 70%, rgba(255, 129, 62, 0.045), transparent 32%),
+    var(--bg);
 }
 
-
-/* ============================================================
-   MOBILE
-============================================================ */
-
-@media (max-width: 700px) {
-
-  .ot-team {
-    padding:
-      76px 0 86px;
-  }
-
-
-  .ot-team__inner {
-    width: min(100% - 30px, 600px);
-  }
-
-
-  .ot-team__header {
-    margin-bottom: 38px;
-  }
-
-
-  .ot-team__eyebrow {
-    margin-bottom: 20px;
-
-    font-size: 0.66rem;
-    letter-spacing: 0.14em;
-  }
-
-
-  .ot-team__title {
-    font-size: clamp(2.45rem, 11vw, 3.5rem);
-    line-height: 1;
-  }
-
-
-  .ot-team__lead {
-    font-size: 0.92rem;
-    line-height: 1.75;
-  }
-
-
-  .ot-carousel {
-    grid-template-columns: 1fr;
-
-    min-height: 0;
-
-    border-radius: 5px;
-  }
-
-
-  .ot-carousel__media {
-    width: 100%;
-    min-height: 0;
-
-    aspect-ratio: 4 / 5;
-
-    max-height: 75svh;
-  }
-
-
-  .ot-carousel__panel {
-    min-height: 430px;
-
-    padding: 34px 26px 28px;
-
-    border-top: 1px solid var(--ot-team-line);
-    border-left: 0;
-  }
-
-
-  .ot-carousel__role {
-    margin-top: 24px;
-
-    font-size: 0.82rem;
-  }
-
-
-  .ot-carousel__name {
-    margin-top: 0.35em;
-
-    font-size: clamp(2.2rem, 10vw, 3.2rem);
-  }
-
-
-  .ot-carousel__bio {
-    font-size: 0.9rem;
-    line-height: 1.75;
-  }
-
-
-  .ot-carousel__controls {
-    margin-top: 28px;
-    padding-top: 22px;
-  }
-
-
-  .ot-carousel__btn {
-    width: 48px;
-    min-width: 48px;
-    height: 48px;
-
-    padding: 0;
-  }
-
-
-  .ot-carousel__btn small {
-    display: none;
-  }
-
-
-  .ot-carousel__progress {
-    gap: 5px;
-  }
-
-
-  .ot-carousel__progress span {
-    width: 13px;
-  }
-
-
-  .ot-carousel__progress span.is-active {
-    width: 24px;
-  }
-
+.ot-purpose::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: linear-gradient(to bottom, transparent, black 18%, black 82%, transparent);
 }
 
-
-/* ============================================================
-   SMALL MOBILE
-============================================================ */
-
-@media (max-width: 420px) {
-
-  .ot-team__inner {
-    width: min(100% - 24px, 600px);
-  }
-
-
-  .ot-carousel__media {
-    aspect-ratio: 0.86;
-  }
-
-
-  .ot-carousel__panel {
-    min-height: 410px;
-
-    padding:
-      30px 21px 24px;
-  }
-
-
-  .ot-carousel__controls {
-    gap: 8px;
-  }
-
+.ot-purpose .section-inner {
+  position: relative;
+  z-index: 1;
 }
 
+.ot-purpose__header {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.8fr);
+  align-items: center;
+  gap: clamp(30px, 7vw, 100px);
+  margin-bottom: 54px;
+}
+
+.ot-purpose__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 0 0 22px;
+  color: var(--purpose-orange);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.ot-purpose__eyebrow span {
+  display: inline-block;
+  width: 36px;
+  height: 2px;
+  flex: 0 0 36px;
+  background: var(--purpose-orange);
+  box-shadow: 0 0 14px rgba(255, 129, 62, 0.4);
+}
+
+.ot-purpose__heading h2 {
+  margin: 0;
+  max-width: 700px;
+  color: var(--purpose-text);
+  font-family: "Sora", "Manrope", system-ui, sans-serif;
+  font-size: clamp(2.3rem, 4.5vw, 4.25rem);
+  font-weight: 650;
+  line-height: 1.08;
+  letter-spacing: -0.045em;
+}
+
+.ot-purpose__heading h2 span {
+  color: var(--purpose-orange-light);
+}
+
+.ot-purpose__intro {
+  max-width: 470px;
+  margin: 12px 0 0 auto;
+  color: var(--purpose-muted);
+  font-size: 1.02rem;
+  line-height: 1.9;
+}
+
+.ot-purpose__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 26px;
+}
+
+.ot-purpose__card {
+  display: grid;
+  grid-template-columns: minmax(145px, 0.82fr) minmax(0, 1.18fr);
+  align-items: stretch;
+  gap: clamp(22px, 2.5vw, 38px);
+  min-width: 0;
+  padding: 24px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.035), transparent 55%), var(--purpose-card);
+  border: 1px solid var(--purpose-border);
+  border-radius: 12px;
+  transition: border-color 0.3s ease, transform 0.3s ease, background-color 0.3s ease;
+}
+
+.ot-purpose__card:hover {
+  border-color: rgba(255, 129, 62, 0.4);
+  transform: translateY(-4px);
+}
+
+.ot-purpose__visual {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 340px;
+  overflow: hidden;
+  color: var(--purpose-orange-light);
+  background: #090c12;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 9px;
+}
+
+.ot-purpose__visual::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(to top, rgba(8, 9, 11, 0.75), transparent 35%),
+    linear-gradient(135deg, rgba(255, 129, 62, 0.08), transparent 55%);
+}
+
+.ot-purpose__visual svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+}
+
+.ot-purpose__visual-glow {
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: rgba(255, 129, 62, 0.12);
+  filter: blur(65px);
+}
+
+.ot-purpose__visual-label {
+  position: absolute;
+  z-index: 2;
+  left: 18px;
+  bottom: 18px;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+
+.ot-purpose__content {
+  align-self: center;
+  min-width: 0;
+  padding: 12px 0;
+}
+
+.ot-purpose__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  margin-bottom: 20px;
+  color: var(--purpose-orange);
+}
+
+.ot-purpose__icon svg {
+  width: 34px;
+  height: 34px;
+}
+
+.ot-purpose__label {
+  margin: 0 0 13px;
+  color: var(--purpose-orange);
+  font-size: 0.77rem;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.ot-purpose__content h3 {
+  margin: 0 0 18px;
+  color: var(--purpose-text);
+  font-family: "Sora", "Manrope", system-ui, sans-serif;
+  font-size: clamp(1.25rem, 1.65vw, 1.7rem);
+  font-weight: 650;
+  line-height: 1.35;
+  letter-spacing: -0.035em;
+}
+
+.ot-purpose__description {
+  margin: 0;
+  color: var(--purpose-muted);
+  font-size: 0.91rem;
+  line-height: 1.85;
+}
 
 /* ============================================================
    CTA
@@ -2049,13 +1751,10 @@ section {
 }
 
 .footer-col a {
-  display: flex;
-  align-items: center;
-  gap: 6px;
   font-size: 0.9rem;
   color: var(--text-muted);
   padding: 6px 0;
-  white-space: nowrap;
+  transition: color .2s var(--ease);
 }
 
 .footer-col a:hover {
@@ -2063,8 +1762,8 @@ section {
 }
 
 .footer-col a i {
-  flex-shrink: 0;
   width: 14px;
+  margin-right: 6px;
   color: var(--text-faint);
 }
 
@@ -2080,417 +1779,379 @@ section {
 }
 
 /* ============================================================
-   Responsive
+   Marquee Section (Expertise)
 ============================================================ */
-
-
-@media (max-width: 1200px) {
-
-  .section-inner {
-    padding: 0 28px;
-  }
-
-  .hero-inner {
-    padding: 0 28px;
-    gap: 30px;
-  }
-
-  .footer-inner {
-    grid-template-columns: 1.4fr 1fr 1fr;
-    row-gap: 32px;
-  }
-
+.software-tech {
+  position: relative;
+  overflow: hidden;
+  padding: 110px 0;
 }
 
-
-@media (max-width: 992px) {
-
-  .hero-inner {
-    grid-template-columns: 1fr;
-  }
-
-  .hero-visual {
-    order: 2;
-    max-width: 420px;
-    margin: 0 auto 20px;
-  }
-
-  .pillar-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .why-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .service-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .timeline {
-    grid-template-columns: repeat(3, 1fr);
-    row-gap: 34px;
-  }
-
-  .timeline::before {
-    display: none;
-  }
-
-  .about-inner {
-    grid-template-columns: 1fr;
-    text-align: center;
-  }
-
-  .about-copy p {
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .about-svg {
-    max-width: 300px;
-  }
-
+.eyebrow-orange {
+  color: #ff813e;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  margin-bottom: 15px;
 }
 
+.modern-tech-marquee {
+  position: relative;
+  margin-top: 65px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+}
+
+.tech-marquee-row {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  padding: 9px 0;
+}
+
+.tech-marquee-row::before,
+.tech-marquee-row::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 160px;
+  height: 100%;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.tech-marquee-row::before {
+  left: 0;
+  background: linear-gradient(90deg, #08090b 5%, transparent);
+}
+
+.tech-marquee-row::after {
+  right: 0;
+  background: linear-gradient(270deg, #08090b 5%, transparent);
+}
+
+.tech-marquee-track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  animation: marqueeForward 32s linear infinite;
+  will-change: transform;
+  transform: translateZ(0);
+  /* Hardware Acceleration */
+}
+
+.tech-marquee-track.reverse {
+  animation-name: marqueeReverse;
+  animation-duration: 36s;
+}
+
+.modern-tech-marquee:hover .tech-marquee-track {
+  animation-play-state: paused;
+}
+
+.tech-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 19px;
+  white-space: nowrap;
+  color: rgba(245, 245, 245, 0.72);
+  font-size: 13px;
+  font-weight: 500;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.tech-item i {
+  font-size: 16px;
+  color: #ff813e;
+  filter: drop-shadow(0 0 7px rgba(255, 129, 62, 0.28));
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.tech-item:hover {
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.tech-item:hover i {
+  transform: scale(1.15);
+  filter: drop-shadow(0 0 12px rgba(255, 129, 62, 0.55));
+}
+
+.tech-line {
+  width: 42px;
+  height: 1px;
+  flex-shrink: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 129, 62, 0.32), transparent);
+  position: relative;
+}
+
+.tech-line::after {
+  content: "";
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #ff813e;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 8px rgba(255, 129, 62, 0.6);
+}
+
+@keyframes marqueeForward {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes marqueeReverse {
+  from {
+    transform: translateX(-50%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+.modern-tech-marquee::before {
+  content: "";
+  position: absolute;
+  width: 500px;
+  height: 180px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(ellipse, rgba(255, 129, 62, 0.045), transparent 70%);
+  pointer-events: none;
+}
 
 /* ============================================================
-   Mobile / Tablet
+   Page Loader
 ============================================================ */
+#page-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at center, rgba(255, 129, 62, 0.055) 0%, transparent 42%), #08090b;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.8s cubic-bezier(.4, 0, .2, 1), visibility 0.8s;
+}
 
-@media (max-width: 1024px) {
+#page-loader.loaded {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
 
-  /* Navbar stable */
+.loader-content {
+  width: min(300px, 80vw);
+  text-align: center;
+  animation: loaderContentIn 0.9s cubic-bezier(.4, 0, .2, 1) both;
+}
 
-  .nav-bar,
-  .nav-bar.scrolled {
-    padding: 12px 0;
+.loader-logo {
+  display: block;
+  width: 115px;
+  height: auto;
+  margin: 0 auto 22px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 18px rgba(255, 129, 62, 0.18));
+  animation: loaderLogoIn 1s cubic-bezier(.4, 0, .2, 1) both;
+}
+
+.loader-brand {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  color: #f5f5f5;
+  margin-left: 0.24em;
+  animation: loaderBrandIn 1s 0.15s cubic-bezier(.4, 0, .2, 1) both;
+}
+
+.loader-line {
+  position: relative;
+  width: 180px;
+  height: 2px;
+  margin: 28px auto 14px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+}
+
+.loader-line span {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 45%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #ff813e, #ff9c67);
+  box-shadow: 0 0 12px rgba(255, 129, 62, 0.45);
+  animation: loaderProgress 1.4s cubic-bezier(.4, 0, .2, 1) infinite;
+}
+
+.loader-status {
+  font-family: "Inter", sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  color: #676b74;
+  margin-left: 0.28em;
+  animation: loaderStatusPulse 1.6s ease-in-out infinite;
+}
+
+@keyframes loaderContentIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
   }
 
-  .nav-inner {
-    min-height: 38px;
-  }
-
-  .nav-links {
-    display: none;
-  }
-
-  .nav-cta {
-    display: none;
-  }
-
-  .hamburger {
-    display: flex;
-    width: 38px;
-    height: 38px;
-    align-items: center;
-    justify-content: center;
-  }
-   .hamburger span {
-    width: 16px;
-    height: 1.5px;
-    margin: 0;
-  }
-
-  .mobile-menu {
-    display: flex;
-  }
-
-
-  /* Sections */
-
-  section {
-    padding: 68px 0;
-  }
-
-  .hero {
-    padding: 52px 0 40px;
-  }
-
-
-  /* Hero */
-
-  .hero-actions {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .hero-actions .btn {
-    width: 100%;
-  }
-
-  .hero-stats {
-    gap: 24px;
-  }
-
-
-  /* Grids */
-
-  .why-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .service-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .timeline {
-    grid-template-columns: 1fr;
-    row-gap: 26px;
-  }
-
-
-  /* Footer */
-
-  .footer-inner {
-    grid-template-columns: 1fr 1fr;
-  }
-
-
-  /* CTA */
-
-  .cta {
-    margin: 0 16px 68px;
-    border-radius: 22px;
-  }
-
-  .cta-inner {
-    padding: 52px 24px;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
+@keyframes loaderLogoIn {
+  from {
+    opacity: 0;
+    transform: scale(0.88);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes loaderBrandIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+    letter-spacing: 0.34em;
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    letter-spacing: 0.24em;
+  }
+}
+
+@keyframes loaderProgress {
+  0% {
+    transform: translateX(-120%);
+  }
+
+  100% {
+    transform: translateX(330%);
+  }
+}
+
+@keyframes loaderStatusPulse {
+
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
 
 /* ============================================================
-   Small Mobile
+   WhatsApp Floating Button
 ============================================================ */
-
-@media (max-width: 480px) {
-
-  .section-inner {
-    padding: 0 20px;
-  }
-
-  .hero-inner {
-    padding: 0 20px;
-  }
-
-  .nav-inner {
-    padding: 0 20px;
-  }
-
-
-  /* Hero */
-  .hero-headline {
-    font-size: 2rem;
-  }
-
-  .hero-desc {
-    font-size: 0.98rem;
-  }
-
-
-  /* Footer */
-  .footer-inner {
-    grid-template-columns: 1fr;
-    padding: 0 20px 40px;
-  }
-
-  .footer-bottom {
-    padding: 20px;
-  }
-
-
-  /* Cards */
-  .pillar-card {
-    padding: 32px 24px;
-  }
-
-
-  /* CTA */
-  .cta-actions {
-    flex-direction: column;
-  }
-
-  .cta-actions .btn {
-    width: 100%;
-  }
-
-}
-
-
-/* ============================================================
-   Reduce Motion
-============================================================ */
-
-@media (prefers-reduced-motion: reduce) {
-
-  * {
-    animation: none !important;
-    transition: none !important;
-  }
-
-  html {
-    scroll-behavior: auto;
-  }
-
-}
-
-/* =========================================================
-   WHATSAPP FLOATING BUTTON
-========================================================= */
-
 .whatsapp-float {
   position: fixed;
   right: 26px;
   bottom: 26px;
-
   display: flex;
   align-items: center;
   gap: 12px;
-
   text-decoration: none;
-
   z-index: 9999;
-
   font-family: "Inter", sans-serif;
 }
-
-
-/* =========================================================
-   TEXT BOX
-========================================================= */
 
 .whatsapp-tooltip {
   display: flex;
   flex-direction: column;
   gap: 3px;
-
   padding: 11px 16px;
-
   background: rgba(14, 16, 20, 0.96);
-
   border: 1px solid rgba(255, 255, 255, 0.09);
-
   border-radius: 12px;
-
-  box-shadow:
-    0 10px 35px rgba(0, 0, 0, 0.35);
-
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.35);
   white-space: nowrap;
-
   opacity: 1;
   visibility: visible;
-
   transform: translateX(0);
-
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-
-
-/* Title */
 
 .whatsapp-tooltip strong {
   color: #ffffff;
-
   font-size: 13px;
   font-weight: 600;
-
   line-height: 1.2;
 }
-
-
-/* Subtitle */
 
 .whatsapp-tooltip span {
   color: #a6a9b0;
-
   font-size: 11px;
   font-weight: 400;
-
   line-height: 1.2;
 }
 
-
-/* =========================================================
-   WHATSAPP ICON
-========================================================= */
-
 .whatsapp-icon {
   position: relative;
-
   width: 58px;
   height: 58px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   border-radius: 50%;
-
   background: #25d366;
-
   color: #ffffff;
-
   font-size: 27px;
-
-  box-shadow:
-    0 8px 25px rgba(37, 211, 102, 0.28);
-
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
+  box-shadow: 0 8px 25px rgba(37, 211, 102, 0.28);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-
-/* =========================================================
-   CALL RING - FIRST RING
-========================================================= */
-
-.whatsapp-icon::before {
-  content: "";
-
-  position: absolute;
-
-  inset: -5px;
-
-  border: 2px solid rgba(37, 211, 102, 0.55);
-
-  border-radius: 50%;
-
-  animation:
-    whatsappCallRing 2.2s ease-out infinite;
-}
-
-
-/* =========================================================
-   CALL RING - SECOND RING
-========================================================= */
-
+.whatsapp-icon::before,
 .whatsapp-icon::after {
   content: "";
-
   position: absolute;
-
   inset: -5px;
-
-  border: 2px solid rgba(37, 211, 102, 0.35);
-
   border-radius: 50%;
+  animation: whatsappCallRing 2.2s ease-out infinite;
+}
 
-  animation:
-    whatsappCallRing 2.2s ease-out infinite;
+.whatsapp-icon::before {
+  border: 2px solid rgba(37, 211, 102, 0.55);
+}
 
+.whatsapp-icon::after {
+  border: 2px solid rgba(37, 211, 102, 0.35);
   animation-delay: 1.1s;
 }
 
-
-/* =========================================================
-   RING ANIMATION
-========================================================= */
-
 @keyframes whatsappCallRing {
-
   0% {
     transform: scale(0.95);
     opacity: 0.8;
@@ -2506,20 +2167,11 @@ section {
   }
 }
 
-
-/* =========================================================
-   WHATSAPP ICON SHAKE
-========================================================= */
-
 .whatsapp-icon i {
   position: relative;
-
   z-index: 2;
-
-  animation:
-    whatsappShake 2.2s ease-in-out infinite;
+  animation: whatsappShake 2.2s ease-in-out infinite;
 }
-
 
 @keyframes whatsappShake {
 
@@ -2550,230 +2202,188 @@ section {
   }
 }
 
-
-/* =========================================================
-   HOVER
-========================================================= */
-
 .whatsapp-float:hover .whatsapp-tooltip {
   transform: translateX(-3px);
-
-  box-shadow:
-    0 12px 40px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
 }
-
 
 .whatsapp-float:hover .whatsapp-icon {
   transform: scale(1.08);
-
-  box-shadow:
-    0 12px 35px rgba(37, 211, 102, 0.40);
+  box-shadow: 0 12px 35px rgba(37, 211, 102, 0.40);
 }
 
+/* ============================================================
+   RESPONSIVE (MEDIA QUERIES)
+============================================================ */
 
-/* =========================================================
-   MOBILE
-========================================================= */
-
-@media (max-width: 600px) {
-
-  .whatsapp-float {
-    right: 18px;
-    bottom: 18px;
-
-    gap: 9px;
+@media (max-width: 1200px) {
+  .section-inner {
+    padding: 0 28px;
   }
 
-
-  .whatsapp-tooltip {
-    padding: 9px 12px;
-
-    border-radius: 10px;
+  .hero-inner {
+    padding: 0 28px;
+    gap: 30px;
   }
 
-
-  .whatsapp-tooltip strong {
-    font-size: 12px;
-  }
-
-
-  .whatsapp-tooltip span {
-    font-size: 10px;
-  }
-
-
-  .whatsapp-icon {
-    width: 54px;
-    height: 54px;
-
-    font-size: 25px;
+  .footer-inner {
+    grid-template-columns: 1.4fr 1fr 1fr;
+    row-gap: 32px;
   }
 }
 
-/* new */
-
-.software-tech {
-  position: relative;
-  overflow: hidden;
-  padding: 110px 0;
-
-}
-
-/* Orange eyebrow */
-.eyebrow-orange {
-  color: #ff813e;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 2.5px;
-  margin-bottom: 15px;
-}
-
-/* ========================================= MARQUEE WRAPPER ========================================= */
-.modern-tech-marquee {
-  position: relative;
-  margin-top: 65px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  width: 100%;
-}
-
-/* ========================================= ROW ========================================= */
-.tech-marquee-row {
-  position: relative;
-  width: 100%;
-  overflow: hidden;
-  padding: 9px 0;
-}
-
-/* Edge fade */
-.tech-marquee-row::before,
-.tech-marquee-row::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  width: 160px;
-  height: 100%;
-  z-index: 5;
-  pointer-events: none;
-}
-
-.tech-marquee-row::before {
-  left: 0;
-  background: linear-gradient(90deg, #08090b 5%, transparent);
-}
-
-.tech-marquee-row::after {
-  right: 0;
-  background: linear-gradient(270deg, #08090b 5%, transparent);
-}
-
-/* ========================================= MOVING TRACK ========================================= */
-.tech-marquee-track {
-  display: flex;
-  align-items: center;
-  width: max-content;
-  animation: marqueeForward 32s linear infinite;
-}
-
-.tech-marquee-track.reverse {
-  animation-name: marqueeReverse;
-  animation-duration: 36s;
-}
-
-/* Pause */
-.modern-tech-marquee:hover .tech-marquee-track {
-  animation-play-state: paused;
-}
-
-/* ========================================= SERVICE ========================================= */
-.tech-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 13px 19px;
-  white-space: nowrap;
-  color: rgba(245, 245, 245, 0.72);
-  font-size: 13px;
-  font-weight: 500;
-  transition: color 0.3s ease, transform 0.3s ease;
-}
-
-.tech-item i {
-  font-size: 16px;
-  color: #ff813e;
-  filter: drop-shadow(0 0 7px rgba(255, 129, 62, 0.28));
-  transition: transform 0.3s ease, filter 0.3s ease;
-}
-
-.tech-item:hover {
-  color: #ffffff;
-  transform: translateY(-2px);
-}
-
-.tech-item:hover i {
-  transform: scale(1.15);
-  filter: drop-shadow(0 0 12px rgba(255, 129, 62, 0.55));
-}
-
-/* ========================================= CONNECTING LINE ========================================= */
-.tech-line {
-  width: 42px;
-  height: 1px;
-  flex-shrink: 0;
-  background: linear-gradient(90deg, transparent, rgba(255, 129, 62, 0.32), transparent);
-  position: relative;
-}
-
-/* Tiny glowing point */
-.tech-line::after {
-  content: "";
-  position: absolute;
-  width: 3px;
-  height: 3px;
-  border-radius: 50%;
-  background: #ff813e;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  box-shadow: 0 0 8px rgba(255, 129, 62, 0.6);
-}
-
-/* ========================================= ANIMATION ========================================= */
-@keyframes marqueeForward {
-  from {
-    transform: translateX(0);
+@media (max-width: 1050px) {
+  .ot-purpose {
+    padding: 75px 0 85px;
   }
 
-  to {
-    transform: translateX(-50%);
+  .ot-purpose__header {
+    gap: 35px;
+    margin-bottom: 40px;
+  }
+
+  .ot-purpose__grid {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+
+  .ot-purpose__card {
+    grid-template-columns: minmax(200px, 0.75fr) minmax(0, 1.25fr);
+    gap: 32px;
+  }
+
+  .ot-purpose__visual {
+    min-height: 300px;
+  }
+
+  .ot-purpose__content h3 {
+    font-size: clamp(1.4rem, 2.5vw, 1.8rem);
   }
 }
 
-@keyframes marqueeReverse {
-  from {
-    transform: translateX(-50%);
+@media (max-width: 1024px) {
+
+  .nav-bar,
+  .nav-bar.scrolled {
+    padding: 12px 0;
   }
 
-  to {
-    transform: translateX(0);
+  .nav-inner {
+    min-height: 38px;
+  }
+
+  .nav-links,
+  .nav-cta {
+    display: none;
+  }
+
+  .hamburger,
+  .mobile-menu {
+    display: flex;
+  }
+
+  section {
+    padding: 68px 0;
+  }
+
+  .hero {
+    padding: 52px 0 40px;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-actions .btn {
+    width: 100%;
+  }
+
+  .hero-stats {
+    gap: 24px;
+  }
+
+  .why-grid,
+  .service-grid,
+  .timeline {
+    grid-template-columns: 1fr;
+    row-gap: 26px;
+  }
+
+  .footer-inner {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .cta {
+    margin: 0 16px 68px;
+    border-radius: 22px;
+  }
+
+  .cta-inner {
+    padding: 52px 24px;
   }
 }
 
-/* ========================================= SUBTLE BACKGROUND GLOW ========================================= */
-.modern-tech-marquee::before {
-  content: "";
-  position: absolute;
-  width: 500px;
-  height: 180px;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  background: radial-gradient(ellipse, rgba(255, 129, 62, 0.045), transparent 70%);
-  pointer-events: none;
+@media (max-width: 992px) {
+  .hero-inner {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-visual {
+    order: 2;
+    max-width: 420px;
+    margin: 0 auto 20px;
+  }
+
+  .pillar-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .timeline::before {
+    display: none;
+  }
+
+  .about-inner {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .about-copy p {
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
 
-/* ========================================= MOBILE ========================================= */
+@media (max-width: 900px) {
+  .ot-team__header {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+
+  .ot-team__lead {
+    margin: 0;
+    max-width: 520px;
+  }
+
+  .ot-carousel {
+    grid-template-columns: 1fr 0.88fr;
+    min-height: 560px;
+  }
+
+  .ot-carousel__media {
+    min-height: 560px;
+  }
+
+  .ot-carousel__panel {
+    padding: 42px;
+  }
+
+  .ot-carousel__name {
+    font-size: clamp(2.1rem, 5vw, 3.5rem);
+  }
+}
+
+/* MOBILE SPECIFIC FIXES & MARQUEE OPTIMIZATION */
 @media (max-width: 700px) {
   .software-tech {
     padding: 80px 0;
@@ -2791,410 +2401,308 @@ section {
 
   .tech-item i {
     font-size: 14px;
+    filter: none !important;
   }
 
+  /* Lag Fix */
   .tech-line {
     width: 25px;
   }
 
+  .tech-line::after {
+    box-shadow: none !important;
+  }
+
+  /* Lag Fix */
+  .modern-tech-marquee::before {
+    display: none;
+  }
+
+  /* Lag Fix */
   .tech-marquee-row::before,
   .tech-marquee-row::after {
     width: 70px;
   }
-}
 
-/* Reduce motion */
-@media (prefers-reduced-motion: reduce) {
-  .tech-marquee-track {
-    animation: none;
-  }
-}
-
-
-/* =========================
-   PREMIUM PAGE LOADER
-========================= */
-
-#page-loader {
-  position: fixed;
-  inset: 0;
-  z-index: 99999;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background:
-    radial-gradient(circle at center,
-      rgba(255, 129, 62, 0.055) 0%,
-      transparent 42%),
-    #08090b;
-
-  opacity: 1;
-  visibility: visible;
-
-  transition:
-    opacity 0.8s cubic-bezier(.4, 0, .2, 1),
-    visibility 0.8s;
-}
-
-#page-loader.loaded {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
-
-
-/* =========================
-   CONTENT
-========================= */
-
-.loader-content {
-  width: min(300px, 80vw);
-  text-align: center;
-
-  animation:
-    loaderContentIn 0.9s cubic-bezier(.4, 0, .2, 1) both;
-
-  will-change: transform, opacity;
-}
-
-
-/* =========================
-   LOGO
-========================= */
-
-.loader-logo {
-  display: block;
-
-  width: 115px;
-  height: auto;
-
-  margin: 0 auto 22px;
-
-  object-fit: contain;
-
-  filter:
-    drop-shadow(0 0 18px rgba(255, 129, 62, 0.18));
-
-  animation:
-    loaderLogoIn 1s cubic-bezier(.4, 0, .2, 1) both;
-
-  will-change: transform, opacity;
-}
-
-
-/* =========================
-   ORYTINGO
-========================= */
-
-.loader-brand {
-  font-family: "Space Grotesk", sans-serif;
-
-  font-size: 22px;
-  font-weight: 700;
-
-  letter-spacing: 0.24em;
-
-  color: #f5f5f5;
-
-  margin-left: 0.24em;
-
-  animation:
-    loaderBrandIn 1s 0.15s cubic-bezier(.4, 0, .2, 1) both;
-
-  will-change: transform, opacity, letter-spacing;
-}
-
-
-/* =========================
-   LOADING LINE
-========================= */
-
-.loader-line {
-  position: relative;
-
-  width: 180px;
-  height: 2px;
-
-  margin: 28px auto 14px;
-
-  overflow: hidden;
-
-  background: rgba(255, 255, 255, 0.08);
-
-  border-radius: 999px;
-}
-
-.loader-line span {
-  position: absolute;
-
-  left: 0;
-  top: 0;
-
-  width: 45%;
-  height: 100%;
-
-  border-radius: inherit;
-
-  background:
-    linear-gradient(90deg,
-      #ff813e,
-      #ff9c67);
-
-  box-shadow:
-    0 0 12px rgba(255, 129, 62, 0.45);
-
-  animation:
-    loaderProgress 1.4s cubic-bezier(.4, 0, .2, 1) infinite;
-
-  will-change: transform;
-}
-
-
-/* =========================
-   LOADING TEXT
-========================= */
-
-.loader-status {
-  font-family: "Inter", sans-serif;
-
-  font-size: 9px;
-  font-weight: 600;
-
-  letter-spacing: 0.28em;
-
-  color: #676b74;
-
-  margin-left: 0.28em;
-
-  animation:
-    loaderStatusPulse 1.6s ease-in-out infinite;
-
-  will-change: opacity;
-}
-
-
-/* =========================
-   ANIMATIONS
-========================= */
-
-@keyframes loaderContentIn {
-
-  from {
-    opacity: 0;
-    transform: translateY(12px);
+  .ot-team {
+    padding: 76px 0 86px;
   }
 
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  .ot-team__inner {
+    width: min(100% - 30px, 600px);
   }
 
+  .ot-team__header {
+    margin-bottom: 38px;
+  }
+
+  .ot-team__eyebrow {
+    margin-bottom: 20px;
+    font-size: 0.66rem;
+    letter-spacing: 0.14em;
+  }
+
+  .ot-team__title {
+    font-size: clamp(2.45rem, 11vw, 3.5rem);
+    line-height: 1;
+  }
+
+  .ot-team__lead {
+    font-size: 0.92rem;
+    line-height: 1.75;
+  }
+
+  .ot-carousel {
+    grid-template-columns: 1fr;
+    min-height: 0;
+    border-radius: 5px;
+  }
+
+  .ot-carousel__media {
+    width: 100%;
+    min-height: 0;
+    aspect-ratio: 4 / 5;
+    max-height: 75svh;
+  }
+
+  .ot-carousel__panel {
+    min-height: 430px;
+    padding: 34px 26px 28px;
+    border-top: 1px solid var(--ot-team-line);
+    border-left: 0;
+  }
+
+  .ot-carousel__role {
+    margin-top: 24px;
+    font-size: 0.82rem;
+  }
+
+  .ot-carousel__name {
+    margin-top: 0.35em;
+    font-size: clamp(2.2rem, 10vw, 3.2rem);
+  }
+
+  .ot-carousel__bio {
+    font-size: 0.9rem;
+    line-height: 1.75;
+  }
+
+  .ot-carousel__controls {
+    margin-top: 28px;
+    padding-top: 22px;
+  }
+
+  .ot-carousel__btn {
+    width: 48px;
+    min-width: 48px;
+    height: 48px;
+    padding: 0;
+  }
+
+  .ot-carousel__btn small {
+    display: none;
+  }
+
+  .ot-carousel__progress {
+    gap: 5px;
+  }
+
+  .ot-carousel__progress span {
+    width: 13px;
+  }
+
+  .ot-carousel__progress span.is-active {
+    width: 24px;
+  }
 }
-
-
-@keyframes loaderLogoIn {
-
-  from {
-    opacity: 0;
-    transform: scale(0.88);
-  }
-
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-
-}
-
-
-@keyframes loaderBrandIn {
-
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-    letter-spacing: 0.34em;
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-    letter-spacing: 0.24em;
-  }
-
-}
-
-
-@keyframes loaderProgress {
-
-  0% {
-    transform: translateX(-120%);
-  }
-
-  100% {
-    transform: translateX(330%);
-  }
-
-}
-
-
-@keyframes loaderStatusPulse {
-
-  0%,
-  100% {
-    opacity: 0.45;
-  }
-
-  50% {
-    opacity: 1;
-  }
-
-}
-
-
-/* =========================
-   MOBILE
-========================= */
 
 @media (max-width: 600px) {
-
-  .loader-content {
-    width: 100%;
-    max-width: 300px;
-
-    animation:
-      loaderContentIn 0.9s cubic-bezier(.4, 0, .2, 1) both;
+  .ot-purpose {
+    padding: 60px 0 65px;
   }
 
+  .ot-purpose__header {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    margin-bottom: 30px;
+  }
+
+  .ot-purpose__eyebrow {
+    gap: 10px;
+    margin-bottom: 17px;
+    font-size: 0.68rem;
+  }
+
+  .ot-purpose__eyebrow span {
+    width: 27px;
+    flex-basis: 27px;
+  }
+
+  .ot-purpose__heading h2 {
+    font-size: clamp(2.15rem, 9vw, 3.2rem);
+    line-height: 1.08;
+  }
+
+  .ot-purpose__intro {
+    margin: 0;
+    font-size: 0.94rem;
+    line-height: 1.75;
+  }
+
+  .ot-purpose__grid {
+    gap: 18px;
+  }
+
+  .ot-purpose__card {
+    grid-template-columns: 1fr;
+    gap: 22px;
+    padding: 16px;
+    border-radius: 10px;
+  }
+
+  .ot-purpose__visual {
+    min-height: 210px;
+    max-height: 240px;
+  }
+
+  .ot-purpose__content {
+    padding: 0 3px 5px;
+  }
+
+  .ot-purpose__icon {
+    width: 34px;
+    height: 34px;
+    margin-bottom: 13px;
+  }
+
+  .ot-purpose__icon svg {
+    width: 30px;
+    height: 30px;
+  }
+
+  .ot-purpose__label {
+    margin-bottom: 10px;
+  }
+
+  .ot-purpose__content h3 {
+    font-size: 1.4rem;
+    line-height: 1.35;
+    margin-bottom: 12px;
+  }
+
+  .ot-purpose__description {
+    font-size: 0.9rem;
+    line-height: 1.8;
+  }
+
+  .whatsapp-float {
+    right: 18px;
+    bottom: 18px;
+    gap: 9px;
+  }
+
+  .whatsapp-tooltip {
+    padding: 9px 12px;
+    border-radius: 10px;
+  }
+
+  .whatsapp-tooltip strong {
+    font-size: 12px;
+  }
+
+  .whatsapp-tooltip span {
+    font-size: 10px;
+  }
+
+  .whatsapp-icon {
+    width: 54px;
+    height: 54px;
+    font-size: 25px;
+  }
 
   .loader-logo {
     width: 68px;
-
     margin-bottom: 20px;
-
-    animation:
-      loaderLogoIn 1s cubic-bezier(.4, 0, .2, 1) both;
   }
-
 
   .loader-brand {
     font-size: 19px;
-
     letter-spacing: 0.20em;
-
-    margin-left: 0.20em;
-
-    animation:
-      loaderBrandInMobile 1s 0.15s cubic-bezier(.4, 0, .2, 1) both;
   }
-
 
   .loader-line {
     width: 155px;
-    height: 2px;
-
-    margin-top: 26px;
-    margin-bottom: 14px;
   }
-
-
-  .loader-line span {
-    animation:
-      loaderProgress 1.4s cubic-bezier(.4, 0, .2, 1) infinite;
-  }
-
-
-  .loader-status {
-    font-size: 8px;
-
-    letter-spacing: 0.25em;
-
-    margin-left: 0.25em;
-
-    animation:
-      loaderStatusPulse 1.6s ease-in-out infinite;
-  }
-
 }
 
+@media (max-width: 480px) {
 
-/* =========================
-   MOBILE BRAND ANIMATION
-========================= */
-
-@keyframes loaderBrandInMobile {
-
-  from {
-    opacity: 0;
-
-    transform: translateY(8px);
-
-    letter-spacing: 0.28em;
+  .section-inner,
+  .hero-inner,
+  .nav-inner {
+    padding: 0 20px;
   }
 
-  to {
-    opacity: 1;
-
-    transform: translateY(0);
-
-    letter-spacing: 0.20em;
+  .hero-headline {
+    font-size: 2rem;
   }
 
+  .hero-desc {
+    font-size: 0.98rem;
+  }
+
+  .footer-inner {
+    grid-template-columns: 1fr;
+    padding: 0 20px 40px;
+  }
+
+  .footer-bottom {
+    padding: 20px;
+  }
+
+  .pillar-card {
+    padding: 32px 24px;
+  }
+
+  .cta-actions {
+    flex-direction: column;
+  }
+
+  .cta-actions .btn {
+    width: 100%;
+  }
 }
 
+@media (max-width: 420px) {
+  .ot-team__inner {
+    width: min(100% - 24px, 600px);
+  }
 
-/* =========================
-   SAFARI / MOBILE FIX
-========================= */
+  .ot-carousel__media {
+    aspect-ratio: 0.86;
+  }
 
-#page-loader,
-.loader-content,
-.loader-logo,
-.loader-brand,
-.loader-line,
-.loader-line span,
-.loader-status {
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
+  .ot-carousel__panel {
+    min-height: 410px;
+    padding: 30px 21px 24px;
+  }
 
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
+  .ot-carousel__controls {
+    gap: 8px;
+  }
 }
 
-
-/* ============================================================
-   Scroll Reveal — Content Only
-============================================================ */
-
-.software-tech .modern-tech-marquee,
-.ot-team .ot-carousel,
-.tech .tech-badges {
-  opacity: 0;
-  transform: translateY(28px);
-  transition:
-    opacity 0.7s ease,
-    transform 0.7s ease;
-}
-
-/* Visible state */
-
-.software-tech .modern-tech-marquee.in-view,
-.ot-team .ot-carousel.in-view,
-.tech .tech-badges.in-view {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Reduced motion accessibility */
-
+/* REDUCE MOTION (ACCESSIBILITY) */
 @media (prefers-reduced-motion: reduce) {
-  .software-tech .modern-tech-marquee,
-  .ot-team .ot-carousel,
-  .tech .tech-badges {
-    opacity: 1;
-    transform: none;
-    transition: none;
+
+  *,
+  ::before,
+  ::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  html {
+    scroll-behavior: auto;
   }
 }
-
