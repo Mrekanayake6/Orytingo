@@ -435,49 +435,7 @@ button {
    Hero
 ============================================================ */
 
-/* Hero visual entrance */
-.hero-visual {
-  animation: heroReveal 1s ease-out both;
-}
 
-@keyframes heroReveal {
-  from {
-    opacity: 0;
-    transform: translateY(20px) scale(0.98);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-/* Floating status cards */
-.floating-card {
-  animation: floatingCard 4s ease-in-out infinite;
-}
-
-.floating-card.two {
-  animation-delay: 1s;
-}
-
-@keyframes floatingCard {
-  0%, 100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-7px);
-  }
-}
-
-/* Accessibility */
-@media (prefers-reduced-motion: reduce) {
-  .hero-visual,
-  .floating-card {
-    animation: none;
-  }
-}
 .hero {
   position: relative;
   padding: 84px 0 60px;
