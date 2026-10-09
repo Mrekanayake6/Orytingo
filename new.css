@@ -523,11 +523,7 @@ button {
   overflow: visible;
 }
 
-.code-panel {
-  fill: rgba(255, 255, 255, 0.035);
-  stroke: rgba(255, 255, 255, 0.12);
-  stroke-width: 1;
-}
+
 
 .code-panel {
   fill: rgba(255, 255, 255, 0.035);
