@@ -3171,19 +3171,19 @@ section {
    Scroll Reveal — Content Only
 ============================================================ */
 
-/* Software technology marquee */
-
-
-/* Keep reveal animations for other sections */
+.software-tech .modern-tech-marquee,
 .ot-team .ot-carousel,
 .tech .tech-badges {
   opacity: 0;
-  transform: translateY(16px);
+  transform: translateY(28px);
   transition:
-    opacity 0.45s ease,
-    transform 0.45s ease;
+    opacity 0.7s ease,
+    transform 0.7s ease;
 }
 
+/* Visible state */
+
+.software-tech .modern-tech-marquee.in-view,
 .ot-team .ot-carousel.in-view,
 .tech .tech-badges.in-view {
   opacity: 1;
@@ -3191,7 +3191,9 @@ section {
 }
 
 /* Reduced motion accessibility */
+
 @media (prefers-reduced-motion: reduce) {
+  .software-tech .modern-tech-marquee,
   .ot-team .ot-carousel,
   .tech .tech-badges {
     opacity: 1;
