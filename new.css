@@ -3172,11 +3172,7 @@ section {
 ============================================================ */
 
 /* Software technology marquee */
-.software-tech .modern-tech-marquee {
-  opacity: 1;
-  transform: none;
-  transition: none;
-}
+
 
 /* Keep reveal animations for other sections */
 .ot-team .ot-carousel,
