@@ -2065,3 +2065,28 @@
     }
 
 }
+
+/* Business Automation — Content Reveal */
+
+.business-automation .industry-marquee {
+    opacity: 0;
+    transform: translateY(28px);
+    transition:
+        opacity 0.7s ease,
+        transform 0.7s ease;
+}
+
+.business-automation .industry-marquee.in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Accessibility */
+
+@media (prefers-reduced-motion: reduce) {
+    .business-automation .industry-marquee {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+}
