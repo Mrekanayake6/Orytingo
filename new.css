@@ -3018,3 +3018,18 @@ section {
   }
 
 }
+
+
+/* Mobile: prevent long blank content while revealing */
+@media (max-width: 768px) {
+  .pillar-card,
+  .why-card,
+  .service-card,
+  .timeline li,
+  .software-tech .modern-tech-marquee,
+  .ot-team .ot-carousel,
+  .tech .tech-badges {
+    transition-delay: 0s !important;
+    animation-delay: 0s !important;
+  }
+}
