@@ -2843,8 +2843,3 @@ section {
     letter-spacing: .12em;
   }
 }
-html,
-body {
-  max-width: 100%;
-  overflow-x: clip;
-}
