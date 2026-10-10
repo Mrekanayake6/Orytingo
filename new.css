@@ -759,19 +759,7 @@ section {
   -webkit-backdrop-filter: blur(20px);
   position: relative;
   overflow: hidden;
-  opacity: 1;
-  transform: translateY(0);
   transition: opacity .45s var(--ease), transform .45s var(--ease), border-color .3s var(--ease), box-shadow .3s var(--ease);
-}
-
-.scroll-reveal-ready .pillar-card:not(.in-view) {
-  opacity: 0;
-  transform: translateY(24px);
-}
-
-.pillar-card.in-view {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 .pillar-card::before {
@@ -872,19 +860,7 @@ section {
   border-radius: var(--radius-md);
   background: var(--card);
   border: 1px solid var(--border-soft);
-  opacity: 1;
-  transform: translateY(0);
   transition: opacity .45s var(--ease), transform .45s var(--ease), border-color .25s var(--ease), background .25s var(--ease);
-}
-
-.scroll-reveal-ready .why-card:not(.in-view) {
-  opacity: 0;
-  transform: translateY(18px);
-}
-
-.why-card.in-view {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 .why-card:hover {
@@ -934,19 +910,7 @@ section {
   border-radius: var(--radius-md);
   background: var(--card);
   border: 1px solid var(--border-soft);
-  opacity: 1;
-  transform: translateY(0);
   transition: opacity .45s var(--ease), transform .45s var(--ease), border-color .25s var(--ease), background .25s var(--ease);
-}
-
-.scroll-reveal-ready .service-card:not(.in-view) {
-  opacity: 0;
-  transform: translateY(18px);
-}
-
-.service-card.in-view {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 .service-card i {
@@ -1001,19 +965,7 @@ section {
 
 .timeline li {
   position: relative;
-  opacity: 1;
-  transform: translateY(0);
   transition: opacity .45s var(--ease), transform .45s var(--ease);
-}
-
-.scroll-reveal-ready .timeline li:not(.in-view) {
-  opacity: 0;
-  transform: translateY(16px);
-}
-
-.timeline li.in-view {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 .tl-num {
@@ -2528,7 +2480,7 @@ section {
 
 .tech-marquee-track.reverse {
   animation-name: marqueeReverse;
-  animation-duration: var(--marquee-duration, 36s);
+  animation-duration: var(--marquee-duration, 32s);
 }
 
 /* Pause */
@@ -2670,34 +2622,42 @@ section {
 
 
 /* ============================================================
-   Scroll Reveal — Smooth & Fast
+   Scroll reveals
 ============================================================ */
 
-.software-tech .modern-tech-marquee,
-.ot-team .ot-carousel,
-.tech .tech-badges {
-  opacity: 1;
-  transform: translateY(0);
-
-  transition:
-    opacity 0.45s var(--ease),
-    transform 0.45s var(--ease);
+.reveal-item {
+  transition-property: opacity, transform;
+  transition-duration: 420ms;
+  transition-timing-function: var(--ease);
+  transition-delay: var(--reveal-delay, 0ms);
 }
 
-.scroll-reveal-ready .software-tech .modern-tech-marquee:not(.in-view),
-.scroll-reveal-ready .ot-team .ot-carousel:not(.in-view),
-.scroll-reveal-ready .tech .tech-badges:not(.in-view) {
+.reveal-item.pillar-card {
+  transition: opacity 420ms var(--ease), transform 420ms var(--ease), border-color .3s var(--ease), box-shadow .3s var(--ease);
+  transition-delay: var(--reveal-delay, 0ms), var(--reveal-delay, 0ms), 0s, 0s;
+}
+
+.reveal-item.why-card,
+.reveal-item.service-card {
+  transition: opacity 420ms var(--ease), transform 420ms var(--ease), border-color .25s var(--ease), background .25s var(--ease);
+  transition-delay: var(--reveal-delay, 0ms), var(--reveal-delay, 0ms), 0s, 0s;
+}
+
+.timeline li.reveal-item {
+  transition-property: opacity, transform;
+  transition-duration: 420ms;
+  transition-timing-function: var(--ease);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.tech-badges > span.reveal-item {
+  transition: opacity 420ms var(--ease), transform 420ms var(--ease), color .2s var(--ease), border-color .2s var(--ease);
+  transition-delay: var(--reveal-delay, 0ms), var(--reveal-delay, 0ms), 0s, 0s;
+}
+
+.scroll-reveal-enabled .reveal-item:not(.is-revealed) {
   opacity: 0;
-  transform: translateY(14px);
-}
-
-/* Visible state */
-
-.software-tech .modern-tech-marquee.in-view,
-.ot-team .ot-carousel.in-view,
-.tech .tech-badges.in-view {
-  opacity: 1;
-  transform: translateY(0);
+  transform: translateY(16px);
 }
 
 
@@ -2719,14 +2679,7 @@ section {
     transition: none !important;
   }
 
-  /* scroll-reveal elements: show immediately */
-  .scroll-reveal-ready .software-tech .modern-tech-marquee,
-  .scroll-reveal-ready .ot-team .ot-carousel,
-  .scroll-reveal-ready .tech .tech-badges,
-  .scroll-reveal-ready .pillar-card,
-  .scroll-reveal-ready .why-card,
-  .scroll-reveal-ready .service-card,
-  .scroll-reveal-ready .timeline li {
+  .scroll-reveal-enabled .reveal-item:not(.is-revealed) {
     opacity: 1;
     transform: none;
   }

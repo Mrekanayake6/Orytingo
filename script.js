@@ -87,48 +87,57 @@
   /* =========================
      Scroll Reveal Animation
   ========================= */
-  const revealEls = document.querySelectorAll(
-    ".pillar-card, .why-card, .service-card, .timeline li, " +
-    ".software-tech .modern-tech-marquee, " +
-    ".ot-team .ot-carousel, " +
-    ".tech .tech-badges"
-  );
+  const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const revealTargets = new Set();
+  const addRevealGroup = (selector, stagger = false) => {
+    const siblingIndexes = new Map();
 
-  const showAll = () => {
-    revealEls.forEach((el) => el.classList.add("in-view"));
+    document.querySelectorAll(selector).forEach((element) => {
+      if (revealTargets.has(element)) return;
+
+      revealTargets.add(element);
+      element.classList.add("reveal-item");
+
+      if (stagger) {
+        const parent = element.parentElement;
+        const siblingIndex = siblingIndexes.get(parent) || 0;
+        siblingIndexes.set(parent, siblingIndex + 1);
+        element.style.setProperty("--reveal-delay", `${Math.min(siblingIndex, 4) * 45}ms`);
+      }
+    });
   };
 
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    /* Reduced motion: show everything immediately */
-    showAll();
-  } else if ("IntersectionObserver" in window) {
-    const observer = new IntersectionObserver(
-      (entries, obs) => {
+  addRevealGroup(".section-head > *", true);
+  addRevealGroup(".pillar-card, .why-card, .service-card, .timeline li, .tech-badges > span", true);
+  addRevealGroup(
+    ".modern-tech-marquee, .about-visual, .about-copy > *, .ot-carousel, .cta-inner > *"
+  );
+
+  if (!motionPreference.matches && "IntersectionObserver" in window && revealTargets.size) {
+    const revealObserver = new IntersectionObserver(
+      (entries, observer) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("in-view");
-            obs.unobserve(entry.target);
-          }
+          if (!entry.isIntersecting) return;
+
+          entry.target.classList.add("is-revealed");
+          observer.unobserve(entry.target);
         });
       },
       {
-        threshold: 0.05,
-        rootMargin: "160px 0px"
+        threshold: 0.01,
+        rootMargin: "100px 0px"
       }
     );
 
-    revealEls.forEach((el) => {
-      const rect = el.getBoundingClientRect();
-      if (rect.bottom >= 0 && rect.top <= window.innerHeight) {
-        el.classList.add("in-view");
+    revealTargets.forEach((element) => {
+      const rect = element.getBoundingClientRect();
+      if (rect.bottom >= -100 && rect.top <= window.innerHeight + 100) {
+        element.classList.add("is-revealed");
       }
+      revealObserver.observe(element);
     });
 
-    revealEls.forEach((el) => observer.observe(el));
-    document.documentElement.classList.add("scroll-reveal-ready");
-  } else {
-    /* Old browser fallback */
-    showAll();
+    document.documentElement.classList.add("scroll-reveal-enabled");
   }
 
   const animationSections = document.querySelectorAll(".hero, .modern-tech-marquee");
@@ -140,12 +149,12 @@
           entry.target.classList.toggle("animation-visible", entry.isIntersecting);
         });
       },
-      { rootMargin: "160px 0px" }
+      { rootMargin: "100px 0px" }
     );
 
     animationSections.forEach((section) => {
       const rect = section.getBoundingClientRect();
-      if (rect.bottom >= -160 && rect.top <= window.innerHeight + 160) {
+      if (rect.bottom >= -100 && rect.top <= window.innerHeight + 100) {
         section.classList.add("animation-visible");
       }
       animationObserver.observe(section);
