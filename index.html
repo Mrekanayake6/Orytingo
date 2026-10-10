@@ -10,6 +10,22 @@
   <meta name="description"
     content="OryTingo Networks &amp; Software Solutions provides custom software, web, business systems, networking, Wi-Fi, CCTV and server solutions for businesses across Sri Lanka.">
 
+  <script>
+    (() => {
+      const root = document.documentElement;
+      if (document.readyState === "complete") return;
+
+      root.classList.add("page-loading");
+      root.dataset.pageLoaderFallback = String(window.setTimeout(() => {
+        root.classList.remove("page-loading");
+        root.dataset.pageLoaderExpired = "true";
+        delete root.dataset.pageLoaderFallback;
+        const loader = document.getElementById("pageLoader");
+        if (loader) loader.remove();
+      }, 8000));
+    })();
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -28,6 +44,14 @@
     <div class="glow glow-blue"></div>
     <div class="glow glow-violet"></div>
     <div class="grid-overlay"></div>
+  </div>
+
+  <div class="page-loader" id="pageLoader" aria-hidden="true" inert>
+    <div class="page-loader-content">
+      <img src="logo.png" alt="" width="240" height="152">
+      <span class="page-loader-indicator"></span>
+      <span class="page-loader-caption">NETWORKS &amp; SOFTWARE SOLUTIONS</span>
+    </div>
   </div>
 
   <!-- NAV -->

@@ -4,6 +4,47 @@
 ============================================================ */
 
 (() => {
+  const loader = document.getElementById("pageLoader");
+  if (!loader || loader.dataset.loaderInitialized === "true") return;
+
+  loader.dataset.loaderInitialized = "true";
+  const root = document.documentElement;
+  const fallbackTimer = Number(root.dataset.pageLoaderFallback);
+  if (root.dataset.pageLoaderExpired === "true" || document.readyState === "complete") {
+    clearTimeout(fallbackTimer);
+    delete root.dataset.pageLoaderFallback;
+    root.classList.remove("page-loading");
+    loader.remove();
+    return;
+  }
+
+  let removalTimer;
+
+  const hideLoader = () => {
+    if (!root.classList.contains("page-loading")) return;
+
+    clearTimeout(fallbackTimer);
+    delete root.dataset.pageLoaderFallback;
+    root.classList.remove("page-loading");
+    loader.classList.add("is-hiding");
+
+    loader.addEventListener("transitionend", (event) => {
+      if (event.target === loader && event.propertyName === "opacity") {
+        clearTimeout(removalTimer);
+        loader.remove();
+      }
+    }, { once: true });
+
+    removalTimer = window.setTimeout(() => loader.remove(), 350);
+  };
+
+  window.addEventListener("load", hideLoader, { once: true });
+  window.addEventListener("pageshow", (event) => {
+    if (event.persisted) hideLoader();
+  }, { once: true });
+})();
+
+(() => {
 
   /* =========================
      Footer Year
