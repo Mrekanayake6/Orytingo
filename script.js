@@ -113,11 +113,19 @@ document.addEventListener("DOMContentLoaded", () => {
       },
       {
         threshold: 0.05,
-        rootMargin: "0px 0px -20px 0px"
+        rootMargin: "120px 0px"
       }
     );
 
+    revealEls.forEach((el) => {
+      const rect = el.getBoundingClientRect();
+      if (rect.bottom >= 0 && rect.top <= window.innerHeight) {
+        el.classList.add("in-view");
+      }
+    });
+
     revealEls.forEach((el) => observer.observe(el));
+    document.documentElement.classList.add("scroll-reveal-ready");
   } else {
     /* Old browser fallback */
     showAll();
@@ -295,16 +303,19 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* CREATE TEAM IMAGES */
+  const photoImages = [];
+
   TEAM.forEach((member, index) => {
     const figure = createElement("figure", "ot-carousel__photo");
     const image = new Image();
 
-    image.src = member.image;
     image.alt = `${member.name}, ${member.role} at ORYTINGO Networks & Software Solutions`;
     image.decoding = "async";
-    image.loading = index === 0 ? "eager" : "lazy";
+    image.loading = "lazy";
     image.draggable = false;
     image.style.objectPosition = member.focus || "50% 25%";
+
+    if (index > 0) image.src = member.image;
 
     image.addEventListener("error", () => {
       figure.classList.add("is-missing");
@@ -315,6 +326,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     figure.append(image, fallback);
     media.appendChild(figure);
+    photoImages.push(image);
   });
 
   /* CREATE TEAM MEMBER CONTENT + SOCIAL LINKS */
@@ -345,6 +357,29 @@ document.addEventListener("DOMContentLoaded", () => {
   const photos = [...media.querySelectorAll(".ot-carousel__photo")];
   const bodySlides = [...bodies.querySelectorAll(".ot-carousel__body")];
   const progressTicks = [...progress.querySelectorAll("span")];
+
+  const loadFirstPhoto = () => {
+    const firstImage = photoImages[0];
+    if (!firstImage || firstImage.hasAttribute("src")) return;
+
+    firstImage.loading = "eager";
+    firstImage.src = TEAM[0].image;
+  };
+
+  if ("IntersectionObserver" in window) {
+    const photoObserver = new IntersectionObserver(
+      (entries, obs) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          loadFirstPhoto();
+          obs.disconnect();
+        }
+      },
+      { rootMargin: "1200px 0px" }
+    );
+    photoObserver.observe(root);
+  } else {
+    loadFirstPhoto();
+  }
 
   /* INITIAL STATE */
   photos.forEach((photo, index) => {
