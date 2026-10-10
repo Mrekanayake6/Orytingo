@@ -10,6 +10,8 @@
   --surface-strong: rgba(255, 255, 255, 0.06);
   --border: rgba(255, 255, 255, 0.08);
   --border-soft: rgba(255, 255, 255, 0.05);
+  --border-light: rgba(255, 255, 255, 0.12);
+  --shadow: 0 18px 40px -14px rgba(0, 0, 0, 0.55);
 
   --text: #f5f5f5;
   --text-muted: #9499a4;
@@ -25,9 +27,9 @@
   --violet: var(--orange-light);
   --violet-2: var(--orange);
 
-  --grad-blue: linear-gradient(135deg, var(--orange), var(--orange-light));
   --grad-violet: linear-gradient(135deg, var(--orange-light), var(--orange));
   --grad-brand: linear-gradient(135deg, var(--orange), var(--orange-light));
+  --grad-blue: var(--grad-brand);
 
   --radius-lg: 22px;
   --radius-md: 14px;
@@ -45,6 +47,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 80px; /* sticky navbar offset for #anchor links */
 }
 
 body {
@@ -244,10 +247,8 @@ button {
   border-bottom: 1px solid transparent;
 }
 
+/* padding intentionally unchanged on scroll (no height jump) */
 .nav-bar.scrolled {
-  padding: 14px 0;
-  /* scroll ekedi height wenas wenne na */
-
   background: rgba(8, 9, 11, 0.88);
 
   backdrop-filter: blur(16px) saturate(140%);
@@ -376,12 +377,15 @@ button {
   max-height: 0;
   overflow: hidden;
   padding: 0 32px;
-  transition: max-height .35s var(--ease), padding .35s var(--ease);
+  visibility: hidden;
+  transition: max-height .35s var(--ease), padding .35s var(--ease), visibility 0s linear .35s;
 }
 
 .mobile-menu.open {
   max-height: 420px;
   padding: 14px 32px 22px;
+  visibility: visible;
+  transition-delay: 0s;
 }
 
 
@@ -395,7 +399,7 @@ button {
   font-weight: 500;
 }
 .mobile-menu .mobile-project-btn {
-  color:var(--bg)
+  color: var(--bg);
 }
 /* NORMAL MENU LINKS - CONTENT WIDTH */
 .mobile-menu a:not(:last-child) {
@@ -557,49 +561,18 @@ button {
 }
 
 /* =========================================================
-           FLOATING CARD
-           ========================================================= */
+   FLOATING CARD
+   ========================================================= */
 
 .floating-card {
   position: absolute;
-
   padding: 12px 14px;
-
   border: 1px solid var(--border-light);
   border-radius: 12px;
-
-  background:
-    rgba(43, 46, 52, 0.92);
-
+  background: rgba(43, 46, 52, 0.92);
   box-shadow: var(--shadow);
-
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-}
-
-.floating-card.one {
-  top: 7%;
-  right: 0;
-}
-
-.floating-card.two {
-  bottom: 5%;
-  left: 3%;
-}
-
-.floating-card-title {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-
-  color: #e8e9ec;
-
-  font-size: 11px;
-  font-weight: 700;
-}
-
-/* Floating card animation */
-.floating-card {
   animation: floatingBounce 3s ease-in-out infinite;
 }
 
@@ -615,6 +588,15 @@ button {
   bottom: 5%;
   left: 3%;
   animation-delay: 1.2s;
+}
+
+.floating-card-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #e8e9ec;
+  font-size: 11px;
+  font-weight: 700;
 }
 
 @keyframes floatingBounce {
@@ -889,7 +871,7 @@ section {
   border: 1px solid var(--border-soft);
   opacity: 0;
   transform: translateY(18px);
-  transition: opacity .6s var(--ease), transform .6s var(--ease), border-color .25s var(--ease), transform .25s var(--ease);
+  transition: opacity .6s var(--ease), transform .4s var(--ease), border-color .25s var(--ease), background .25s var(--ease);
 }
 
 .why-card.in-view {
@@ -1522,14 +1504,6 @@ section {
   }
 }
 
-/* Respect reduced-motion preferences */
-
-@media (prefers-reduced-motion: reduce) {
-  .ot-purpose__card {
-    transition: none;
-  }
-}
-
 /* ============================================================
    ORYTINGO — Team Social Links
    Additive styles only; existing carousel remains unchanged
@@ -1577,16 +1551,6 @@ section {
   outline-offset: 4px;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .ot-carousel__social-link {
-    transition: none;
-  }
-
-  .ot-carousel__social-link:hover {
-    transform: none;
-  }
-}
-
 .ot-team {
   --ot-team-orange: #ff813e;
   --ot-team-orange-light: #ff9c67;
@@ -1607,75 +1571,10 @@ section {
 }
 
 
-/* ============================================================
-   INNER
-============================================================ */
-
-.ot-team__inner {
-  width: min(1320px, calc(100% - 40px));
-  margin: 0 auto;
-}
 
 
-/* ============================================================
-   HEADER
-============================================================ */
-
-.ot-team__header {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 340px;
-  align-items: end;
-  gap: 60px;
-  margin-bottom: clamp(42px, 6vw, 82px);
-}
-
-.ot-team__eyebrow {
-  display: flex;
-  align-items: center;
-  gap: 13px;
-
-  margin: 0 0 24px;
-
-  color: var(--ot-team-orange);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.17em;
-  line-height: 1;
-  text-transform: uppercase;
-}
-
-.ot-team__eyebrow span {
-  width: 34px;
-  height: 1px;
-  flex: 0 0 auto;
-
-  background: var(--ot-team-orange);
-  box-shadow: 0 0 12px rgba(255, 129, 62, 0.45);
-}
 
 
-.ot-team__title {
-  margin: 0;
-
-  color: var(--ot-team-text);
-
-  font-family: "Sora", "Manrope", system-ui, sans-serif;
-  font-size: clamp(2.6rem, 6vw, 5.4rem);
-  font-weight: 500;
-  line-height: 0.99;
-  letter-spacing: -0.045em;
-}
-
-
-.ot-team__lead {
-  max-width: 340px;
-  margin: 0 0 3px auto;
-
-  color: var(--ot-team-muted);
-
-  font-size: 0.98rem;
-  line-height: 1.8;
-}
 
 
 /* ============================================================
@@ -2106,7 +2005,8 @@ section {
 }
 
 
-.ot-carousel__btn:active {
+.ot-carousel__btn:active,
+.ot-carousel__btn:first-child:active {
   transform: scale(0.96);
 }
 
@@ -2161,15 +2061,9 @@ section {
 
 @media (max-width: 900px) {
 
-  .ot-team__header {
-    grid-template-columns: 1fr;
-    gap: 22px;
-  }
+ 
 
-  .ot-team__lead {
-    margin: 0;
-    max-width: 520px;
-  }
+  
 
 
   .ot-carousel {
@@ -2213,17 +2107,9 @@ section {
   }
 
 
-  .ot-team__header {
-    margin-bottom: 38px;
-  }
+ 
 
 
-  .ot-team__eyebrow {
-    margin-bottom: 20px;
-
-    font-size: 0.66rem;
-    letter-spacing: 0.14em;
-  }
 
 
   .ot-team__title {
@@ -2232,10 +2118,7 @@ section {
   }
 
 
-  .ot-team__lead {
-    font-size: 0.92rem;
-    line-height: 1.75;
-  }
+ 
 
 
   .ot-carousel {
@@ -2359,8 +2242,9 @@ section {
    CTA
 ============================================================ */
 .cta {
-  margin: 0 32px 96px;
-  max-width: calc(var(--container) - 64px + 64px);
+  width: calc(100% - 64px);
+  max-width: var(--container);
+  margin: 0 auto 96px;
   border-radius: 28px;
   background: linear-gradient(135deg, rgba(255, 129, 62, 0.12), rgba(255, 156, 103, 0.12));
   border: 1px solid var(--border);
@@ -2529,23 +2413,6 @@ section {
     grid-template-columns: 1fr;
   }
 
-  .why-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .service-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .timeline {
-    grid-template-columns: repeat(3, 1fr);
-    row-gap: 34px;
-  }
-
-  .timeline::before {
-    display: none;
-  }
-
   .about-inner {
     grid-template-columns: 1fr;
     text-align: center;
@@ -2554,10 +2421,6 @@ section {
   .about-copy p {
     margin-left: auto;
     margin-right: auto;
-  }
-
-  .about-svg {
-    max-width: 300px;
   }
 
 }
@@ -2571,8 +2434,7 @@ section {
 
   /* Navbar stable */
 
-  .nav-bar,
-  .nav-bar.scrolled {
+  .nav-bar {
     padding: 12px 0;
   }
 
@@ -2590,15 +2452,6 @@ section {
 
   .hamburger {
     display: flex;
-    width: 38px;
-    height: 38px;
-    align-items: center;
-    justify-content: center;
-  }
-   .hamburger span {
-    width: 16px;
-    height: 1.5px;
-    margin: 0;
   }
 
   .mobile-menu {
@@ -2648,6 +2501,11 @@ section {
     row-gap: 26px;
   }
 
+  /* connector line only makes sense in the horizontal layout */
+  .timeline::before {
+    display: none;
+  }
+
 
   /* Footer */
 
@@ -2659,7 +2517,8 @@ section {
   /* CTA */
 
   .cta {
-    margin: 0 16px 68px;
+    width: calc(100% - 32px);
+    margin: 0 auto 68px;
     border-radius: 22px;
   }
 
@@ -2726,23 +2585,6 @@ section {
 
 }
 
-
-/* ============================================================
-   Reduce Motion
-============================================================ */
-
-@media (prefers-reduced-motion: reduce) {
-
-  * {
-    animation: none !important;
-    transition: none !important;
-  }
-
-  html {
-    scroll-behavior: auto;
-  }
-
-}
 
 /* =========================================================
    WHATSAPP FLOATING BUTTON
@@ -2854,43 +2696,21 @@ section {
 
 
 /* =========================================================
-   CALL RING - FIRST RING
+   CALL RINGS (two staggered rings)
 ========================================================= */
 
-.whatsapp-icon::before {
-  content: "";
-
-  position: absolute;
-
-  inset: -5px;
-
-  border: 2px solid rgba(37, 211, 102, 0.55);
-
-  border-radius: 50%;
-
-  animation:
-    whatsappCallRing 2.2s ease-out infinite;
-}
-
-
-/* =========================================================
-   CALL RING - SECOND RING
-========================================================= */
-
+.whatsapp-icon::before,
 .whatsapp-icon::after {
   content: "";
-
   position: absolute;
-
   inset: -5px;
-
-  border: 2px solid rgba(37, 211, 102, 0.35);
-
+  border: 2px solid rgba(37, 211, 102, 0.55);
   border-radius: 50%;
+  animation: whatsappCallRing 2.2s ease-out infinite;
+}
 
-  animation:
-    whatsappCallRing 2.2s ease-out infinite;
-
+.whatsapp-icon::after {
+  border-color: rgba(37, 211, 102, 0.35);
   animation-delay: 1.1s;
 }
 
@@ -3213,13 +3033,6 @@ section {
   }
 }
 
-/* Reduce motion */
-@media (prefers-reduced-motion: reduce) {
-  .tech-marquee-track {
-    animation: none;
-  }
-}
-
 
 /* =========================
    PREMIUM PAGE LOADER
@@ -3472,58 +3285,30 @@ section {
   .loader-content {
     width: 100%;
     max-width: 300px;
-
-    animation:
-      loaderContentIn 0.9s cubic-bezier(.4, 0, .2, 1) both;
   }
-
 
   .loader-logo {
     width: 68px;
-
     margin-bottom: 20px;
-
-    animation:
-      loaderLogoIn 1s cubic-bezier(.4, 0, .2, 1) both;
   }
-
 
   .loader-brand {
     font-size: 19px;
-
     letter-spacing: 0.20em;
-
     margin-left: 0.20em;
-
-    animation:
-      loaderBrandInMobile 1s 0.15s cubic-bezier(.4, 0, .2, 1) both;
+    animation: loaderBrandInMobile 1s 0.15s cubic-bezier(.4, 0, .2, 1) both;
   }
-
 
   .loader-line {
     width: 155px;
-    height: 2px;
-
     margin-top: 26px;
     margin-bottom: 14px;
   }
 
-
-  .loader-line span {
-    animation:
-      loaderProgress 1.4s cubic-bezier(.4, 0, .2, 1) infinite;
-  }
-
-
   .loader-status {
     font-size: 8px;
-
     letter-spacing: 0.25em;
-
     margin-left: 0.25em;
-
-    animation:
-      loaderStatusPulse 1.6s ease-in-out infinite;
   }
 
 }
@@ -3573,9 +3358,7 @@ section {
 }
 
 
-/* ============================================================
-   Scroll Reveal — Content Only
-============================================================ */
+
 
 
 /* ============================================================
@@ -3604,17 +3387,32 @@ section {
   transform: translateY(0);
 }
 
-/* Reduced motion */
+
+/* ============================================================
+   Reduced motion (single consolidated block)
+============================================================ */
 
 @media (prefers-reduced-motion: reduce) {
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  /* include pseudo-elements: plain `*` does not match them */
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  /* scroll-reveal elements: show immediately */
   .software-tech .modern-tech-marquee,
   .ot-team .ot-carousel,
   .tech .tech-badges {
     opacity: 1;
     transform: none;
-    transition: none;
     will-change: auto;
   }
+
 }
-
-
