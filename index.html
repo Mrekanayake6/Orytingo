@@ -22,7 +22,7 @@
         delete root.dataset.pageLoaderFallback;
         const loader = document.getElementById("pageLoader");
         if (loader) loader.remove();
-      }, 8000));
+      }, 15000));
     })();
   </script>
 
@@ -48,9 +48,17 @@
 
   <div class="page-loader" id="pageLoader" aria-hidden="true" inert>
     <div class="page-loader-content">
-      <img src="logo.png" alt="" width="240" height="152">
-      <span class="page-loader-indicator"></span>
-      <span class="page-loader-caption">NETWORKS &amp; SOFTWARE SOLUTIONS</span>
+      <div class="page-loader-mark">
+        <svg class="page-loader-ring" viewBox="0 0 120 120" aria-hidden="true">
+          <circle class="page-loader-ring-track" cx="60" cy="60" r="53"></circle>
+          <circle class="page-loader-ring-progress" cx="60" cy="60" r="53"></circle>
+        </svg>
+        <img src="logo.png" alt="" width="240" height="152">
+      </div>
+      <div class="page-loader-copy">
+        <span class="page-loader-caption">NETWORKS &amp; SOFTWARE SOLUTIONS</span>
+        <span class="page-loader-line" aria-hidden="true"></span>
+      </div>
     </div>
   </div>
 
@@ -540,20 +548,20 @@
       <div class="section-inner">
 
         <div class="section-head">
-          
+
           <div>
             <p class="eyebrow-orange">
               <span aria-hidden="true"></span>
               The people behind ORYTINGO
             </p>
 
-            <h2  id="ot-team-title">
+            <h2 id="ot-team-title">
               Meet the people<br>
               behind the work.
             </h2>
           </div>
 
-          <p >
+          <p>
             A focused team bringing together software, networking,
             design, and technical expertise.
           </p>

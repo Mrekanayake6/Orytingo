@@ -9,9 +9,11 @@
 
   loader.dataset.loaderInitialized = "true";
   const root = document.documentElement;
-  const fallbackTimer = Number(root.dataset.pageLoaderFallback);
+  const fallbackTimer = root.dataset.pageLoaderFallback
+    ? Number(root.dataset.pageLoaderFallback)
+    : null;
   if (root.dataset.pageLoaderExpired === "true" || document.readyState === "complete") {
-    clearTimeout(fallbackTimer);
+    if (fallbackTimer !== null) clearTimeout(fallbackTimer);
     delete root.dataset.pageLoaderFallback;
     root.classList.remove("page-loading");
     loader.remove();
@@ -23,7 +25,7 @@
   const hideLoader = () => {
     if (!root.classList.contains("page-loading")) return;
 
-    clearTimeout(fallbackTimer);
+    if (fallbackTimer !== null) clearTimeout(fallbackTimer);
     delete root.dataset.pageLoaderFallback;
     root.classList.remove("page-loading");
     loader.classList.add("is-hiding");
