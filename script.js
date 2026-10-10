@@ -1,9 +1,9 @@
 /* ============================================================
    ORYTINGO — site scripts
-   (loaded with `defer`, so the DOM is ready when this runs)
+   (loaded with `defer` after document parsing)
 ============================================================ */
 
-document.addEventListener("DOMContentLoaded", () => {
+(() => {
 
   /* =========================
      Footer Year
@@ -113,7 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
       },
       {
         threshold: 0.05,
-        rootMargin: "120px 0px"
+        rootMargin: "160px 0px"
       }
     );
 
@@ -131,7 +131,46 @@ document.addEventListener("DOMContentLoaded", () => {
     showAll();
   }
 
-});
+  const animationSections = document.querySelectorAll(".hero, .modern-tech-marquee");
+
+  if ("IntersectionObserver" in window && animationSections.length) {
+    const animationObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          entry.target.classList.toggle("animation-visible", entry.isIntersecting);
+        });
+      },
+      { rootMargin: "160px 0px" }
+    );
+
+    animationSections.forEach((section) => {
+      const rect = section.getBoundingClientRect();
+      if (rect.bottom >= -160 && rect.top <= window.innerHeight + 160) {
+        section.classList.add("animation-visible");
+      }
+      animationObserver.observe(section);
+    });
+    document.documentElement.classList.add("animation-visibility-ready");
+  }
+
+  const marqueeTracks = document.querySelectorAll(".tech-marquee-track");
+  const updateMarqueeDuration = (track) => {
+    const distance = track.scrollWidth / 2;
+    if (distance > 0) {
+      track.style.setProperty("--marquee-duration", `${distance / 32}s`);
+    }
+  };
+
+  marqueeTracks.forEach(updateMarqueeDuration);
+
+  if ("ResizeObserver" in window && marqueeTracks.length) {
+    const marqueeResizeObserver = new ResizeObserver((entries) => {
+      entries.forEach((entry) => updateMarqueeDuration(entry.target));
+    });
+    marqueeTracks.forEach((track) => marqueeResizeObserver.observe(track));
+  }
+
+})();
 
 
 
@@ -202,10 +241,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let currentIndex = 0;
   let isAnimating = false;
+  let carouselVisible = true;
 
   /* AUTO-PLAY SETTINGS */
   const AUTO_PLAY_DELAY = 6000;
-  const ANIMATION_DURATION = 850;
+  const ANIMATION_DURATION = 760;
 
   let autoPlayTimer = null;
   let animationTimer = null;
@@ -426,6 +466,12 @@ document.addEventListener("DOMContentLoaded", () => {
     photos[currentIndex].classList.add("is-active");
     progressTicks[currentIndex].classList.add("is-active");
 
+    if (prefersReducedMotion.matches) {
+      bodySlides[oldIndex].classList.remove("is-leaving");
+      isAnimating = false;
+      return;
+    }
+
     /* Finish animation */
     clearTimeout(animationTimer);
     animationTimer = window.setTimeout(() => {
@@ -446,10 +492,10 @@ document.addEventListener("DOMContentLoaded", () => {
   /* AUTO-PLAY */
   function startAutoPlay() {
     clearTimeout(autoPlayTimer);
-    if (prefersReducedMotion.matches || document.hidden || pausedByHover || pausedByFocus) return;
+    if (prefersReducedMotion.matches || document.hidden || !carouselVisible || pausedByHover || pausedByFocus) return;
 
     autoPlayTimer = window.setTimeout(() => {
-      if (!document.hidden && !pausedByHover && !pausedByFocus) {
+      if (!document.hidden && carouselVisible && !pausedByHover && !pausedByFocus) {
         nextMember();
       }
       startAutoPlay();
@@ -458,6 +504,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function resetAutoPlay() {
     startAutoPlay();
+  }
+
+  if ("IntersectionObserver" in window) {
+    const rect = root.getBoundingClientRect();
+    const visibleHeight = Math.max(0, Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0));
+    const visibleWidth = Math.max(0, Math.min(rect.right, window.innerWidth) - Math.max(rect.left, 0));
+    carouselVisible = rect.width > 0 && rect.height > 0 &&
+      (visibleHeight * visibleWidth) / (rect.width * rect.height) >= 0.1;
+
+    const carouselObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const visible = entry.isIntersecting && entry.intersectionRatio >= 0.1;
+          if (visible === carouselVisible) return;
+
+          carouselVisible = visible;
+          if (visible) {
+            startAutoPlay();
+          } else {
+            clearTimeout(autoPlayTimer);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+    carouselObserver.observe(root);
   }
 
   /* BUTTON EVENTS */
@@ -491,13 +563,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  /* MOUSE HOVER PAUSE */
-  root.addEventListener("mouseenter", () => {
+  /* Pause autoplay for mouse hover; touch input is handled by the swipe listeners. */
+  root.addEventListener("pointerenter", (event) => {
+    if (event.pointerType !== "mouse") return;
     pausedByHover = true;
     clearTimeout(autoPlayTimer);
   });
 
-  root.addEventListener("mouseleave", () => {
+  root.addEventListener("pointerleave", (event) => {
+    if (event.pointerType !== "mouse") return;
     pausedByHover = false;
     startAutoPlay();
   });
@@ -528,6 +602,9 @@ document.addEventListener("DOMContentLoaded", () => {
   prefersReducedMotion.addEventListener("change", () => {
     if (prefersReducedMotion.matches) {
       clearTimeout(autoPlayTimer);
+      clearTimeout(animationTimer);
+      bodySlides.forEach((body) => body.classList.remove("is-leaving"));
+      isAnimating = false;
     } else {
       startAutoPlay();
     }
