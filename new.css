@@ -47,8 +47,7 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 80px;
-  /* sticky navbar offset for #anchor links */
+  scroll-padding-top: 80px; /* sticky navbar offset for #anchor links */
 }
 
 body {
@@ -399,11 +398,9 @@ button {
   color: var(--text-muted);
   font-weight: 500;
 }
-
 .mobile-menu .mobile-project-btn {
   color: var(--bg);
 }
-
 /* NORMAL MENU LINKS - CONTENT WIDTH */
 .mobile-menu a:not(:last-child) {
   display: inline-block;
@@ -1107,319 +1104,7 @@ section {
 }
 
 
-/* ============================================================
-   ORYTINGO — VISION & MISSION
-============================================================ */
 
-.ot-purpose {
-  --purpose-orange: #ff813e;
-  --purpose-orange-light: #ff9c67;
-  --purpose-text: #f5f5f5;
-  --purpose-muted: #9499a4;
-  --purpose-card: #101319;
-  --purpose-border: rgba(255, 255, 255, 0.10);
-
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  padding: 90px 0 100px;
-  color: var(--purpose-text);
-
-
-}
-
-.ot-purpose::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.018) 1px,
-      transparent 1px),
-    linear-gradient(90deg,
-      rgba(255, 255, 255, 0.018) 1px,
-      transparent 1px);
-
-  background-size: 64px 64px;
-  mask-image: linear-gradient(to bottom,
-      transparent,
-      black 18%,
-      black 82%,
-      transparent);
-}
-
-.ot-purpose .section-inner {
-  position: relative;
-  z-index: 1;
-}
-
-/* Heading */
-
-.ot-purpose__header {
-  display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.8fr);
-  align-items: center;
-  gap: clamp(30px, 7vw, 100px);
-  margin-bottom: 54px;
-}
-
-
-
-/* Cards */
-
-.ot-purpose__grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 26px;
-}
-
-.ot-purpose__card {
-  display: grid;
-  grid-template-columns: minmax(145px, 0.82fr) minmax(0, 1.18fr);
-  align-items: stretch;
-  gap: clamp(22px, 2.5vw, 38px);
-
-  min-width: 0;
-  padding: 24px;
-
-  background:
-    linear-gradient(135deg,
-      rgba(255, 255, 255, 0.035),
-      transparent 55%),
-    var(--purpose-card);
-
-  border: 1px solid var(--purpose-border);
-  border-radius: 12px;
-
-  transition:
-    border-color 0.3s ease,
-    transform 0.3s ease,
-    background-color 0.3s ease;
-}
-
-.ot-purpose__card:hover {
-  border-color: rgba(255, 129, 62, 0.4);
-  transform: translateY(-4px);
-}
-
-/* Visuals */
-
-.ot-purpose__visual {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  min-width: 0;
-  min-height: 340px;
-  overflow: hidden;
-
-  color: var(--purpose-orange-light);
-  background: #090c12;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 9px;
-}
-
-.ot-purpose__visual::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-
-  background:
-    linear-gradient(to top,
-      rgba(8, 9, 11, 0.75),
-      transparent 35%),
-    linear-gradient(135deg,
-      rgba(255, 129, 62, 0.08),
-      transparent 55%);
-}
-
-.ot-purpose__visual svg {
-  display: block;
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  inset: 0;
-}
-
-.ot-purpose__visual-glow {
-  position: absolute;
-  width: 220px;
-  height: 220px;
-  border-radius: 50%;
-  background: rgba(255, 129, 62, 0.12);
-  filter: blur(65px);
-}
-
-.ot-purpose__visual-label {
-  position: absolute;
-  z-index: 2;
-  left: 18px;
-  bottom: 18px;
-
-  color: rgba(255, 255, 255, 0.78);
-  font-size: 0.62rem;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-}
-
-/* Card content */
-
-.ot-purpose__content {
-  align-self: center;
-  min-width: 0;
-  padding: 12px 0;
-}
-
-.ot-purpose__icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 42px;
-  height: 42px;
-  margin-bottom: 20px;
-
-  color: var(--purpose-orange);
-}
-
-.ot-purpose__icon svg {
-  width: 34px;
-  height: 34px;
-}
-
-.ot-purpose__label {
-  margin: 0 0 13px;
-
-  color: var(--purpose-orange);
-  font-size: 0.77rem;
-  font-weight: 800;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-}
-
-.ot-purpose__content h3 {
-  margin: 0 0 18px;
-
-  color: var(--purpose-text);
-  font-family: "Sora", "Manrope", system-ui, sans-serif;
-  font-size: clamp(1.25rem, 1.65vw, 1.7rem);
-  font-weight: 650;
-  line-height: 1.35;
-  letter-spacing: -0.035em;
-}
-
-.ot-purpose__description {
-  margin: 0;
-
-  color: var(--purpose-muted);
-  font-size: 0.91rem;
-  line-height: 1.85;
-}
-
-/* ============================================================
-   RESPONSIVE — TABLET
-============================================================ */
-
-@media (max-width: 1050px) {
-  .ot-purpose {
-    padding: 75px 0 85px;
-  }
-
-  .ot-purpose__header {
-    gap: 35px;
-    margin-bottom: 40px;
-  }
-
-  .ot-purpose__grid {
-    grid-template-columns: 1fr;
-    gap: 22px;
-  }
-
-  .ot-purpose__card {
-    grid-template-columns: minmax(200px, 0.75fr) minmax(0, 1.25fr);
-    gap: 32px;
-  }
-
-  .ot-purpose__visual {
-    min-height: 300px;
-  }
-
-  .ot-purpose__content h3 {
-    font-size: clamp(1.4rem, 2.5vw, 1.8rem);
-  }
-}
-
-/* ============================================================
-   RESPONSIVE — MOBILE
-============================================================ */
-
-@media (max-width: 600px) {
-  .ot-purpose {
-    padding: 60px 0 65px;
-  }
-
-  .ot-purpose__header {
-    grid-template-columns: 1fr;
-    gap: 18px;
-    margin-bottom: 30px;
-  }
-
-
-
-
-
-
-
-  .ot-purpose__grid {
-    gap: 18px;
-  }
-
-  .ot-purpose__card {
-    grid-template-columns: 1fr;
-    gap: 22px;
-    padding: 16px;
-    border-radius: 10px;
-  }
-
-  .ot-purpose__visual {
-    min-height: 210px;
-    max-height: 240px;
-  }
-
-  .ot-purpose__content {
-    padding: 0 3px 5px;
-  }
-
-  .ot-purpose__icon {
-    width: 34px;
-    height: 34px;
-    margin-bottom: 13px;
-  }
-
-  .ot-purpose__icon svg {
-    width: 30px;
-    height: 30px;
-  }
-
-  .ot-purpose__label {
-    margin-bottom: 10px;
-  }
-
-  .ot-purpose__content h3 {
-    font-size: 1.4rem;
-    line-height: 1.35;
-    margin-bottom: 12px;
-  }
-
-  .ot-purpose__description {
-    font-size: 0.9rem;
-    line-height: 1.8;
-  }
-}
 
 /* ============================================================
    ORYTINGO — Team Social Links
@@ -1978,9 +1663,9 @@ section {
 
 @media (max-width: 900px) {
 
+ 
 
-
-
+  
 
 
   .ot-carousel {
@@ -2024,7 +1709,7 @@ section {
   }
 
 
-
+ 
 
 
 
@@ -2035,7 +1720,7 @@ section {
   }
 
 
-
+ 
 
 
   .ot-carousel {
