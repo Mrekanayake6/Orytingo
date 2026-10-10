@@ -126,29 +126,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-/* =========================
-   Page Loader
-========================= */
-const loaderStart = Date.now();
-
-window.addEventListener("load", function () {
-  const loader = document.getElementById("page-loader");
-
-  if (!loader) return;
-
-  const minimumTime = 1800; // 1.8 seconds
-  const elapsed = Date.now() - loaderStart;
-  const remaining = Math.max(0, minimumTime - elapsed);
-
-  setTimeout(() => {
-    loader.classList.add("loaded");
-
-    setTimeout(() => {
-      loader.remove();
-    }, 900);
-
-  }, remaining);
-});
 
 
 /* ============================================================
