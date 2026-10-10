@@ -47,7 +47,8 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 80px; /* sticky navbar offset for #anchor links */
+  scroll-padding-top: 80px;
+  /* sticky navbar offset for #anchor links */
 }
 
 body {
@@ -398,9 +399,11 @@ button {
   color: var(--text-muted);
   font-weight: 500;
 }
+
 .mobile-menu .mobile-project-btn {
   color: var(--bg);
 }
+
 /* NORMAL MENU LINKS - CONTENT WIDTH */
 .mobile-menu a:not(:last-child) {
   display: inline-block;
@@ -1122,18 +1125,7 @@ section {
   padding: 90px 0 100px;
   color: var(--purpose-text);
 
-  background:
-    radial-gradient(
-      ellipse at 0% 20%,
-      rgba(255, 129, 62, 0.065),
-      transparent 35%
-    ),
-    radial-gradient(
-      ellipse at 100% 70%,
-      rgba(255, 129, 62, 0.045),
-      transparent 32%
-    ),
-    var(--bg);
+
 }
 
 .ot-purpose::before {
@@ -1144,24 +1136,18 @@ section {
   pointer-events: none;
 
   background-image:
-    linear-gradient(
+    linear-gradient(rgba(255, 255, 255, 0.018) 1px,
+      transparent 1px),
+    linear-gradient(90deg,
       rgba(255, 255, 255, 0.018) 1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0.018) 1px,
-      transparent 1px
-    );
+      transparent 1px);
 
   background-size: 64px 64px;
-  mask-image: linear-gradient(
-    to bottom,
-    transparent,
-    black 18%,
-    black 82%,
-    transparent
-  );
+  mask-image: linear-gradient(to bottom,
+      transparent,
+      black 18%,
+      black 82%,
+      transparent);
 }
 
 .ot-purpose .section-inner {
@@ -1179,54 +1165,7 @@ section {
   margin-bottom: 54px;
 }
 
-.ot-purpose__eyebrow {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin: 0 0 22px;
 
-  color: var(--purpose-orange);
-  font-size: 0.76rem;
-  font-weight: 800;
-  letter-spacing: 0.15em;
-  line-height: 1.5;
-  text-transform: uppercase;
-}
-
-.ot-purpose__eyebrow span {
-  display: inline-block;
-  width: 36px;
-  height: 2px;
-  flex: 0 0 36px;
-
-  background: var(--purpose-orange);
-  box-shadow: 0 0 14px rgba(255, 129, 62, 0.4);
-}
-
-.ot-purpose__heading h2 {
-  margin: 0;
-  max-width: 700px;
-
-  color: var(--purpose-text);
-  font-family: "Sora", "Manrope", system-ui, sans-serif;
-  font-size: clamp(2.3rem, 4.5vw, 4.25rem);
-  font-weight: 650;
-  line-height: 1.08;
-  letter-spacing: -0.045em;
-}
-
-.ot-purpose__heading h2 span {
-  color: var(--purpose-orange-light);
-}
-
-.ot-purpose__intro {
-  max-width: 470px;
-  margin: 12px 0 0 auto;
-
-  color: var(--purpose-muted);
-  font-size: 1.02rem;
-  line-height: 1.9;
-}
 
 /* Cards */
 
@@ -1246,11 +1185,9 @@ section {
   padding: 24px;
 
   background:
-    linear-gradient(
-      135deg,
+    linear-gradient(135deg,
       rgba(255, 255, 255, 0.035),
-      transparent 55%
-    ),
+      transparent 55%),
     var(--purpose-card);
 
   border: 1px solid var(--purpose-border);
@@ -1292,16 +1229,12 @@ section {
   pointer-events: none;
 
   background:
-    linear-gradient(
-      to top,
+    linear-gradient(to top,
       rgba(8, 9, 11, 0.75),
-      transparent 35%
-    ),
-    linear-gradient(
-      135deg,
+      transparent 35%),
+    linear-gradient(135deg,
       rgba(255, 129, 62, 0.08),
-      transparent 55%
-    );
+      transparent 55%);
 }
 
 .ot-purpose__visual svg {
@@ -1435,27 +1368,11 @@ section {
     margin-bottom: 30px;
   }
 
-  .ot-purpose__eyebrow {
-    gap: 10px;
-    margin-bottom: 17px;
-    font-size: 0.68rem;
-  }
 
-  .ot-purpose__eyebrow span {
-    width: 27px;
-    flex-basis: 27px;
-  }
 
-  .ot-purpose__heading h2 {
-    font-size: clamp(2.15rem, 9vw, 3.2rem);
-    line-height: 1.08;
-  }
 
-  .ot-purpose__intro {
-    margin: 0;
-    font-size: 0.94rem;
-    line-height: 1.75;
-  }
+
+
 
   .ot-purpose__grid {
     gap: 18px;
@@ -2061,9 +1978,9 @@ section {
 
 @media (max-width: 900px) {
 
- 
 
-  
+
+
 
 
   .ot-carousel {
@@ -2107,7 +2024,7 @@ section {
   }
 
 
- 
+
 
 
 
@@ -2118,7 +2035,7 @@ section {
   }
 
 
- 
+
 
 
   .ot-carousel {
