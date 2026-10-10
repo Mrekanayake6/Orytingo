@@ -965,7 +965,6 @@ section {
 
 .timeline li {
   position: relative;
-  transition: opacity .45s var(--ease), transform .45s var(--ease);
 }
 
 .tl-num {
@@ -2643,13 +2642,6 @@ section {
   transition-delay: var(--reveal-delay, 0ms), var(--reveal-delay, 0ms), 0s, 0s;
 }
 
-.timeline li.reveal-item {
-  transition-property: opacity, transform;
-  transition-duration: 420ms;
-  transition-timing-function: var(--ease);
-  transition-delay: var(--reveal-delay, 0ms);
-}
-
 .tech-badges > span.reveal-item {
   transition: opacity 420ms var(--ease), transform 420ms var(--ease), color .2s var(--ease), border-color .2s var(--ease);
   transition-delay: var(--reveal-delay, 0ms), var(--reveal-delay, 0ms), 0s, 0s;
@@ -2658,6 +2650,10 @@ section {
 .scroll-reveal-enabled .reveal-item:not(.is-revealed) {
   opacity: 0;
   transform: translateY(16px);
+}
+
+.scroll-reveal-enabled .reveal-item {
+  transition-delay: var(--reveal-delay, 0ms), var(--reveal-delay, 0ms), 0s, 0s;
 }
 
 

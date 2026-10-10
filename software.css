@@ -304,16 +304,14 @@
             rgba(255, 255, 255, .045),
             rgba(255, 255, 255, .018));
     overflow: hidden;
-    opacity: 0;
-    transform: translateY(25px);
     transition:
-        opacity .65s ease,
-        transform .65s ease,
+        opacity 420ms var(--ease),
+        transform 420ms var(--ease),
         border-color .3s ease,
         background .3s ease;
 }
 
-.software-service-card.in-view {
+.software-service-card.is-revealed {
     opacity: 1;
     transform: translateY(0);
 }
@@ -411,15 +409,13 @@
     background: rgba(255, 255, 255, .025);
     display: flex;
     flex-direction: column;
-    opacity: 0;
-    transform: translateY(25px);
     transition:
-        opacity .65s ease,
-        transform .65s ease,
+        opacity 420ms var(--ease),
+        transform 420ms var(--ease),
         border-color .3s ease;
 }
 
-.package-card.in-view {
+.package-card.is-revealed {
     opacity: 1;
     transform: translateY(0);
 }
@@ -557,15 +553,13 @@
     border: 1px solid var(--border);
     border-radius: var(--radius-sm);
     background: var(--surface);
-    opacity: 0;
-    transform: translateY(20px);
     transition:
-        opacity .6s ease,
-        transform .6s ease,
+        opacity 420ms var(--ease),
+        transform 420ms var(--ease),
         border-color .3s ease;
 }
 
-.benefit-card.in-view {
+.benefit-card.is-revealed {
     opacity: 1;
     transform: translateY(0);
 }
@@ -617,15 +611,13 @@
     padding: 30px 24px;
     background: var(--card);
     min-height: 235px;
-    opacity: 0;
-    transform: translateY(20px);
     transition:
-        opacity .6s ease,
-        transform .6s ease,
+        opacity 420ms var(--ease),
+        transform 420ms var(--ease),
         background .3s ease;
 }
 
-.software-process-grid>div.in-view {
+.software-process-grid>div.is-revealed {
     opacity: 1;
     transform: translateY(0);
 }
@@ -689,16 +681,14 @@
     border: 1px solid var(--border);
     border-radius: 14px;
     background: var(--surface);
-    opacity: 0;
-    transform: translateY(18px);
     transition:
-        opacity .5s ease,
-        transform .5s ease,
+        opacity 420ms var(--ease),
+        transform 420ms var(--ease),
         border-color .3s ease,
         background .3s ease;
 }
 
-.software-tech-grid>div.in-view {
+.software-tech-grid>div.is-revealed {
     opacity: 1;
     transform: translateY(0);
 }
@@ -953,201 +943,6 @@
     }
 
 }
-
-/* =========================================================
-   SOFTWARE PAGE — ANIMATIONS
-   ========================================================= */
-
-/* ---------- SERVICE CARDS ---------- */
-
-.software-service-card {
-    opacity: 0;
-    transform: translateY(35px);
-    transition:
-        opacity .7s ease,
-        transform .7s cubic-bezier(.22, 1, .36, 1),
-        border-color .3s ease,
-        background .3s ease;
-}
-
-.software-service-card.in-view {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.software-service-card:nth-child(1) {
-    transition-delay: .05s;
-}
-
-.software-service-card:nth-child(2) {
-    transition-delay: .12s;
-}
-
-.software-service-card:nth-child(3) {
-    transition-delay: .19s;
-}
-
-.software-service-card:nth-child(4) {
-    transition-delay: .26s;
-}
-
-.software-service-card:nth-child(5) {
-    transition-delay: .33s;
-}
-
-.software-service-card:nth-child(6) {
-    transition-delay: .40s;
-}
-
-
-/* ---------- PACKAGE CARDS ---------- */
-
-.package-card {
-    opacity: 0;
-    transform: translateY(35px);
-    transition:
-        opacity .7s ease,
-        transform .7s cubic-bezier(.22, 1, .36, 1),
-        border-color .3s ease;
-}
-
-.package-card.in-view {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.package-card:nth-child(1) {
-    transition-delay: .05s;
-}
-
-.package-card:nth-child(2) {
-    transition-delay: .15s;
-}
-
-.package-card:nth-child(3) {
-    transition-delay: .25s;
-}
-
-
-/* ---------- BENEFIT CARDS ---------- */
-
-.benefit-card {
-    opacity: 0;
-    transform: translateY(30px);
-    transition:
-        opacity .65s ease,
-        transform .65s cubic-bezier(.22, 1, .36, 1),
-        border-color .3s ease;
-}
-
-.benefit-card.in-view {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.benefit-card:nth-child(1) {
-    transition-delay: .05s;
-}
-
-.benefit-card:nth-child(2) {
-    transition-delay: .12s;
-}
-
-.benefit-card:nth-child(3) {
-    transition-delay: .19s;
-}
-
-.benefit-card:nth-child(4) {
-    transition-delay: .26s;
-}
-
-
-/* ---------- PROCESS ---------- */
-
-.software-process-grid>div {
-    opacity: 0;
-    transform: translateY(25px);
-    transition:
-        opacity .65s ease,
-        transform .65s cubic-bezier(.22, 1, .36, 1),
-        background .3s ease;
-}
-
-.software-process-grid>div.in-view {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.software-process-grid>div:nth-child(1) {
-    transition-delay: .05s;
-}
-
-.software-process-grid>div:nth-child(2) {
-    transition-delay: .12s;
-}
-
-.software-process-grid>div:nth-child(3) {
-    transition-delay: .19s;
-}
-
-.software-process-grid>div:nth-child(4) {
-    transition-delay: .26s;
-}
-
-.software-process-grid>div:nth-child(5) {
-    transition-delay: .33s;
-}
-
-
-/* ---------- TECHNOLOGY ---------- */
-
-.software-tech-grid>div {
-    opacity: 0;
-    transform: translateY(20px);
-    transition:
-        opacity .55s ease,
-        transform .55s cubic-bezier(.22, 1, .36, 1),
-        border-color .3s ease,
-        background .3s ease;
-}
-
-.software-tech-grid>div.in-view {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.software-tech-grid>div:nth-child(1) {
-    transition-delay: .03s;
-}
-
-.software-tech-grid>div:nth-child(2) {
-    transition-delay: .08s;
-}
-
-.software-tech-grid>div:nth-child(3) {
-    transition-delay: .13s;
-}
-
-.software-tech-grid>div:nth-child(4) {
-    transition-delay: .18s;
-}
-
-.software-tech-grid>div:nth-child(5) {
-    transition-delay: .23s;
-}
-
-.software-tech-grid>div:nth-child(6) {
-    transition-delay: .28s;
-}
-
-.software-tech-grid>div:nth-child(7) {
-    transition-delay: .33s;
-}
-
-.software-tech-grid>div:nth-child(8) {
-    transition-delay: .38s;
-}
-
 
 /* =========================================================
    HERO ANIMATION
@@ -1431,16 +1226,13 @@
 
     border: 1px solid rgba(255, 255, 255, 0.08);
 
-    opacity: 0;
-    transform: translateY(25px);
-
     transition:
-        opacity .65s ease,
-        transform .65s ease,
+        opacity 420ms var(--ease),
+        transform 420ms var(--ease),
         border-color .3s ease;
 }
 
-.project-card.in-view {
+.project-card.is-revealed {
     opacity: 1;
     transform: translateY(0);
 }
@@ -2069,24 +1861,12 @@
 /* Business Automation — Content Reveal */
 
 .business-automation .industry-marquee {
-    opacity: 0;
-    transform: translateY(28px);
     transition:
-        opacity 0.7s ease,
-        transform 0.7s ease;
+        opacity 420ms var(--ease),
+        transform 420ms var(--ease);
 }
 
-.business-automation .industry-marquee.in-view {
+.business-automation .industry-marquee.is-revealed {
     opacity: 1;
     transform: translateY(0);
-}
-
-/* Accessibility */
-
-@media (prefers-reduced-motion: reduce) {
-    .business-automation .industry-marquee {
-        opacity: 1;
-        transform: none;
-        transition: none;
-    }
 }

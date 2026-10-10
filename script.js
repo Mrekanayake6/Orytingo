@@ -112,15 +112,30 @@
   addRevealGroup(
     ".modern-tech-marquee, .about-visual, .about-copy > *, .ot-carousel, .cta-inner > *"
   );
+  addRevealGroup(
+    ".software-service-card, .project-card, .package-card, .benefit-card, " +
+    ".software-process-grid > div, .software-tech-grid > div, " +
+    ".business-automation .industry-marquee, .network-service-card, " +
+    ".network-process-grid > div, .worker-card",
+    true
+  );
 
-  if (!motionPreference.matches && "IntersectionObserver" in window && revealTargets.size) {
-    const revealObserver = new IntersectionObserver(
-      (entries, observer) => {
+  const animationTargets = new Set(document.querySelectorAll(".hero, .modern-tech-marquee"));
+  const animationObserverTargets = new Set([...revealTargets, ...animationTargets]);
+
+  if (!motionPreference.matches && "IntersectionObserver" in window && animationObserverTargets.size) {
+    const animationObserver = new IntersectionObserver(
+      (entries) => {
         entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
+          const { target, isIntersecting } = entry;
 
-          entry.target.classList.add("is-revealed");
-          observer.unobserve(entry.target);
+          if (revealTargets.has(target)) {
+            target.classList.toggle("is-revealed", isIntersecting);
+          }
+
+          if (animationTargets.has(target)) {
+            target.classList.toggle("animation-visible", isIntersecting);
+          }
         });
       },
       {
@@ -129,36 +144,15 @@
       }
     );
 
-    revealTargets.forEach((element) => {
+    animationObserverTargets.forEach((element) => {
       const rect = element.getBoundingClientRect();
       if (rect.bottom >= -100 && rect.top <= window.innerHeight + 100) {
-        element.classList.add("is-revealed");
+        if (revealTargets.has(element)) element.classList.add("is-revealed");
+        if (animationTargets.has(element)) element.classList.add("animation-visible");
       }
-      revealObserver.observe(element);
+      animationObserver.observe(element);
     });
-
     document.documentElement.classList.add("scroll-reveal-enabled");
-  }
-
-  const animationSections = document.querySelectorAll(".hero, .modern-tech-marquee");
-
-  if ("IntersectionObserver" in window && animationSections.length) {
-    const animationObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          entry.target.classList.toggle("animation-visible", entry.isIntersecting);
-        });
-      },
-      { rootMargin: "100px 0px" }
-    );
-
-    animationSections.forEach((section) => {
-      const rect = section.getBoundingClientRect();
-      if (rect.bottom >= -100 && rect.top <= window.innerHeight + 100) {
-        section.classList.add("animation-visible");
-      }
-      animationObserver.observe(section);
-    });
     document.documentElement.classList.add("animation-visibility-ready");
   }
 
@@ -251,6 +245,7 @@
   let currentIndex = 0;
   let isAnimating = false;
   let carouselVisible = true;
+  let queuedStep = 0;
 
   /* AUTO-PLAY SETTINGS */
   const AUTO_PLAY_DELAY = 6000;
@@ -450,7 +445,10 @@
 
   /* CHANGE MEMBER */
   function showMember(nextIndex, direction = "next") {
-    if (isAnimating) return;
+    if (isAnimating) {
+      queuedStep += direction === "prev" ? -1 : 1;
+      return;
+    }
 
     nextIndex = (nextIndex + total) % total;
     if (nextIndex === currentIndex) return;
@@ -486,6 +484,12 @@
     animationTimer = window.setTimeout(() => {
       bodySlides[oldIndex].classList.remove("is-leaving");
       isAnimating = false;
+
+      if (queuedStep !== 0) {
+        const step = queuedStep;
+        queuedStep = 0;
+        showMember(currentIndex + step, step < 0 ? "prev" : "next");
+      }
     }, ANIMATION_DURATION);
   }
 
@@ -612,6 +616,7 @@
     if (prefersReducedMotion.matches) {
       clearTimeout(autoPlayTimer);
       clearTimeout(animationTimer);
+      queuedStep = 0;
       bodySlides.forEach((body) => body.classList.remove("is-leaving"));
       isAnimating = false;
     } else {

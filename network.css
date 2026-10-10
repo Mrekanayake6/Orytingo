@@ -304,17 +304,14 @@
 
     overflow: hidden;
 
-    opacity: 0;
-    transform: translateY(22px);
-
     transition:
-        opacity .65s var(--ease),
-        transform .65s var(--ease),
+        opacity 420ms var(--ease),
+        transform 420ms var(--ease),
         border-color .25s var(--ease),
         background .25s var(--ease);
 }
 
-.network-service-card.in-view {
+.network-service-card.is-revealed {
     opacity: 1;
     transform: translateY(0);
 }
@@ -446,17 +443,14 @@
 
     border-radius: var(--radius-lg);
 
-    opacity: 0;
-    transform: translateY(22px);
-
     transition:
-        opacity .65s var(--ease),
-        transform .65s var(--ease),
+        opacity 420ms var(--ease),
+        transform 420ms var(--ease),
         border-color .25s var(--ease),
         box-shadow .25s var(--ease);
 }
 
-.package-card.in-view {
+.package-card.is-revealed {
     opacity: 1;
     transform: translateY(0);
 }
@@ -608,16 +602,13 @@
 
     border: 1px solid var(--border-soft);
 
-    opacity: 0;
-    transform: translateY(18px);
-
     transition:
-        opacity .6s var(--ease),
-        transform .6s var(--ease),
+        opacity 420ms var(--ease),
+        transform 420ms var(--ease),
         border-color .25s var(--ease);
 }
 
-.benefit-card.in-view {
+.benefit-card.is-revealed {
     opacity: 1;
     transform: translateY(0);
 }
@@ -669,15 +660,12 @@
 
     border-top: 1px solid var(--border);
 
-    opacity: 0;
-    transform: translateY(18px);
-
     transition:
-        opacity .6s var(--ease),
-        transform .6s var(--ease);
+        opacity 420ms var(--ease),
+        transform 420ms var(--ease);
 }
 
-.network-process-grid>div.in-view {
+.network-process-grid>div.is-revealed {
     opacity: 1;
     transform: translateY(0);
 }
@@ -953,11 +941,6 @@
     gap: 18px;
 }
 
-.network-workers.in-view {
-    opacity: 1;
-    transform: translateY(0);
-}
-
 .worker-card {
     position: relative;
     min-height: 260px;
@@ -965,16 +948,13 @@
     border: 1px solid rgba(255, 255, 255, 0.08);
     background: #101216;
 
-    opacity: 0;
-    transform: translateY(22px);
-
     transition:
-        opacity .65s var(--ease),
-        transform .65s var(--ease),
+        opacity 420ms var(--ease),
+        transform 420ms var(--ease),
         border-color .3s ease;
 }
 
-.worker-card.in-view {
+.worker-card.is-revealed {
     opacity: 1;
     transform: translateY(0);
 }
