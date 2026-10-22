@@ -139,8 +139,8 @@
           });
         });
 
-        if (ScrollTrigger) {
-          const parallaxTarget = visual.querySelector(".hero-svg") || visual;
+        const parallaxTarget = visual.querySelector(".hero-svg");
+        if (ScrollTrigger && parallaxTarget) {
           gsap.to(parallaxTarget, {
             y: 42,
             ease: "none",
