@@ -216,6 +216,7 @@
     const options = { signal: eventController.signal };
 
     document.addEventListener("pointerover", (event) => {
+      if (event.pointerType !== "mouse") return;
       const origin = event.target instanceof Element ? event.target : null;
       const target = origin && origin.closest(interactiveSelector);
       if (!target || containsRelatedTarget(target, event.relatedTarget)) return;
@@ -223,6 +224,7 @@
     }, options);
 
     document.addEventListener("pointerout", (event) => {
+      if (event.pointerType !== "mouse") return;
       const origin = event.target instanceof Element ? event.target : null;
       const target = origin && origin.closest(interactiveSelector);
       if (!target || containsRelatedTarget(target, event.relatedTarget)) return;
@@ -306,25 +308,25 @@
     initializeTree();
 
     mutationObserver = new MutationObserver((records) => {
+      let treeChanged = false;
       records.forEach((record) => {
-        if (record.type === "attributes") {
-          initializeTree(record.target);
-          return;
-        }
-
+        treeChanged = true;
         record.removedNodes.forEach((node) => {
-          if (node instanceof Element) disposeTree(node);
+          if (node instanceof Element) {
+            disposeTree(node);
+          }
         });
         record.addedNodes.forEach((node) => {
-          if (node instanceof Element) initializeTree(node);
+          if (node instanceof Element) {
+            initializeTree(node);
+          }
         });
       });
+      if (treeChanged) scheduleRefresh();
     });
     mutationObserver.observe(document.body, {
       childList: true,
-      subtree: true,
-      attributes: true,
-      attributeFilter: ["class", "data-animate"]
+      subtree: true
     });
 
     window.addEventListener("load", scheduleRefresh, { once: true });

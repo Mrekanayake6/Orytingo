@@ -52,12 +52,6 @@ html {
   /* sticky navbar offset for #anchor links */
 }
 
-@supports not (overflow-x: clip) {
-  html {
-    overflow-x: hidden;
-  }
-}
-
 body {
   margin: 0;
   background: var(--bg);
