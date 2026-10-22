@@ -204,6 +204,22 @@
     top: 190px;
 }
 
+.node-2.hero-bounce {
+    animation-delay: .16s;
+}
+
+.node-3.hero-bounce {
+    animation-delay: .32s;
+}
+
+.node-4.hero-bounce {
+    animation-delay: .48s;
+}
+
+.node-5.hero-bounce {
+    animation-delay: .64s;
+}
+
 
 /* ============================================================
    INTRO

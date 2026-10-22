@@ -723,6 +723,10 @@ html.page-loading .page-loader {
   animation: floatingBounce 4s ease-in-out infinite;
 }
 
+.hero-bounce {
+  animation: floatingBounce 4s ease-in-out infinite;
+}
+
 /* Top card */
 .floating-card.one {
   top: 7%;

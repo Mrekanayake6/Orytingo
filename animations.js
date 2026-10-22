@@ -117,28 +117,6 @@
           });
         });
 
-        const core = visual.querySelector(".software-core, .network-core");
-        if (core) {
-          gsap.to(core, {
-            y: -7,
-            duration: 3.6,
-            repeat: -1,
-            yoyo: true,
-            ease: "sine.inOut"
-          });
-        }
-
-        visual.querySelectorAll(".software-node, .network-node").forEach((node, index) => {
-          gsap.to(node, {
-            y: -7,
-            duration: 3.4 + (index % 3) * 0.35,
-            delay: index * 0.16,
-            repeat: -1,
-            yoyo: true,
-            ease: "sine.inOut"
-          });
-        });
-
         const parallaxTarget = visual.querySelector(".hero-svg");
         if (ScrollTrigger && parallaxTarget) {
           gsap.to(parallaxTarget, {

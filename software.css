@@ -240,6 +240,22 @@
     left: 4%;
 }
 
+.software-node-2.hero-bounce {
+    animation-delay: .16s;
+}
+
+.software-node-3.hero-bounce {
+    animation-delay: .32s;
+}
+
+.software-node-4.hero-bounce {
+    animation-delay: .48s;
+}
+
+.software-node-5.hero-bounce {
+    animation-delay: .64s;
+}
+
 
 /* =========================================================
    INTRO
@@ -1639,4 +1655,3 @@
     }
 
 }
-
