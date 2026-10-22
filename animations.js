@@ -139,17 +139,19 @@
           });
         });
 
-        const parallaxTarget = visual.querySelector(".hero-svg") || visual;
-        gsap.to(parallaxTarget, {
-          y: 42,
-          ease: "none",
-          scrollTrigger: {
-            trigger: hero,
-            start: "top top",
-            end: "bottom top",
-            scrub: 1
-          }
-        });
+        if (ScrollTrigger) {
+          const parallaxTarget = visual.querySelector(".hero-svg") || visual;
+          gsap.to(parallaxTarget, {
+            y: 42,
+            ease: "none",
+            scrollTrigger: {
+              trigger: hero,
+              start: "top top",
+              end: "bottom top",
+              scrub: 1
+            }
+          });
+        }
       }
     });
   };
@@ -185,7 +187,7 @@
   };
 
   const scheduleRefresh = () => {
-    if (!active || refreshFrame) return;
+    if (!active || !ScrollTrigger || refreshFrame) return;
     refreshFrame = requestAnimationFrame(() => {
       refreshFrame = 0;
       ScrollTrigger.refresh();
@@ -196,6 +198,11 @@
     elementsWithin(root, heroSelector).forEach(animateHero);
     const siblingIndexes = new Map();
     elementsWithin(root, revealSelector).forEach((element) => {
+      if (!ScrollTrigger) {
+        element.classList.add("is-revealed");
+        return;
+      }
+
       const parent = element.parentElement;
       const siblingIndex = siblingIndexes.get(parent) || 0;
       siblingIndexes.set(parent, siblingIndex + 1);
@@ -307,12 +314,12 @@
   };
 
   const initialize = () => {
-    if (!gsap || !ScrollTrigger) {
+    if (!gsap) {
       document.querySelectorAll(revealSelector).forEach((element) => element.classList.add("is-revealed"));
       return;
     }
 
-    gsap.registerPlugin(ScrollTrigger);
+    if (ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
     active = true;
     setupInteractions();
     resizeObserver = "ResizeObserver" in window
