@@ -305,15 +305,8 @@
             rgba(255, 255, 255, .018));
     overflow: hidden;
     transition:
-        opacity 420ms var(--ease),
-        transform 420ms var(--ease),
         border-color .3s ease,
         background .3s ease;
-}
-
-.software-service-card.is-revealed {
-    opacity: 1;
-    transform: translateY(0);
 }
 
 .software-service-card:hover {
@@ -409,15 +402,7 @@
     background: rgba(255, 255, 255, .025);
     display: flex;
     flex-direction: column;
-    transition:
-        opacity 420ms var(--ease),
-        transform 420ms var(--ease),
-        border-color .3s ease;
-}
-
-.package-card.is-revealed {
-    opacity: 1;
-    transform: translateY(0);
+    transition: border-color .3s ease;
 }
 
 .package-card:hover {
@@ -553,15 +538,7 @@
     border: 1px solid var(--border);
     border-radius: var(--radius-sm);
     background: var(--surface);
-    transition:
-        opacity 420ms var(--ease),
-        transform 420ms var(--ease),
-        border-color .3s ease;
-}
-
-.benefit-card.is-revealed {
-    opacity: 1;
-    transform: translateY(0);
+    transition: border-color .3s ease;
 }
 
 .benefit-card:hover {
@@ -611,15 +588,7 @@
     padding: 30px 24px;
     background: var(--card);
     min-height: 235px;
-    transition:
-        opacity 420ms var(--ease),
-        transform 420ms var(--ease),
-        background .3s ease;
-}
-
-.software-process-grid>div.is-revealed {
-    opacity: 1;
-    transform: translateY(0);
+    transition: background .3s ease;
 }
 
 .software-process-grid>div:hover {
@@ -682,15 +651,8 @@
     border-radius: 14px;
     background: var(--surface);
     transition:
-        opacity 420ms var(--ease),
-        transform 420ms var(--ease),
         border-color .3s ease,
         background .3s ease;
-}
-
-.software-tech-grid>div.is-revealed {
-    opacity: 1;
-    transform: translateY(0);
 }
 
 .software-tech-grid>div:hover {
@@ -945,138 +907,6 @@
 }
 
 /* =========================================================
-   HERO ANIMATION
-   ========================================================= */
-
-.software-hero-copy {
-    animation: softwareHeroLeft .9s cubic-bezier(.22, 1, .36, 1) both;
-}
-
-.software-visual {
-    animation: softwareHeroRight 1s cubic-bezier(.22, 1, .36, 1) .12s both;
-}
-
-@keyframes softwareHeroLeft {
-    from {
-        opacity: 0;
-        transform: translateX(-35px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-@keyframes softwareHeroRight {
-    from {
-        opacity: 0;
-        transform: translateX(35px) scale(.96);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateX(0) scale(1);
-    }
-}
-
-
-/* =========================================================
-   ORBIT ANIMATION
-   ========================================================= */
-
-.code-orbit.orbit-one {
-    animation: softwareOrbitOne 18s linear infinite;
-}
-
-.code-orbit.orbit-two {
-    animation: softwareOrbitTwo 24s linear infinite;
-}
-
-@keyframes softwareOrbitOne {
-    from {
-        transform: rotate(-20deg);
-    }
-
-    to {
-        transform: rotate(340deg);
-    }
-}
-
-@keyframes softwareOrbitTwo {
-    from {
-        transform: rotate(55deg);
-    }
-
-    to {
-        transform: rotate(-305deg);
-    }
-}
-
-
-/* =========================================================
-   CORE FLOAT
-   ========================================================= */
-
-.software-core {
-    animation: softwareCoreFloat 4s ease-in-out infinite;
-}
-
-@keyframes softwareCoreFloat {
-
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-8px);
-    }
-}
-
-
-/* =========================================================
-   NODE FLOATING
-   ========================================================= */
-
-.software-node {
-    animation: softwareNodeFloat 4s ease-in-out infinite;
-}
-
-.software-node-1 {
-    animation-delay: 0s;
-}
-
-.software-node-2 {
-    animation-delay: .7s;
-}
-
-.software-node-3 {
-    animation-delay: 1.4s;
-}
-
-.software-node-4 {
-    animation-delay: 2.1s;
-}
-
-.software-node-5 {
-    animation-delay: 2.8s;
-}
-
-@keyframes softwareNodeFloat {
-
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-7px);
-    }
-}
-
-
-/* =========================================================
    HOVER
    ========================================================= */
 
@@ -1096,32 +926,6 @@
     transform: translateY(-4px);
 }
 
-
-/* =========================================================
-   REDUCED MOTION
-   ========================================================= */
-
-@media (prefers-reduced-motion: reduce) {
-
-    .software-hero-copy,
-    .software-visual,
-    .software-core,
-    .software-node,
-    .code-orbit.orbit-one,
-    .code-orbit.orbit-two {
-        animation: none !important;
-    }
-
-    .software-service-card,
-    .package-card,
-    .benefit-card,
-    .software-process-grid>div,
-    .software-tech-grid>div {
-        opacity: 1 !important;
-        transform: none !important;
-        transition: none !important;
-    }
-}
 
 /* ============================================================
    SOFTWARE HERO — MOBILE SPACING FIX
@@ -1226,15 +1030,7 @@
 
     border: 1px solid rgba(255, 255, 255, 0.08);
 
-    transition:
-        opacity 420ms var(--ease),
-        transform 420ms var(--ease),
-        border-color .3s ease;
-}
-
-.project-card.is-revealed {
-    opacity: 1;
-    transform: translateY(0);
+    transition: border-color .3s ease;
 }
 
 .project-card:hover {
@@ -1844,29 +1640,3 @@
 
 }
 
-
-/* ============================================================
-   REDUCED MOTION
-============================================================ */
-
-@media (prefers-reduced-motion: reduce) {
-
-    .industry-track {
-        animation: none;
-        transform: none;
-    }
-
-}
-
-/* Business Automation — Content Reveal */
-
-.business-automation .industry-marquee {
-    transition:
-        opacity 420ms var(--ease),
-        transform 420ms var(--ease);
-}
-
-.business-automation .industry-marquee.is-revealed {
-    opacity: 1;
-    transform: translateY(0);
-}

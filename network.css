@@ -89,28 +89,12 @@
 .orbit-one {
     width: 330px;
     height: 330px;
-    animation: orbitPulse 4s ease-in-out infinite;
 }
 
 .orbit-two {
     width: 450px;
     height: 450px;
     border-color: rgba(255, 129, 62, 0.09);
-    animation: orbitPulse 5s ease-in-out infinite reverse;
-}
-
-@keyframes orbitPulse {
-
-    0%,
-    100% {
-        transform: scale(1);
-        opacity: .55;
-    }
-
-    50% {
-        transform: scale(1.04);
-        opacity: 1;
-    }
 }
 
 .network-core {
@@ -183,7 +167,6 @@
 
     z-index: 4;
 
-    animation: nodeFloat 3.5s ease-in-out infinite;
 }
 
 .network-node i {
@@ -204,37 +187,21 @@
 .node-2 {
     right: -30px;
     top: 190px;
-    animation-delay: .5s;
 }
 
 .node-3 {
     right: 65px;
     bottom: -5px;
-    animation-delay: 1s;
 }
 
 .node-4 {
     left: 65px;
     bottom: -5px;
-    animation-delay: 1.5s;
 }
 
 .node-5 {
     left: -30px;
     top: 190px;
-    animation-delay: 2s;
-}
-
-@keyframes nodeFloat {
-
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-8px);
-    }
 }
 
 
@@ -305,15 +272,8 @@
     overflow: hidden;
 
     transition:
-        opacity 420ms var(--ease),
-        transform 420ms var(--ease),
         border-color .25s var(--ease),
         background .25s var(--ease);
-}
-
-.network-service-card.is-revealed {
-    opacity: 1;
-    transform: translateY(0);
 }
 
 .network-service-card::before {
@@ -444,15 +404,8 @@
     border-radius: var(--radius-lg);
 
     transition:
-        opacity 420ms var(--ease),
-        transform 420ms var(--ease),
         border-color .25s var(--ease),
         box-shadow .25s var(--ease);
-}
-
-.package-card.is-revealed {
-    opacity: 1;
-    transform: translateY(0);
 }
 
 .package-card:hover {
@@ -602,15 +555,7 @@
 
     border: 1px solid var(--border-soft);
 
-    transition:
-        opacity 420ms var(--ease),
-        transform 420ms var(--ease),
-        border-color .25s var(--ease);
-}
-
-.benefit-card.is-revealed {
-    opacity: 1;
-    transform: translateY(0);
+    transition: border-color .25s var(--ease);
 }
 
 .benefit-card:hover {
@@ -660,14 +605,6 @@
 
     border-top: 1px solid var(--border);
 
-    transition:
-        opacity 420ms var(--ease),
-        transform 420ms var(--ease);
-}
-
-.network-process-grid>div.is-revealed {
-    opacity: 1;
-    transform: translateY(0);
 }
 
 .network-process-grid>div::before {
@@ -948,15 +885,7 @@
     border: 1px solid rgba(255, 255, 255, 0.08);
     background: #101216;
 
-    transition:
-        opacity 420ms var(--ease),
-        transform 420ms var(--ease),
-        border-color .3s ease;
-}
-
-.worker-card.is-revealed {
-    opacity: 1;
-    transform: translateY(0);
+    transition: border-color .3s ease;
 }
 
 .worker-card:hover {

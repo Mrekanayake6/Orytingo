@@ -900,7 +900,7 @@ section {
   -webkit-backdrop-filter: blur(20px);
   position: relative;
   overflow: hidden;
-  transition: opacity .45s var(--ease), transform .45s var(--ease), border-color .3s var(--ease), box-shadow .3s var(--ease);
+  transition: border-color .3s var(--ease), box-shadow .3s var(--ease);
 }
 
 .pillar-card::before {
@@ -1001,7 +1001,7 @@ section {
   border-radius: var(--radius-md);
   background: var(--card);
   border: 1px solid var(--border-soft);
-  transition: opacity .45s var(--ease), transform .45s var(--ease), border-color .25s var(--ease), background .25s var(--ease);
+  transition: border-color .25s var(--ease), background .25s var(--ease);
 }
 
 .why-card:hover {
@@ -1051,7 +1051,7 @@ section {
   border-radius: var(--radius-md);
   background: var(--card);
   border: 1px solid var(--border-soft);
-  transition: opacity .45s var(--ease), transform .45s var(--ease), border-color .25s var(--ease), background .25s var(--ease);
+  transition: border-color .25s var(--ease), background .25s var(--ease);
 }
 
 .service-card i {
@@ -2630,14 +2630,6 @@ section {
   }
 }
 
-.animation-visibility-ready .hero:not(.animation-visible) .floating-card,
-.animation-visibility-ready .hero:not(.animation-visible) .bridge-line,
-.animation-visibility-ready .hero:not(.animation-visible) .pulse-dot,
-.animation-visibility-ready .hero:not(.animation-visible) .scroll-cue span::before,
-.animation-visibility-ready .modern-tech-marquee:not(.animation-visible) .tech-marquee-track {
-  animation-play-state: paused;
-}
-
 /* ========================================= SERVICE ========================================= */
 .tech-item {
   display: flex;
@@ -2761,78 +2753,6 @@ section {
 
 
 
-/* ============================================================
-   Scroll reveals
-============================================================ */
-
-.reveal-item {
-  transition-property: opacity, transform;
-  transition-duration: 420ms;
-  transition-timing-function: var(--ease);
-  transition-delay: var(--reveal-delay, 0ms);
-}
-
-.reveal-item.pillar-card {
-  transition: opacity 420ms var(--ease), transform 420ms var(--ease), border-color .3s var(--ease), box-shadow .3s var(--ease);
-  transition-delay: var(--reveal-delay, 0ms), var(--reveal-delay, 0ms), 0s, 0s;
-}
-
-.reveal-item.why-card,
-.reveal-item.service-card {
-  transition: opacity 420ms var(--ease), transform 420ms var(--ease), border-color .25s var(--ease), background .25s var(--ease);
-  transition-delay: var(--reveal-delay, 0ms), var(--reveal-delay, 0ms), 0s, 0s;
-}
-
-.tech-badges>span.reveal-item {
-  transition: opacity 420ms var(--ease), transform 420ms var(--ease), color .2s var(--ease), border-color .2s var(--ease);
-  transition-delay: var(--reveal-delay, 0ms), var(--reveal-delay, 0ms), 0s, 0s;
-}
-
-.scroll-reveal-enabled .reveal-item:not(.is-revealed) {
-  opacity: 0;
-  transform: translateY(16px);
-}
-
-.scroll-reveal-enabled .reveal-item {
-  transition-delay: var(--reveal-delay, 0ms), var(--reveal-delay, 0ms), 0s, 0s;
-}
-
-
-/* ============================================================
-   Reduced motion (single consolidated block)
-============================================================ */
-
-@media (prefers-reduced-motion: reduce) {
-
-  html {
-    scroll-behavior: auto;
-  }
-
-  /* include pseudo-elements: plain `*` does not match them */
-  *,
-  *::before,
-  *::after {
-    animation: none !important;
-    transition: none !important;
-  }
-
-  .scroll-reveal-enabled .reveal-item:not(.is-revealed) {
-    opacity: 1;
-    transform: none;
-  }
-
-  .page-loader {
-    transition: none;
-  }
-
-  .page-loader-ring,
-  .page-loader-mark img,
-  .page-loader-line::after {
-    animation: none;
-  }
-
-}
-
 @media (max-width: 360px) {
   .page-loader-mark {
     width: 126px;
@@ -2843,6 +2763,20 @@ section {
     letter-spacing: .12em;
   }
 }
+
+/* JavaScript-driven page transitions */
+.page-transition-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 50% 100%, rgba(255, 129, 62, .2), transparent 55%),
+    var(--bg);
+  transform: translateY(100%);
+  will-change: transform;
+}
+
 html,
 body {
   max-width: 100%;
