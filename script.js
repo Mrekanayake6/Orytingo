@@ -91,8 +91,10 @@
         if (!target) return;
 
         event.preventDefault();
+        const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
         setTimeout(() => {
-          target.scrollIntoView({ behavior: "smooth", block: "start" });
+          target.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
           history.pushState(null, "", href);
         }, MENU_COLLAPSE_MS);
       });
@@ -124,6 +126,95 @@
     updateNavbar();
   }
 
+
+  /* =========================
+     Scroll Reveal Animation
+  ========================= */
+  const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const revealTargets = new Set();
+  const addRevealGroup = (selector, stagger = false) => {
+    const siblingIndexes = new Map();
+
+    document.querySelectorAll(selector).forEach((element) => {
+      if (revealTargets.has(element)) return;
+
+      revealTargets.add(element);
+      element.classList.add("reveal-item");
+
+      if (stagger) {
+        const parent = element.parentElement;
+        const siblingIndex = siblingIndexes.get(parent) || 0;
+        siblingIndexes.set(parent, siblingIndex + 1);
+        element.style.setProperty("--reveal-delay", `${Math.min(siblingIndex, 4) * 45}ms`);
+      }
+    });
+  };
+
+  addRevealGroup(".section-head > *", true);
+  addRevealGroup(".pillar-card, .why-card, .service-card, .timeline li, .tech-badges > span", true);
+  addRevealGroup(
+    ".modern-tech-marquee, .about-visual, .about-copy > *, .ot-carousel, .cta-inner > *"
+  );
+  addRevealGroup(
+    ".software-service-card, .project-card, .package-card, .benefit-card, " +
+    ".software-process-grid > div, .software-tech-grid > div, " +
+    ".business-automation .industry-marquee, .network-service-card, " +
+    ".network-process-grid > div, .worker-card",
+    true
+  );
+
+  const animationTargets = new Set(document.querySelectorAll(".hero, .modern-tech-marquee"));
+  const animationObserverTargets = new Set([...revealTargets, ...animationTargets]);
+
+  if (!motionPreference.matches && "IntersectionObserver" in window && animationObserverTargets.size) {
+    const animationObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const { target, isIntersecting } = entry;
+
+          if (revealTargets.has(target)) {
+            target.classList.toggle("is-revealed", isIntersecting);
+          }
+
+          if (animationTargets.has(target)) {
+            target.classList.toggle("animation-visible", isIntersecting);
+          }
+        });
+      },
+      {
+        threshold: 0.01,
+        rootMargin: "100px 0px"
+      }
+    );
+
+    animationObserverTargets.forEach((element) => {
+      const rect = element.getBoundingClientRect();
+      if (rect.bottom >= -100 && rect.top <= window.innerHeight + 100) {
+        if (revealTargets.has(element)) element.classList.add("is-revealed");
+        if (animationTargets.has(element)) element.classList.add("animation-visible");
+      }
+      animationObserver.observe(element);
+    });
+    document.documentElement.classList.add("scroll-reveal-enabled");
+    document.documentElement.classList.add("animation-visibility-ready");
+  }
+
+  const marqueeTracks = document.querySelectorAll(".tech-marquee-track");
+  const updateMarqueeDuration = (track) => {
+    const distance = track.scrollWidth / 2;
+    if (distance > 0) {
+      track.style.setProperty("--marquee-duration", `${distance / 32}s`);
+    }
+  };
+
+  marqueeTracks.forEach(updateMarqueeDuration);
+
+  if ("ResizeObserver" in window && marqueeTracks.length) {
+    const marqueeResizeObserver = new ResizeObserver((entries) => {
+      entries.forEach((entry) => updateMarqueeDuration(entry.target));
+    });
+    marqueeTracks.forEach((track) => marqueeResizeObserver.observe(track));
+  }
 
 })();
 
@@ -209,6 +300,8 @@
   let pausedByFocus = false;
   let touchStartX = null;
   let touchStartY = null;
+
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
   /* HELPERS */
   const padNumber = (number) => String(number).padStart(2, "0");
@@ -423,6 +516,12 @@
     photos[currentIndex].classList.add("is-active");
     progressTicks[currentIndex].classList.add("is-active");
 
+    if (prefersReducedMotion.matches) {
+      bodySlides[oldIndex].classList.remove("is-leaving");
+      isAnimating = false;
+      return;
+    }
+
     /* Finish animation */
     clearTimeout(animationTimer);
     animationTimer = window.setTimeout(() => {
@@ -449,7 +548,7 @@
   /* AUTO-PLAY */
   function startAutoPlay() {
     clearTimeout(autoPlayTimer);
-    if (document.hidden || !carouselVisible || pausedByHover || pausedByFocus) return;
+    if (prefersReducedMotion.matches || document.hidden || !carouselVisible || pausedByHover || pausedByFocus) return;
 
     autoPlayTimer = window.setTimeout(() => {
       if (!document.hidden && carouselVisible && !pausedByHover && !pausedByFocus) {
@@ -550,6 +649,19 @@
   document.addEventListener("visibilitychange", () => {
     if (document.hidden) {
       clearTimeout(autoPlayTimer);
+    } else {
+      startAutoPlay();
+    }
+  });
+
+  /* REDUCED MOTION CHANGES */
+  prefersReducedMotion.addEventListener("change", () => {
+    if (prefersReducedMotion.matches) {
+      clearTimeout(autoPlayTimer);
+      clearTimeout(animationTimer);
+      queuedStep = 0;
+      bodySlides.forEach((body) => body.classList.remove("is-leaving"));
+      isAnimating = false;
     } else {
       startAutoPlay();
     }
