@@ -48,7 +48,14 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 80px;
+  overflow-x: clip;
   /* sticky navbar offset for #anchor links */
+}
+
+@supports not (overflow-x: clip) {
+  html {
+    overflow-x: hidden;
+  }
 }
 
 body {
@@ -58,7 +65,6 @@ body {
   font-family: 'Inter', system-ui, sans-serif;
   font-size: 16px;
   line-height: 1.6;
-  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -2775,10 +2781,4 @@ section {
     var(--bg);
   transform: translateY(100%);
   will-change: transform;
-}
-
-html,
-body {
-  max-width: 100%;
-  overflow-x: clip;
 }
