@@ -1097,32 +1097,6 @@
 }
 
 
-/* =========================================================
-   REDUCED MOTION
-   ========================================================= */
-
-@media (prefers-reduced-motion: reduce) {
-
-    .software-hero-copy,
-    .software-visual,
-    .software-core,
-    .software-node,
-    .code-orbit.orbit-one,
-    .code-orbit.orbit-two {
-        animation: none !important;
-    }
-
-    .software-service-card,
-    .package-card,
-    .benefit-card,
-    .software-process-grid>div,
-    .software-tech-grid>div {
-        opacity: 1 !important;
-        transform: none !important;
-        transition: none !important;
-    }
-}
-
 /* ============================================================
    SOFTWARE HERO — MOBILE SPACING FIX
    Match Networking Page
@@ -1844,19 +1818,6 @@
 
 }
 
-
-/* ============================================================
-   REDUCED MOTION
-============================================================ */
-
-@media (prefers-reduced-motion: reduce) {
-
-    .industry-track {
-        animation: none;
-        transform: none;
-    }
-
-}
 
 /* Business Automation — Content Reveal */
 

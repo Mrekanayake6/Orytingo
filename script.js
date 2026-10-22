@@ -91,10 +91,9 @@
         if (!target) return;
 
         event.preventDefault();
-        const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
         setTimeout(() => {
-          target.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+          target.scrollIntoView({ behavior: "smooth", block: "start" });
           history.pushState(null, "", href);
         }, MENU_COLLAPSE_MS);
       });
@@ -130,7 +129,6 @@
   /* =========================
      Scroll Reveal Animation
   ========================= */
-  const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
   const revealTargets = new Set();
   const addRevealGroup = (selector, stagger = false) => {
     const siblingIndexes = new Map();
@@ -166,7 +164,7 @@
   const animationTargets = new Set(document.querySelectorAll(".hero, .modern-tech-marquee"));
   const animationObserverTargets = new Set([...revealTargets, ...animationTargets]);
 
-  if (!motionPreference.matches && "IntersectionObserver" in window && animationObserverTargets.size) {
+  if ("IntersectionObserver" in window && animationObserverTargets.size) {
     const animationObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -300,8 +298,6 @@
   let pausedByFocus = false;
   let touchStartX = null;
   let touchStartY = null;
-
-  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
   /* HELPERS */
   const padNumber = (number) => String(number).padStart(2, "0");
@@ -516,12 +512,6 @@
     photos[currentIndex].classList.add("is-active");
     progressTicks[currentIndex].classList.add("is-active");
 
-    if (prefersReducedMotion.matches) {
-      bodySlides[oldIndex].classList.remove("is-leaving");
-      isAnimating = false;
-      return;
-    }
-
     /* Finish animation */
     clearTimeout(animationTimer);
     animationTimer = window.setTimeout(() => {
@@ -548,7 +538,7 @@
   /* AUTO-PLAY */
   function startAutoPlay() {
     clearTimeout(autoPlayTimer);
-    if (prefersReducedMotion.matches || document.hidden || !carouselVisible || pausedByHover || pausedByFocus) return;
+    if (document.hidden || !carouselVisible || pausedByHover || pausedByFocus) return;
 
     autoPlayTimer = window.setTimeout(() => {
       if (!document.hidden && carouselVisible && !pausedByHover && !pausedByFocus) {
@@ -649,19 +639,6 @@
   document.addEventListener("visibilitychange", () => {
     if (document.hidden) {
       clearTimeout(autoPlayTimer);
-    } else {
-      startAutoPlay();
-    }
-  });
-
-  /* REDUCED MOTION CHANGES */
-  prefersReducedMotion.addEventListener("change", () => {
-    if (prefersReducedMotion.matches) {
-      clearTimeout(autoPlayTimer);
-      clearTimeout(animationTimer);
-      queuedStep = 0;
-      bodySlides.forEach((body) => body.classList.remove("is-leaving"));
-      isAnimating = false;
     } else {
       startAutoPlay();
     }

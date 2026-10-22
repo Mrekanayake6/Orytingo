@@ -293,6 +293,32 @@ html.page-loading .page-loader {
   mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 90%);
 }
 
+/* Scroll stability (iOS Safari / mobile browsers)
+   This layer is position:fixed and holds blur(110px) glows. With `inset: 0` its height
+   changed every frame while the browser toolbar collapsed/expanded during a scroll, forcing
+   the blurred layers to be re-rasterised mid-scroll. It is now a fixed-size, GPU-composited
+   layer sized to the large viewport. The glow and grid keep the exact same positions they
+   had at the small viewport, so the look is unchanged (on desktop svh = lvh = vh). */
+.bg-field {
+  transform: translateZ(0);
+}
+
+@supports (height: 100lvh) and (height: 100svh) {
+  .bg-field {
+    bottom: auto;
+    height: 100lvh;
+  }
+
+  .glow-violet {
+    top: 30svh;
+  }
+
+  .grid-overlay {
+    bottom: auto;
+    height: 100svh;
+  }
+}
+
 /* ============================================================
    Buttons
 ============================================================ */
@@ -2797,41 +2823,6 @@ section {
   transition-delay: var(--reveal-delay, 0ms), var(--reveal-delay, 0ms), 0s, 0s;
 }
 
-
-/* ============================================================
-   Reduced motion (single consolidated block)
-============================================================ */
-
-@media (prefers-reduced-motion: reduce) {
-
-  html {
-    scroll-behavior: auto;
-  }
-
-  /* include pseudo-elements: plain `*` does not match them */
-  *,
-  *::before,
-  *::after {
-    animation: none !important;
-    transition: none !important;
-  }
-
-  .scroll-reveal-enabled .reveal-item:not(.is-revealed) {
-    opacity: 1;
-    transform: none;
-  }
-
-  .page-loader {
-    transition: none;
-  }
-
-  .page-loader-ring,
-  .page-loader-mark img,
-  .page-loader-line::after {
-    animation: none;
-  }
-
-}
 
 @media (max-width: 360px) {
   .page-loader-mark {
