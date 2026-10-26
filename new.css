@@ -3120,14 +3120,16 @@ html.page-loading .rbs-rail {
   width: 100%;
 }
 
-/* ---------- Track (Railway Steel Rail - Single Line Design / දුම්රිය තනි පීල්ලේ නිර්මාණය) ---------- */
+/* ---------- Track (Railway Steel Rail - Loads dynamically as you scroll / Scroll කරද්දී පමණක් load වන නිර්මාණය) ---------- */
 .rbs-track {
   position: absolute;
   top: 0;
-  bottom: 0;
   left: 0;
   width: 3px;
+  height: 0; /* Dynamic: JS loads the track height up to the train engine as you scroll */
   border-radius: 3px;
+  opacity: 0; /* Hidden when idle, only loads/shows when scrolling */
+  transition: opacity 0.4s ease;
   /* Single Steel Railway Rail with metallic sheen & subtle rail joints */
   background-image:
     /* Subtle periodic rail joint / sleeper fastener notches */
@@ -3143,14 +3145,19 @@ html.page-loading .rbs-rail {
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.05), 0 0 4px rgba(0, 0, 0, 0.5);
   overflow: hidden;
 }
+
+/* While scrolling or dragging or hovering: the rail line is active and visible */
+.rbs--moving .rbs-track,
+.rbs--drag .rbs-track,
+.rbs-rail:hover .rbs-track {
+  opacity: 1;
+}
+
 /* Orange trail showing energy flowing through the railway */
 .rbs-fill {
   position: absolute;
   inset: 0;
   background: linear-gradient(180deg, rgba(255, 129, 62, 0.2), var(--rbs-accent));
-  transform-origin: 50% 0;
-  transform: scaleY(0);
-  will-change: transform;
   box-shadow: 0 0 4px var(--rbs-accent-soft);
 }
 

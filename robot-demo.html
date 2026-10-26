@@ -334,13 +334,13 @@ body::-webkit-scrollbar {
 .rbs-track {
   position: absolute;
   top: 0;
-  bottom: 0;
   left: 0;
   width: 3px;
+  height: 0;
   border-radius: 3px;
-  /* Single Steel Railway Rail with metallic sheen & subtle rail joints */
+  opacity: 0;
+  transition: opacity 0.4s ease;
   background-image:
-    /* Subtle periodic rail joint / sleeper fastener notches */
     repeating-linear-gradient(180deg,
       transparent 0px,
       transparent 11px,
@@ -348,18 +348,19 @@ body::-webkit-scrollbar {
       rgba(0, 0, 0, 0.5) 13px,
       transparent 15px
     ),
-    /* Polished steel rail metallic crown gradient */
     linear-gradient(90deg, #2d323b 0%, #6e7a8c 45%, #46505e 70%, #15181e 100%);
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.05), 0 0 4px rgba(0, 0, 0, 0.5);
   overflow: hidden;
+}
+.rbs--moving .rbs-track,
+.rbs--drag .rbs-track,
+.rbs-rail:hover .rbs-track {
+  opacity: 1;
 }
 .rbs-fill {
   position: absolute;
   inset: 0;
   background: linear-gradient(180deg, rgba(255, 122, 26, 0.2), var(--rbs-accent));
-  transform-origin: 50% 0;
-  transform: scaleY(0);
-  will-change: transform;
   box-shadow: 0 0 4px var(--rbs-accent-soft);
 }
 .rbs-hit {
@@ -811,6 +812,7 @@ body::-webkit-scrollbar {
     body.appendChild(rail);
 
     var lane = rail.querySelector('.rbs-lane');
+    var track = rail.querySelector('.rbs-track');
     var fill = rail.querySelector('.rbs-fill');
     var hit = rail.querySelector('.rbs-hit');
     var bus = rail.querySelector('.rbs-bus');
@@ -819,6 +821,23 @@ body::-webkit-scrollbar {
     var maxScroll = 0, laneH = 0, busH = 0, travel = 0, wheelPx = 4.6;
     var cur = 0, target = 0, curY = 0, prevY = 0;
     var raf = 0, lastT = 0, facingUp = false, moving = false, dragging = false;
+    var idleTimer = null;
+
+    function setMoving(val) {
+      if (val) {
+        if (idleTimer) { clearTimeout(idleTimer); idleTimer = null; }
+        if (!moving) {
+          moving = true;
+          rail.classList.add('rbs--moving');
+        }
+      } else if (moving && !idleTimer) {
+        idleTimer = setTimeout(function () {
+          moving = false;
+          rail.classList.remove('rbs--moving');
+          idleTimer = null;
+        }, 900);
+      }
+    }
 
     function scroller() {
       var se = document.scrollingElement || doc;
@@ -876,7 +895,10 @@ body::-webkit-scrollbar {
 
       curY = cur * travel;
       bus.style.transform = 'translate3d(0,' + curY.toFixed(2) + 'px,0)';
-      fill.style.transform = 'scaleY(' + (travel > 0 ? Math.min(1, (curY + busH * 0.5) / laneH) : 0).toFixed(4) + ')';
+
+      /* Railway Track loads/grows dynamically along with the train */
+      var trackH = travel > 0 ? Math.min(laneH, curY + busH * 0.5) : 0;
+      track.style.height = trackH.toFixed(1) + 'px';
 
       var deg = (curY / wheelPx) * 57.29578;
       var a = (facingUp ? -deg : deg).toFixed(2);
@@ -890,22 +912,25 @@ body::-webkit-scrollbar {
       else if (dy < -0.3 && !facingUp) { facingUp = true; rail.classList.add('rbs--up'); }
       prevY = curY;
 
-      var isMoving = Math.abs(dy) > 0.05 || Math.abs(target - cur) * travel > 0.15;
-      if (isMoving !== moving) {
-        moving = isMoving;
-        rail.classList.toggle('rbs--moving', moving);
-      }
+      var isMoving = Math.abs(dy) > 0.05 || Math.abs(target - cur) * travel > 0.15 || dragging;
+      if (isMoving) setMoving(true);
+      else setMoving(false);
 
-      if (cur !== target || dragging) schedule();
-      else if (moving) { moving = false; rail.classList.remove('rbs--moving'); }
+      if (cur !== target || dragging || isMoving) schedule();
     }
 
     function onScroll(e) {
       var t = e.target;
-      if (t === document || t === body || t === doc) schedule();
+      if (t === document || t === body || t === doc) {
+        setMoving(true);
+        schedule();
+      }
     }
     document.addEventListener('scroll', onScroll, { passive: true, capture: true });
-    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('scroll', function () { setMoving(true); schedule(); }, { passive: true });
+    window.addEventListener('touchstart', function () { setMoving(true); schedule(); }, { passive: true });
+    window.addEventListener('touchmove', function () { setMoving(true); schedule(); }, { passive: true });
+    window.addEventListener('touchend', function () { setMoving(false); schedule(); }, { passive: true });
 
     function onResize() { measure(); schedule(); }
     window.addEventListener('resize', onResize, { passive: true });
@@ -934,16 +959,18 @@ body::-webkit-scrollbar {
         grab = e.clientY - (br.top + br.height / 2);
       } else { grab = 0; }
       dragging = true;
+      setMoving(true);
       rail.classList.add('rbs--drag');
       try { e.currentTarget.setPointerCapture(e.pointerId); } catch (err) {}
       e.preventDefault();
       posToScroll(e.clientY);
     }
-    function onMove(e) { if (dragging) posToScroll(e.clientY); }
+    function onMove(e) { if (dragging) { setMoving(true); posToScroll(e.clientY); } }
     function onUp() {
       if (!dragging) return;
       dragging = false;
       rail.classList.remove('rbs--drag');
+      setMoving(false);
       schedule();
     }
     [bus, hit].forEach(function (el) {

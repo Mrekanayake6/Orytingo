@@ -1059,6 +1059,7 @@
     body.appendChild(rail);
 
     var lane = rail.querySelector('.rbs-lane');
+    var track = rail.querySelector('.rbs-track');
     var fill = rail.querySelector('.rbs-fill');
     var hit = rail.querySelector('.rbs-hit');
     var bus = rail.querySelector('.rbs-bus');
@@ -1067,6 +1068,23 @@
     var maxScroll = 0, laneH = 0, busH = 0, travel = 0, wheelPx = 4.6;
     var cur = 0, target = 0, curY = 0, prevY = 0;
     var raf = 0, lastT = 0, facingUp = false, moving = false, dragging = false;
+    var idleTimer = null;
+
+    function setMoving(val) {
+      if (val) {
+        if (idleTimer) { clearTimeout(idleTimer); idleTimer = null; }
+        if (!moving) {
+          moving = true;
+          rail.classList.add('rbs--moving');
+        }
+      } else if (moving && !idleTimer) {
+        idleTimer = setTimeout(function () {
+          moving = false;
+          rail.classList.remove('rbs--moving');
+          idleTimer = null;
+        }, 900);
+      }
+    }
 
     function scroller() {
       var se = document.scrollingElement || doc;
@@ -1114,7 +1132,6 @@
       lastT = t;
 
       var diffPx = (target - cur) * travel;
-
       if (dragging) {
         cur = target;
       } else if (Math.abs(diffPx) < 0.15) {
@@ -1125,7 +1142,10 @@
 
       curY = cur * travel;
       bus.style.transform = 'translate3d(0,' + curY.toFixed(2) + 'px,0)';
-      fill.style.transform = 'scaleY(' + (travel > 0 ? Math.min(1, (curY + busH * 0.5) / laneH) : 0).toFixed(4) + ')';
+
+      /* Railway Track loads/grows dynamically along with the train (no pre-drawn track below train) */
+      var trackH = travel > 0 ? Math.min(laneH, curY + busH * 0.5) : 0;
+      track.style.height = trackH.toFixed(1) + 'px';
 
       var deg = (curY / wheelPx) * 57.29578;
       var a = (facingUp ? -deg : deg).toFixed(2);
@@ -1139,22 +1159,25 @@
       else if (dy < -0.3 && !facingUp) { facingUp = true; rail.classList.add('rbs--up'); }
       prevY = curY;
 
-      var isMoving = Math.abs(dy) > 0.05 || Math.abs(target - cur) * travel > 0.15;
-      if (isMoving !== moving) {
-        moving = isMoving;
-        rail.classList.toggle('rbs--moving', moving);
-      }
+      var isMoving = Math.abs(dy) > 0.05 || Math.abs(target - cur) * travel > 0.15 || dragging;
+      if (isMoving) setMoving(true);
+      else setMoving(false);
 
-      if (cur !== target || dragging) schedule();
-      else if (moving) { moving = false; rail.classList.remove('rbs--moving'); }
+      if (cur !== target || dragging || isMoving) schedule();
     }
 
     function onScroll(e) {
       var t = e.target;
-      if (t === document || t === body || t === doc) schedule();
+      if (t === document || t === body || t === doc) {
+        setMoving(true);
+        schedule();
+      }
     }
     document.addEventListener('scroll', onScroll, { passive: true, capture: true });
-    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('scroll', function () { setMoving(true); schedule(); }, { passive: true });
+    window.addEventListener('touchstart', function () { setMoving(true); schedule(); }, { passive: true });
+    window.addEventListener('touchmove', function () { setMoving(true); schedule(); }, { passive: true });
+    window.addEventListener('touchend', function () { setMoving(false); schedule(); }, { passive: true });
 
     function onResize() { measure(); schedule(); }
     window.addEventListener('resize', onResize, { passive: true });
@@ -1183,16 +1206,18 @@
         grab = e.clientY - (br.top + br.height / 2);
       } else { grab = 0; }
       dragging = true;
+      setMoving(true);
       rail.classList.add('rbs--drag');
       try { e.currentTarget.setPointerCapture(e.pointerId); } catch (err) {}
       e.preventDefault();
       posToScroll(e.clientY);
     }
-    function onMove(e) { if (dragging) posToScroll(e.clientY); }
+    function onMove(e) { if (dragging) { setMoving(true); posToScroll(e.clientY); } }
     function onUp() {
       if (!dragging) return;
       dragging = false;
       rail.classList.remove('rbs--drag');
+      setMoving(false);
       schedule();
     }
     [bus, hit].forEach(function (el) {
@@ -1202,6 +1227,13 @@
       el.addEventListener('pointercancel', onUp);
       el.addEventListener('lostpointercapture', onUp);
     });
+    if (false) {
+      el.addEventListener('pointerdown', onDown);
+      el.addEventListener('pointermove', onMove);
+      el.addEventListener('pointerup', onUp);
+      el.addEventListener('pointercancel', onUp);
+      el.addEventListener('lostpointercapture', onUp);
+    }
 
     measure();
     cur = target;
