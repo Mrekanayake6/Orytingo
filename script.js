@@ -864,7 +864,11 @@
     cur += (target - cur) * (1 - Math.exp(-dt * lerpSpeed));
     if (Math.abs(target - cur) < 0.15) cur = target;
 
-    const moving = t - lastScroll < CFG.idleMs || Math.abs(target - cur) > 0.8;
+    const isSmall = vw < 640;
+    const idleThreshold = isSmall ? 260 : 160;
+    const minDiff = isSmall ? 0.1 : 0.35;
+    const moving = isTouching || (t - lastScroll < idleThreshold) || (Math.abs(target - cur) > minDiff);
+
     if (moving !== running) {
       running = moving;
       robot.classList.toggle('run', running);
@@ -881,13 +885,31 @@
     }
   };
 
+  let isTouching = false;
+  window.addEventListener('touchstart', () => {
+    isTouching = true;
+    lastScroll = performance.now();
+    wake();
+  }, { passive: true });
+
+  window.addEventListener('touchmove', () => {
+    isTouching = true;
+    lastScroll = performance.now();
+    wake();
+  }, { passive: true });
+
+  window.addEventListener('touchend', () => {
+    isTouching = false;
+    lastScroll = performance.now();
+    wake();
+  }, { passive: true });
+
   window.addEventListener('scroll', () => {
     const y = readY(), dy = y - lastY;
-    // Deadband threshold 1.2px avoids touch micro-jitter direction changes on mobile
-    if (Math.abs(dy) >= 1.2) {
+    lastScroll = performance.now();
+    if (Math.abs(dy) >= 0.4) {
       dir = dy > 0 ? 1 : -1;
       lastY = y;
-      lastScroll = performance.now();
     }
     wake();
   }, { passive: true });

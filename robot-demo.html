@@ -199,35 +199,95 @@ p{color:var(--muted);max-width:52ch;margin:0 0 20px}
 #robot .tilt{width:100%;height:100%;transition:transform .3s ease-out}
 #robot .flip{width:100%;height:100%;transform:scaleX(var(--face,1));transition:transform .28s cubic-bezier(.3,1.4,.5,1)}
 #robot svg{display:block;width:100%;height:100%;overflow:visible}
-#robot .px{transform-box:view-box}
-#robot .breath{animation:breath 2.6s ease-in-out infinite}
-#robot .eye{transform-box:fill-box;transform-origin:center;animation:blink 4.2s infinite}
-#robot .eye.r{animation-delay:.02s}
-#robot .core{animation:pulse 1.8s ease-in-out infinite}
-#robot .bulb{animation:pulse 1.2s ease-in-out infinite}
-#robot.run .breath{animation:bob .3s ease-in-out infinite}
-#robot.run .thigh{animation:thigh .6s ease-in-out infinite}
-#robot.run .shin{animation:shin .6s ease-in-out infinite}
-#robot.run .arm{animation:arm .6s ease-in-out infinite}
-#robot.run .thigh.l,#robot.run .shin.l,#robot.run .arm.r{animation-delay:-.3s}
-#robot.run .thigh.r,#robot.run .shin.r,#robot.run .arm.l{animation-delay:0s}
-#robot .thigh.l{transform-origin:34px 66px}#robot .thigh.r{transform-origin:46px 66px}
-#robot .shin.l{transform-origin:34px 74px}#robot .shin.r{transform-origin:46px 74px}
-#robot .arm.l{transform-origin:25.5px 51px}#robot .arm.r{transform-origin:54.5px 51px}
-@keyframes thigh{0%,100%{transform:rotate(-38deg)}50%{transform:rotate(38deg)}}
-@keyframes shin{0%,100%{transform:rotate(6deg)}30%{transform:rotate(62deg)}60%{transform:rotate(6deg)}}
-@keyframes arm{0%,100%{transform:rotate(32deg)}50%{transform:rotate(-32deg)}}
-@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-2.6px)}}
-@keyframes breath{0%,100%{transform:translateY(0)}50%{transform:translateY(-1px)}}
-@keyframes blink{0%,94%,100%{transform:scaleY(1)}97%{transform:scaleY(.1)}}
-@keyframes pulse{0%,100%{opacity:.75}50%{opacity:1}}
-:root{--lane:38px}
-@media (max-width:719px){#robot{--size:22px}:root{--lane:33px}}
-@media (max-width:479px){#robot{--size:20px}:root{--lane:30px}}
-@media (hover:none),(pointer:coarse){#robot,#mascot-trail .glow{filter:none}#mascot-trail .glow{stroke-width:2.4}}
-@media (prefers-reduced-motion:reduce){
-  #robot.run *{animation:none!important}
-  .reveal-item, .hero-load {opacity:1!important;transform:none!important;animation:none!important;transition:none!important}
+#robot .px {
+  -webkit-transform-box: view-box;
+  transform-box: view-box;
+}
+#robot .thigh, #robot .shin, #robot .arm {
+  will-change: transform;
+}
+#robot .breath {
+  -webkit-animation: breath 2.6s ease-in-out infinite;
+  animation: breath 2.6s ease-in-out infinite;
+}
+#robot .eye {
+  -webkit-transform-box: fill-box;
+  transform-box: fill-box;
+  -webkit-transform-origin: center;
+  transform-origin: center;
+  -webkit-animation: blink 4.2s infinite;
+  animation: blink 4.2s infinite;
+}
+#robot .eye.r { animation-delay: 0.02s; }
+#robot .core {
+  -webkit-animation: pulse 1.8s ease-in-out infinite;
+  animation: pulse 1.8s ease-in-out infinite;
+}
+#robot .bulb {
+  -webkit-animation: pulse 1.2s ease-in-out infinite;
+  animation: pulse 1.2s ease-in-out infinite;
+}
+
+#robot.run .breath {
+  -webkit-animation: bob 0.3s ease-in-out infinite;
+  animation: bob 0.3s ease-in-out infinite;
+}
+#robot.run .thigh {
+  -webkit-animation: thigh 0.6s ease-in-out infinite;
+  animation: thigh 0.6s ease-in-out infinite;
+}
+#robot.run .shin {
+  -webkit-animation: shin 0.6s ease-in-out infinite;
+  animation: shin 0.6s ease-in-out infinite;
+}
+#robot.run .arm {
+  -webkit-animation: arm 0.6s ease-in-out infinite;
+  animation: arm 0.6s ease-in-out infinite;
+}
+
+#robot.run .thigh.l, #robot.run .shin.l, #robot.run .arm.r {
+  -webkit-animation-delay: -0.3s;
+  animation-delay: -0.3s;
+}
+#robot.run .thigh.r, #robot.run .shin.r, #robot.run .arm.l {
+  -webkit-animation-delay: 0s;
+  animation-delay: 0s;
+}
+
+#robot .thigh.l { -webkit-transform-origin: 34px 66px; transform-origin: 34px 66px; }
+#robot .thigh.r { -webkit-transform-origin: 46px 66px; transform-origin: 46px 66px; }
+#robot .shin.l { -webkit-transform-origin: 34px 74px; transform-origin: 34px 74px; }
+#robot .shin.r { -webkit-transform-origin: 46px 74px; transform-origin: 46px 74px; }
+#robot .arm.l { -webkit-transform-origin: 25.5px 51px; transform-origin: 25.5px 51px; }
+#robot .arm.r { -webkit-transform-origin: 54.5px 51px; transform-origin: 54.5px 51px; }
+
+@-webkit-keyframes thigh { 0%, 100% { -webkit-transform: rotate(-38deg); transform: rotate(-38deg); } 50% { -webkit-transform: rotate(38deg); transform: rotate(38deg); } }
+@keyframes thigh { 0%, 100% { -webkit-transform: rotate(-38deg); transform: rotate(-38deg); } 50% { -webkit-transform: rotate(38deg); transform: rotate(38deg); } }
+
+@-webkit-keyframes shin { 0%, 100% { -webkit-transform: rotate(6deg); transform: rotate(6deg); } 30% { -webkit-transform: rotate(62deg); transform: rotate(62deg); } 60% { -webkit-transform: rotate(6deg); transform: rotate(6deg); } }
+@keyframes shin { 0%, 100% { -webkit-transform: rotate(6deg); transform: rotate(6deg); } 30% { -webkit-transform: rotate(62deg); transform: rotate(62deg); } 60% { -webkit-transform: rotate(6deg); transform: rotate(6deg); } }
+
+@-webkit-keyframes arm { 0%, 100% { -webkit-transform: rotate(32deg); transform: rotate(32deg); } 50% { -webkit-transform: rotate(-32deg); transform: rotate(-32deg); } }
+@keyframes arm { 0%, 100% { -webkit-transform: rotate(32deg); transform: rotate(32deg); } 50% { -webkit-transform: rotate(-32deg); transform: rotate(-32deg); } }
+
+@-webkit-keyframes bob { 0%, 100% { -webkit-transform: translateY(0); transform: translateY(0); } 50% { -webkit-transform: translateY(-2.6px); transform: translateY(-2.6px); } }
+@keyframes bob { 0%, 100% { -webkit-transform: translateY(0); transform: translateY(0); } 50% { -webkit-transform: translateY(-2.6px); transform: translateY(-2.6px); } }
+
+@-webkit-keyframes breath { 0%, 100% { -webkit-transform: translateY(0); transform: translateY(0); } 50% { -webkit-transform: translateY(-1px); transform: translateY(-1px); } }
+@keyframes breath { 0%, 100% { -webkit-transform: translateY(0); transform: translateY(0); } 50% { -webkit-transform: translateY(-1px); transform: translateY(-1px); } }
+
+@-webkit-keyframes blink { 0%, 94%, 100% { -webkit-transform: scaleY(1); transform: scaleY(1); } 97% { -webkit-transform: scaleY(0.1); transform: scaleY(0.1); } }
+@keyframes blink { 0%, 94%, 100% { -webkit-transform: scaleY(1); transform: scaleY(1); } 97% { -webkit-transform: scaleY(0.1); transform: scaleY(0.1); } }
+
+@-webkit-keyframes pulse { 0%, 100% { opacity: 0.75; } 50% { opacity: 1; } }
+@keyframes pulse { 0%, 100% { opacity: 0.75; } 50% { opacity: 1; } }
+
+:root { --lane: 38px; }
+@media (max-width: 768px) { #robot { --size: 22px; } :root { --lane: 32px; } }
+@media (max-width: 480px) { #robot { --size: 19px; } :root { --lane: 28px; } }
+@media (hover: none), (pointer: coarse) { #robot, #mascot-trail .glow { filter: none; } #mascot-trail .glow { stroke-width: 2.2; } }
+@media (prefers-reduced-motion: reduce) {
+  #robot.run * { animation: none !important; -webkit-animation: none !important; }
 }
 /* ============ /MASCOT CSS ============ */
 </style>
@@ -423,18 +483,30 @@ p{color:var(--muted);max-width:52ch;margin:0 0 20px}
   function frame(t) {
     const dt = Math.min(0.05, (t - prevT) / 1000 || 0.016); prevT = t;
     const target = targetX();
-    cur += (target - cur) * (1 - Math.exp(-dt * 14));
+    const isSmall = vw < 640;
+    const lerpSpeed = isSmall ? 11 : 13.5;
+    cur += (target - cur) * (1 - Math.exp(-dt * lerpSpeed));
     if (Math.abs(target - cur) < 0.15) cur = target;
-    const moving = t - lastScroll < CFG.idleMs || Math.abs(target - cur) > 1;
+
+    const idleThreshold = isSmall ? 260 : 160;
+    const minDiff = isSmall ? 0.1 : 0.35;
+    const moving = isTouching || (t - lastScroll < idleThreshold) || (Math.abs(target - cur) > minDiff);
+
     if (moving !== running) { running = moving; robot.classList.toggle('run', running); layer.classList.toggle('run', running); }
     render();
     raf = (running || cur !== target) ? requestAnimationFrame(frame) : 0;
   }
   const wake = () => { if (!raf) { prevT = performance.now(); raf = requestAnimationFrame(frame); } };
 
+  let isTouching = false;
+  addEventListener('touchstart', () => { isTouching = true; lastScroll = performance.now(); wake(); }, { passive: true });
+  addEventListener('touchmove', () => { isTouching = true; lastScroll = performance.now(); wake(); }, { passive: true });
+  addEventListener('touchend', () => { isTouching = false; lastScroll = performance.now(); wake(); }, { passive: true });
+
   addEventListener('scroll', () => {
     const y = readY(), dy = y - lastY;
-    if (Math.abs(dy) >= 0.5) { dir = dy > 0 ? 1 : -1; lastY = y; lastScroll = performance.now(); }
+    lastScroll = performance.now();
+    if (Math.abs(dy) >= 0.4) { dir = dy > 0 ? 1 : -1; lastY = y; }
     wake();
   }, { passive: true });
 

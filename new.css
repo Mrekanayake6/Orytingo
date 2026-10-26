@@ -2961,55 +2961,99 @@ html:not(.page-loading) #mascot.ready,
   overflow: visible;
 }
 #robot .px {
+  -webkit-transform-box: view-box;
   transform-box: view-box;
 }
 #robot .breath {
+  -webkit-animation: mascot-breath 2.6s ease-in-out infinite;
   animation: mascot-breath 2.6s ease-in-out infinite;
 }
 #robot .eye {
+  -webkit-transform-box: fill-box;
   transform-box: fill-box;
+  -webkit-transform-origin: center;
   transform-origin: center;
+  -webkit-animation: mascot-blink 4.2s infinite;
   animation: mascot-blink 4.2s infinite;
 }
 #robot .eye.r {
   animation-delay: 0.02s;
 }
 #robot .core {
+  -webkit-animation: mascot-pulse 1.8s ease-in-out infinite;
   animation: mascot-pulse 1.8s ease-in-out infinite;
 }
 #robot .bulb {
+  -webkit-animation: mascot-pulse 1.2s ease-in-out infinite;
   animation: mascot-pulse 1.2s ease-in-out infinite;
 }
 
-#robot.run .breath { animation: mascot-bob 0.3s ease-in-out infinite; }
-#robot.run .thigh { animation: mascot-thigh 0.6s ease-in-out infinite; }
-#robot.run .shin { animation: mascot-shin 0.6s ease-in-out infinite; }
-#robot.run .arm { animation: mascot-arm 0.6s ease-in-out infinite; }
+#robot .thigh,
+#robot .shin,
+#robot .arm {
+  will-change: transform;
+}
 
-#robot.run .thigh.l, #robot.run .shin.l, #robot.run .arm.r { animation-delay: -0.3s; }
-#robot.run .thigh.r, #robot.run .shin.r, #robot.run .arm.l { animation-delay: 0s; }
+#robot.run .breath {
+  -webkit-animation: mascot-bob 0.3s ease-in-out infinite;
+  animation: mascot-bob 0.3s ease-in-out infinite;
+}
+#robot.run .thigh {
+  -webkit-animation: mascot-thigh 0.6s ease-in-out infinite;
+  animation: mascot-thigh 0.6s ease-in-out infinite;
+}
+#robot.run .shin {
+  -webkit-animation: mascot-shin 0.6s ease-in-out infinite;
+  animation: mascot-shin 0.6s ease-in-out infinite;
+}
+#robot.run .arm {
+  -webkit-animation: mascot-arm 0.6s ease-in-out infinite;
+  animation: mascot-arm 0.6s ease-in-out infinite;
+}
 
-#robot .thigh.l { transform-origin: 34px 66px; }
-#robot .thigh.r { transform-origin: 46px 66px; }
-#robot .shin.l { transform-origin: 34px 74px; }
-#robot .shin.r { transform-origin: 46px 74px; }
-#robot .arm.l { transform-origin: 25.5px 51px; }
-#robot .arm.r { transform-origin: 54.5px 51px; }
+#robot.run .thigh.l, #robot.run .shin.l, #robot.run .arm.r {
+  -webkit-animation-delay: -0.3s;
+  animation-delay: -0.3s;
+}
+#robot.run .thigh.r, #robot.run .shin.r, #robot.run .arm.l {
+  -webkit-animation-delay: 0s;
+  animation-delay: 0s;
+}
 
-@keyframes mascot-thigh { 0%, 100% { transform: rotate(-38deg); } 50% { transform: rotate(38deg); } }
-@keyframes mascot-shin { 0%, 100% { transform: rotate(6deg); } 30% { transform: rotate(62deg); } 60% { transform: rotate(6deg); } }
-@keyframes mascot-arm { 0%, 100% { transform: rotate(32deg); } 50% { transform: rotate(-32deg); } }
-@keyframes mascot-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-2.6px); } }
-@keyframes mascot-breath { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-1px); } }
-@keyframes mascot-blink { 0%, 94%, 100% { transform: scaleY(1); } 97% { transform: scaleY(0.1); } }
+#robot .thigh.l { -webkit-transform-origin: 34px 66px; transform-origin: 34px 66px; }
+#robot .thigh.r { -webkit-transform-origin: 46px 66px; transform-origin: 46px 66px; }
+#robot .shin.l { -webkit-transform-origin: 34px 74px; transform-origin: 34px 74px; }
+#robot .shin.r { -webkit-transform-origin: 46px 74px; transform-origin: 46px 74px; }
+#robot .arm.l { -webkit-transform-origin: 25.5px 51px; transform-origin: 25.5px 51px; }
+#robot .arm.r { -webkit-transform-origin: 54.5px 51px; transform-origin: 54.5px 51px; }
+
+@-webkit-keyframes mascot-thigh { 0%, 100% { -webkit-transform: rotate(-38deg); transform: rotate(-38deg); } 50% { -webkit-transform: rotate(38deg); transform: rotate(38deg); } }
+@keyframes mascot-thigh { 0%, 100% { -webkit-transform: rotate(-38deg); transform: rotate(-38deg); } 50% { -webkit-transform: rotate(38deg); transform: rotate(38deg); } }
+
+@-webkit-keyframes mascot-shin { 0%, 100% { -webkit-transform: rotate(6deg); transform: rotate(6deg); } 30% { -webkit-transform: rotate(62deg); transform: rotate(62deg); } 60% { -webkit-transform: rotate(6deg); transform: rotate(6deg); } }
+@keyframes mascot-shin { 0%, 100% { -webkit-transform: rotate(6deg); transform: rotate(6deg); } 30% { -webkit-transform: rotate(62deg); transform: rotate(62deg); } 60% { -webkit-transform: rotate(6deg); transform: rotate(6deg); } }
+
+@-webkit-keyframes mascot-arm { 0%, 100% { -webkit-transform: rotate(32deg); transform: rotate(32deg); } 50% { -webkit-transform: rotate(-32deg); transform: rotate(-32deg); } }
+@keyframes mascot-arm { 0%, 100% { -webkit-transform: rotate(32deg); transform: rotate(32deg); } 50% { -webkit-transform: rotate(-32deg); transform: rotate(-32deg); } }
+
+@-webkit-keyframes mascot-bob { 0%, 100% { -webkit-transform: translateY(0); transform: translateY(0); } 50% { -webkit-transform: translateY(-2.6px); transform: translateY(-2.6px); } }
+@keyframes mascot-bob { 0%, 100% { -webkit-transform: translateY(0); transform: translateY(0); } 50% { -webkit-transform: translateY(-2.6px); transform: translateY(-2.6px); } }
+
+@-webkit-keyframes mascot-breath { 0%, 100% { -webkit-transform: translateY(0); transform: translateY(0); } 50% { -webkit-transform: translateY(-1px); transform: translateY(-1px); } }
+@keyframes mascot-breath { 0%, 100% { -webkit-transform: translateY(0); transform: translateY(0); } 50% { -webkit-transform: translateY(-1px); transform: translateY(-1px); } }
+
+@-webkit-keyframes mascot-blink { 0%, 94%, 100% { -webkit-transform: scaleY(1); transform: scaleY(1); } 97% { -webkit-transform: scaleY(0.1); transform: scaleY(0.1); } }
+@keyframes mascot-blink { 0%, 94%, 100% { -webkit-transform: scaleY(1); transform: scaleY(1); } 97% { -webkit-transform: scaleY(0.1); transform: scaleY(0.1); } }
+
+@-webkit-keyframes mascot-pulse { 0%, 100% { opacity: 0.75; } 50% { opacity: 1; } }
 @keyframes mascot-pulse { 0%, 100% { opacity: 0.75; } 50% { opacity: 1; } }
 
 @media (hover: none), (pointer: coarse) {
   #robot, #mascot-trail .glow { filter: none; }
-  #mascot-trail .glow { stroke-width: 2.4; }
+  #mascot-trail .glow { stroke-width: 2.2; }
 }
 @media (prefers-reduced-motion: reduce) {
-  #robot.run * { animation: none !important; }
+  #robot.run * { animation: none !important; -webkit-animation: none !important; }
 }
 /* ============ /MASCOT CSS ============ */
 
