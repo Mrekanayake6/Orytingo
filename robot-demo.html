@@ -659,6 +659,241 @@ body::-webkit-scrollbar {
   if ('ResizeObserver' in window) new ResizeObserver(onResize).observe(document.body);
   build();
 })();
+
+(function () {
+  'use strict';
+  if (window.__otRobotBus) return;
+  window.__otRobotBus = true;
+
+  var SVG = '' +
+    '<svg class="rbs-svg" viewBox="0 0 32 60" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">' +
+    '<defs>' +
+      '<linearGradient id="rbs-body" x1="0" y1="0" x2="0" y2="1">' +
+        '<stop offset="0" stop-color="#3a3f48"/><stop offset="0.45" stop-color="#1c1f25"/><stop offset="1" stop-color="#0b0c0f"/>' +
+      '</linearGradient>' +
+      '<linearGradient id="rbs-glass" x1="0" y1="0" x2="1" y2="1">' +
+        '<stop offset="0" stop-color="#1b2a3a"/><stop offset="1" stop-color="#05080c"/>' +
+      '</linearGradient>' +
+      '<radialGradient id="rbs-glowg" cx="0.5" cy="0.5" r="0.5">' +
+        '<stop offset="0" class="rbs-stop-accent" stop-opacity="0.55"/>' +
+        '<stop offset="1" class="rbs-stop-accent" stop-opacity="0"/>' +
+      '</radialGradient>' +
+      '<linearGradient id="rbs-beamg" x1="0" y1="0" x2="1" y2="0">' +
+        '<stop offset="0" stop-color="#ffd9a8" stop-opacity="0.9"/><stop offset="1" stop-color="#ffd9a8" stop-opacity="0"/>' +
+      '</linearGradient>' +
+      '<radialGradient id="rbs-rim" cx="0.5" cy="0.5" r="0.5">' +
+        '<stop offset="0" stop-color="#555b66"/><stop offset="1" stop-color="#262a31"/>' +
+      '</radialGradient>' +
+    '</defs>' +
+    '<g transform="translate(32 0) rotate(90)">' +
+      '<ellipse class="rbs-glow" cx="30" cy="16" rx="30" ry="16" fill="url(#rbs-glowg)"/>' +
+      '<path class="rbs-beam" d="M52 17 L60 14 L60 22 Z" fill="url(#rbs-beamg)"/>' +
+      '<line x1="26" y1="6" x2="26" y2="2.6" stroke="#4a505b" stroke-width="0.8" stroke-linecap="round"/>' +
+      '<circle class="rbs-accent rbs-beacon" cx="26" cy="2" r="1.3"/>' +
+      '<rect x="4" y="5.5" width="48" height="20" rx="6" fill="url(#rbs-body)" stroke="#444a54" stroke-width="0.5"/>' +
+      '<rect x="9" y="5.5" width="30" height="1.6" rx="0.8" fill="#0a0b0e"/>' +
+      '<rect x="8" y="9" width="9.5" height="7" rx="1.8" fill="url(#rbs-glass)"/>' +
+      '<rect x="19" y="9" width="9.5" height="7" rx="1.8" fill="url(#rbs-glass)"/>' +
+      '<rect x="30" y="9" width="9.5" height="7" rx="1.8" fill="url(#rbs-glass)"/>' +
+      '<path d="M9 10 L13 10 L10.5 15 L9 15 Z" fill="#fff" opacity="0.06"/>' +
+      '<rect x="42" y="8" width="8.4" height="10" rx="2.4" fill="#06080b" stroke="var(--rbs-accent)" stroke-width="0.5" class="rbs-accent-line"/>' +
+      '<circle class="rbs-accent rbs-eye" cx="44.7" cy="11.2" r="1.25"/>' +
+      '<circle class="rbs-accent rbs-eye" cx="48.1" cy="11.2" r="1.25"/>' +
+      '<path d="M44.2 14.6 Q46.4 16.6 48.6 14.6" fill="none" stroke-width="0.7" stroke-linecap="round" class="rbs-accent-line"/>' +
+      '<rect x="4" y="19.4" width="48" height="2.6" fill="#0d0f13"/>' +
+      '<circle class="rbs-light" cx="23" cy="20.7" r="0.9"/>' +
+      '<circle class="rbs-light rbs-l2" cx="27.5" cy="20.7" r="0.9"/>' +
+      '<circle class="rbs-light rbs-l3" cx="32" cy="20.7" r="0.9"/>' +
+      '<rect x="50.6" y="16.6" width="2.4" height="3.2" rx="1" fill="#ffe2bd"/>' +
+      '<rect x="3.2" y="12.5" width="1.6" height="4.5" rx="0.8" class="rbs-accent"/>' +
+      '<circle cx="14" cy="26" r="5.6" fill="#050608"/>' +
+      '<circle cx="42" cy="26" r="5.6" fill="#050608"/>' +
+      wheel('rbs-wheel', 14, 26) +
+      wheel('rbs-wheel', 42, 26) +
+    '</g>' +
+    '</svg>';
+
+  function wheel(cls, cx, cy) {
+    return '<g class="' + cls + '" data-cx="' + cx + '" data-cy="' + cy + '">' +
+      '<circle cx="' + cx + '" cy="' + cy + '" r="4.6" fill="#14171c" stroke="#30353d" stroke-width="0.6"/>' +
+      '<circle cx="' + cx + '" cy="' + cy + '" r="2.9" fill="url(#rbs-rim)"/>' +
+      '<path d="M' + cx + ' ' + (cy - 2.9) + 'V' + (cy + 2.9) + 'M' + (cx - 2.9) + ' ' + cy + 'H' + (cx + 2.9) +
+        '" stroke="var(--rbs-accent)" stroke-width="0.7" stroke-linecap="round" class="rbs-accent-line" fill="none"/>' +
+      '<circle cx="' + cx + '" cy="' + cy + '" r="0.9" fill="#0a0b0d"/>' +
+    '</g>';
+  }
+
+  function init() {
+    var doc = document.documentElement;
+    var body = document.body;
+    if (!body || document.querySelector('.rbs-rail')) return;
+
+    var rail = document.createElement('div');
+    rail.className = 'rbs-rail rbs--hidden';
+    rail.setAttribute('aria-hidden', 'true');
+    rail.innerHTML =
+      '<div class="rbs-lane">' +
+        '<div class="rbs-track"><div class="rbs-fill"></div></div>' +
+        '<div class="rbs-hit"></div>' +
+        '<div class="rbs-bus">' + SVG + '</div>' +
+      '</div>';
+    body.appendChild(rail);
+
+    var lane = rail.querySelector('.rbs-lane');
+    var fill = rail.querySelector('.rbs-fill');
+    var hit = rail.querySelector('.rbs-hit');
+    var bus = rail.querySelector('.rbs-bus');
+    var wheels = rail.querySelectorAll('.rbs-wheel');
+
+    var maxScroll = 0, laneH = 0, busH = 0, travel = 0, wheelPx = 4.6;
+    var cur = 0, target = 0, curY = 0, prevY = 0;
+    var raf = 0, lastT = 0, facingUp = false, moving = false, dragging = false;
+
+    function scroller() {
+      var se = document.scrollingElement || doc;
+      if (se.scrollHeight - se.clientHeight <= 1 && body.scrollHeight - body.clientHeight > 1) {
+        var oy = window.getComputedStyle(body).overflowY;
+        if (oy === 'auto' || oy === 'scroll') return body;
+      }
+      return se;
+    }
+    function getTop() {
+      var s = scroller();
+      return s === body ? body.scrollTop : (window.pageYOffset || s.scrollTop || 0);
+    }
+    function setTop(top) {
+      var s = scroller();
+      if (s === body) { body.scrollTop = top; return; }
+      try { window.scrollTo({ top: top, left: 0, behavior: 'instant' }); }
+      catch (err) { window.scrollTo(0, top); }
+    }
+
+    function measure() {
+      var s = scroller();
+      var viewH = s === body ? body.clientHeight : (doc.clientHeight || window.innerHeight);
+      maxScroll = Math.max(0, s.scrollHeight - viewH);
+      laneH = lane.clientHeight;
+      busH = bus.getBoundingClientRect().height;
+      travel = Math.max(0, laneH - busH);
+      wheelPx = (bus.getBoundingClientRect().width / 32) * 4.6;
+      rail.classList.toggle('rbs--hidden', maxScroll <= 1);
+      readTarget();
+    }
+
+    function readTarget() {
+      target = maxScroll > 0 ? Math.min(1, Math.max(0, getTop() / maxScroll)) : 0;
+    }
+
+    function schedule() {
+      if (!raf) { lastT = 0; raf = requestAnimationFrame(frame); }
+    }
+
+    function frame(t) {
+      raf = 0;
+      readTarget();
+      var dt = lastT ? Math.min(50, t - lastT) : 16;
+      lastT = t;
+      var diffPx = (target - cur) * travel;
+
+      if (dragging) {
+        cur = target;
+      } else if (Math.abs(diffPx) < 0.15) {
+        cur = target;
+      } else {
+        cur += (target - cur) * (1 - Math.exp(-dt / 70));
+      }
+
+      curY = cur * travel;
+      bus.style.transform = 'translate3d(0,' + curY.toFixed(2) + 'px,0)';
+      fill.style.transform = 'scaleY(' + (travel > 0 ? Math.min(1, (curY + busH * 0.5) / laneH) : 0).toFixed(4) + ')';
+
+      var deg = (curY / wheelPx) * 57.29578;
+      var a = (facingUp ? -deg : deg).toFixed(2);
+      for (var i = 0; i < wheels.length; i++) {
+        var w = wheels[i];
+        w.setAttribute('transform', 'rotate(' + a + ' ' + w.getAttribute('data-cx') + ' ' + w.getAttribute('data-cy') + ')');
+      }
+
+      var dy = curY - prevY;
+      if (dy > 0.3 && facingUp) { facingUp = false; rail.classList.remove('rbs--up'); }
+      else if (dy < -0.3 && !facingUp) { facingUp = true; rail.classList.add('rbs--up'); }
+      prevY = curY;
+
+      var isMoving = Math.abs(dy) > 0.05 || Math.abs(target - cur) * travel > 0.15;
+      if (isMoving !== moving) {
+        moving = isMoving;
+        rail.classList.toggle('rbs--moving', moving);
+      }
+
+      if (cur !== target || dragging) schedule();
+      else if (moving) { moving = false; rail.classList.remove('rbs--moving'); }
+    }
+
+    function onScroll(e) {
+      var t = e.target;
+      if (t === document || t === body || t === doc) schedule();
+    }
+    document.addEventListener('scroll', onScroll, { passive: true, capture: true });
+    window.addEventListener('scroll', schedule, { passive: true });
+
+    function onResize() { measure(); schedule(); }
+    window.addEventListener('resize', onResize, { passive: true });
+    window.addEventListener('orientationchange', onResize, { passive: true });
+    window.addEventListener('load', onResize);
+    if (window.visualViewport) visualViewport.addEventListener('resize', onResize, { passive: true });
+    if ('ResizeObserver' in window) {
+      var ro = new ResizeObserver(onResize);
+      ro.observe(doc); ro.observe(body); ro.observe(lane);
+    }
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(onResize);
+
+    var grab = 0;
+    function posToScroll(clientY) {
+      var r = lane.getBoundingClientRect();
+      var p = travel > 0 ? (clientY - grab - r.top - busH / 2) / travel : 0;
+      setTop(Math.min(1, Math.max(0, p)) * maxScroll);
+      schedule();
+    }
+    function onDown(e) {
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      measure();
+      var onBus = bus.contains(e.target);
+      if (onBus) {
+        var br = bus.getBoundingClientRect();
+        grab = e.clientY - (br.top + br.height / 2);
+      } else { grab = 0; }
+      dragging = true;
+      rail.classList.add('rbs--drag');
+      try { e.currentTarget.setPointerCapture(e.pointerId); } catch (err) {}
+      e.preventDefault();
+      posToScroll(e.clientY);
+    }
+    function onMove(e) { if (dragging) posToScroll(e.clientY); }
+    function onUp() {
+      if (!dragging) return;
+      dragging = false;
+      rail.classList.remove('rbs--drag');
+      schedule();
+    }
+    [bus, hit].forEach(function (el) {
+      el.addEventListener('pointerdown', onDown);
+      el.addEventListener('pointermove', onMove);
+      el.addEventListener('pointerup', onUp);
+      el.addEventListener('pointercancel', onUp);
+      el.addEventListener('lostpointercapture', onUp);
+    });
+
+    measure();
+    cur = target;
+    curY = prevY = cur * travel;
+    schedule();
+
+    window.__otRobotBus = { refresh: onResize };
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+})();
 </script>
 </body>
 </html>
