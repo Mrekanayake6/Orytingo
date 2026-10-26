@@ -722,7 +722,6 @@
   const layer = document.getElementById('mascot');
   if (!layer) return;
 
-  const CFG = { step: 8, idleMs: 140, particles: 10, tail: 4.5 /* x robot width */ };
   const svg = document.getElementById('mascot-trail');
   const base = document.getElementById('m-base');
   const glow = document.getElementById('m-glow');
@@ -735,6 +734,8 @@
   const NS = 'http://www.w3.org/2000/svg';
   const root = document.documentElement;
 
+  const CFG = { step: 8, idleMs: 140, particles: 10, tail: 4.5 };
+
   const dots = reduce ? [] : Array.from({ length: CFG.particles }, () => {
     const c = document.createElementNS(NS, 'circle');
     c.setAttribute('class', 'dot');
@@ -744,6 +745,7 @@
 
   let vw = 0, Wr = 0, Hr = 0, amp = 0, baseY = 0, wl = 0, x0 = 0, x1 = 0, lens = [], total = 0, maxScroll = 0;
   let cur = 0, dir = 1, lastY = 0, lastScroll = 0, lastSpawn = 0, di = 0, raf = 0, prevT = 0, running = false;
+  let hasRevealed = false;
 
   const calcMax = () => Math.max(0, root.scrollHeight - root.clientHeight);
   const readY = () => Math.min(Math.max(window.pageYOffset || root.scrollTop || 0, 0), maxScroll);
@@ -751,17 +753,50 @@
   const slopeAt = (x) => -amp * Math.cos(((x - x0) / wl) * Math.PI * 2) * (Math.PI * 2 / wl);
   const targetX = () => x0 + (maxScroll ? readY() / maxScroll : 0) * (x1 - x0);
 
+  /* [LOADER FIX] පිටුව සම්පූර්ණයෙන්ම load වී loader එක අයින් වූ පසු පමණක් robot පෙන්වීම */
+  function revealMascot() {
+    if (hasRevealed) return;
+    if (root.classList.contains('page-loading')) {
+      const observer = new MutationObserver(() => {
+        if (!root.classList.contains('page-loading')) {
+          observer.disconnect();
+          hasRevealed = true;
+          setTimeout(() => layer.classList.add('ready'), 180);
+        }
+      });
+      observer.observe(root, { attributes: true, attributeFilter: ['class'] });
+
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          if (!hasRevealed) {
+            hasRevealed = true;
+            layer.classList.add('ready');
+          }
+        }, 300);
+      }, { once: true });
+    } else {
+      hasRevealed = true;
+      setTimeout(() => layer.classList.add('ready'), 100);
+    }
+  }
+
   function build() {
-    vw = layer.clientWidth;
+    vw = layer.clientWidth || window.innerWidth;
     Wr = robot.offsetWidth || 26;
     Hr = robot.offsetHeight || 29;
     maxScroll = calcMax();
-    amp = Math.max(2, Wr * 0.1);
+
+    const isSmall = vw < 640;
+    // Mobile smooth wave amplitude & tail scaling
+    amp = isSmall ? Math.max(1.4, Wr * 0.075) : Math.max(2, Wr * 0.1);
+    CFG.tail = isSmall ? 3.5 : 4.5;
+    CFG.idleMs = isSmall ? 180 : 140;
+
     baseY = Hr * 0.96 + amp + 1;
     layer.style.height = Math.ceil(baseY + amp + 3) + 'px';
     x0 = Wr * 0.6 + 4;
     x1 = Math.max(x0 + 40, vw - Wr * 0.6 - 4);
-    wl = Math.max(160, (x1 - x0) / 2.2);
+    wl = Math.max(140, (x1 - x0) / 2.2);
 
     let d = '', acc = 0, px, py;
     lens = [];
@@ -780,6 +815,8 @@
     lastY = readY();
     cur = targetX();
     render(true);
+
+    revealMascot();
   }
 
   function sync() {
@@ -799,9 +836,9 @@
     c.setAttribute('cy', y - 1);
     c.setAttribute('r', 0.9 + Math.random() * 1.1);
     c.animate([
-      { opacity: 0.85, transform: 'translate(0,0)' },
-      { opacity: 0, transform: `translate(${-dir * (8 + Math.random() * 10)}px,${-Math.random() * 7}px)` }
-    ], { duration: 600, easing: 'ease-out' });
+      { opacity: 0.85, transform: 'translate3d(0,0,0)' },
+      { opacity: 0, transform: `translate3d(${-dir * (7 + Math.random() * 8)}px,${-Math.random() * 6}px,0)` }
+    ], { duration: 550, easing: 'ease-out' });
   }
 
   function render(force) {
@@ -821,9 +858,13 @@
     const dt = Math.min(0.05, (t - prevT) / 1000 || 0.016);
     prevT = t;
     const target = targetX();
-    cur += (target - cur) * (1 - Math.exp(-dt * 14));
+
+    // Mobile butter-smooth lerp rate
+    const lerpSpeed = vw < 640 ? 11 : 13.5;
+    cur += (target - cur) * (1 - Math.exp(-dt * lerpSpeed));
     if (Math.abs(target - cur) < 0.15) cur = target;
-    const moving = t - lastScroll < CFG.idleMs || Math.abs(target - cur) > 1;
+
+    const moving = t - lastScroll < CFG.idleMs || Math.abs(target - cur) > 0.8;
     if (moving !== running) {
       running = moving;
       robot.classList.toggle('run', running);
@@ -842,7 +883,8 @@
 
   window.addEventListener('scroll', () => {
     const y = readY(), dy = y - lastY;
-    if (Math.abs(dy) >= 0.5) {
+    // Deadband threshold 1.2px avoids touch micro-jitter direction changes on mobile
+    if (Math.abs(dy) >= 1.2) {
       dir = dy > 0 ? 1 : -1;
       lastY = y;
       lastScroll = performance.now();
