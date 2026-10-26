@@ -938,8 +938,8 @@
 
 /* =========================================================
    [NEW ANIMATION / අලුතින් එක් කළ කොටස]
-   ORYTINGO – Robot Bus Scrollbar Logic
-   (පිටුවේ දකුණු පසින් Scroll කරද්දී රෝද කැරකෙමින් දිවෙන Robot Bus Scrollbar එක)
+   ORYTINGO – Robot Train Engine & Railway Road Scrollbar Logic
+   (පිටුවේ දකුණු පසින් Scroll කරද්දී රෝද කැරකෙමින් දුම් දමමින් දිවෙන Robot Train Engine Scrollbar එක)
    ========================================================= */
 (function () {
   'use strict';
@@ -951,57 +951,94 @@
     '<svg class="rbs-svg" viewBox="0 0 32 60" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">' +
     '<defs>' +
       '<linearGradient id="rbs-body" x1="0" y1="0" x2="0" y2="1">' +
-        '<stop offset="0" stop-color="#3a3f48"/><stop offset="0.45" stop-color="#1c1f25"/><stop offset="1" stop-color="#0b0c0f"/>' +
+        '<stop offset="0" stop-color="#3c424c"/><stop offset="0.45" stop-color="#1b1e24"/><stop offset="1" stop-color="#0a0c0f"/>' +
+      '</linearGradient>' +
+      '<linearGradient id="rbs-boiler" x1="0" y1="0" x2="0" y2="1">' +
+        '<stop offset="0" stop-color="#555d6b"/><stop offset="0.5" stop-color="#242830"/><stop offset="1" stop-color="#0e1014"/>' +
       '</linearGradient>' +
       '<linearGradient id="rbs-glass" x1="0" y1="0" x2="1" y2="1">' +
-        '<stop offset="0" stop-color="#1b2a3a"/><stop offset="1" stop-color="#05080c"/>' +
+        '<stop offset="0" stop-color="#24384d"/><stop offset="1" stop-color="#070c12"/>' +
       '</linearGradient>' +
       '<radialGradient id="rbs-glowg" cx="0.5" cy="0.5" r="0.5">' +
-        '<stop offset="0" class="rbs-stop-accent" stop-opacity="0.55"/>' +
+        '<stop offset="0" class="rbs-stop-accent" stop-opacity="0.6"/>' +
         '<stop offset="1" class="rbs-stop-accent" stop-opacity="0"/>' +
       '</radialGradient>' +
       '<linearGradient id="rbs-beamg" x1="0" y1="0" x2="1" y2="0">' +
-        '<stop offset="0" stop-color="#ffd9a8" stop-opacity="0.9"/><stop offset="1" stop-color="#ffd9a8" stop-opacity="0"/>' +
+        '<stop offset="0" stop-color="#fff0d4" stop-opacity="0.95"/><stop offset="1" stop-color="#ffd9a8" stop-opacity="0"/>' +
       '</linearGradient>' +
       '<radialGradient id="rbs-rim" cx="0.5" cy="0.5" r="0.5">' +
-        '<stop offset="0" stop-color="#555b66"/><stop offset="1" stop-color="#262a31"/>' +
+        '<stop offset="0" stop-color="#67707e"/><stop offset="0.8" stop-color="#282d35"/><stop offset="1" stop-color="#ff813e"/>' +
       '</radialGradient>' +
     '</defs>' +
     '<g transform="translate(32 0) rotate(90)">' +
+      /* Ambient track/engine glow */
       '<ellipse class="rbs-glow" cx="30" cy="16" rx="30" ry="16" fill="url(#rbs-glowg)"/>' +
-      '<path class="rbs-beam" d="M52 17 L60 14 L60 22 Z" fill="url(#rbs-beamg)"/>' +
-      '<line x1="26" y1="6" x2="26" y2="2.6" stroke="#4a505b" stroke-width="0.8" stroke-linecap="round"/>' +
-      '<circle class="rbs-accent rbs-beacon" cx="26" cy="2" r="1.3"/>' +
-      '<rect x="4" y="5.5" width="48" height="20" rx="6" fill="url(#rbs-body)" stroke="#444a54" stroke-width="0.5"/>' +
-      '<rect x="9" y="5.5" width="30" height="1.6" rx="0.8" fill="#0a0b0e"/>' +
-      '<rect x="8" y="9" width="9.5" height="7" rx="1.8" fill="url(#rbs-glass)"/>' +
-      '<rect x="19" y="9" width="9.5" height="7" rx="1.8" fill="url(#rbs-glass)"/>' +
-      '<rect x="30" y="9" width="9.5" height="7" rx="1.8" fill="url(#rbs-glass)"/>' +
-      '<path d="M9 10 L13 10 L10.5 15 L9 15 Z" fill="#fff" opacity="0.06"/>' +
-      '<rect x="42" y="8" width="8.4" height="10" rx="2.4" fill="#06080b" stroke="var(--rbs-accent)" stroke-width="0.5" class="rbs-accent-line"/>' +
-      '<circle class="rbs-accent rbs-eye" cx="44.7" cy="11.2" r="1.25"/>' +
-      '<circle class="rbs-accent rbs-eye" cx="48.1" cy="11.2" r="1.25"/>' +
-      '<path d="M44.2 14.6 Q46.4 16.6 48.6 14.6" fill="none" stroke-width="0.7" stroke-linecap="round" class="rbs-accent-line"/>' +
-      '<rect x="4" y="19.4" width="48" height="2.6" fill="#0d0f13"/>' +
-      '<circle class="rbs-light" cx="23" cy="20.7" r="0.9"/>' +
-      '<circle class="rbs-light rbs-l2" cx="27.5" cy="20.7" r="0.9"/>' +
-      '<circle class="rbs-light rbs-l3" cx="32" cy="20.7" r="0.9"/>' +
-      '<rect x="50.6" y="16.6" width="2.4" height="3.2" rx="1" fill="#ffe2bd"/>' +
-      '<rect x="3.2" y="12.5" width="1.6" height="4.5" rx="0.8" class="rbs-accent"/>' +
-      '<circle cx="14" cy="26" r="5.6" fill="#050608"/>' +
-      '<circle cx="42" cy="26" r="5.6" fill="#050608"/>' +
-      wheel('rbs-wheel', 14, 26) +
-      wheel('rbs-wheel', 42, 26) +
+      /* Powerful locomotive headlight beam */
+      '<path class="rbs-beam" d="M53 14 L68 9 L68 19 Z" fill="url(#rbs-beamg)"/>' +
+      /* Steam puffs from chimney */
+      '<ellipse class="rbs-steam rbs-steam-1" cx="44" cy="1" rx="2.4" ry="1.6" fill="#fff"/>' +
+      '<ellipse class="rbs-steam rbs-steam-2" cx="42" cy="-2.5" rx="3.5" ry="2" fill="#fff"/>' +
+      /* Chimney / Smokestack */
+      '<rect x="42" y="3.2" width="4.8" height="4.5" rx="0.8" fill="#1b1e24" stroke="#444a54" stroke-width="0.5"/>' +
+      '<ellipse cx="44.4" cy="3.2" rx="3.2" ry="1" class="rbs-accent"/>' +
+      /* Brass steam dome / whistle */
+      '<path d="M26 4.5 Q28 2.5 30 4.5 L30 7.5 L26 7.5 Z" fill="var(--rbs-accent)" opacity="0.85"/>' +
+      /* Cab roof curved overhang */
+      '<rect x="3" y="2.5" width="16" height="2" rx="1" fill="#20242b" stroke="var(--rbs-accent)" stroke-width="0.5"/>' +
+      /* Engineer Cab (driver cabin) */
+      '<rect x="4" y="4" width="14" height="20" rx="3" fill="url(#rbs-body)" stroke="#444a54" stroke-width="0.5"/>' +
+      /* Cab window with Robot driver face */
+      '<rect x="6" y="6.5" width="9.5" height="7.5" rx="1.8" fill="url(#rbs-glass)"/>' +
+      '<circle class="rbs-accent rbs-eye" cx="8.8" cy="9.8" r="1.15"/>' +
+      '<circle class="rbs-accent rbs-eye" cx="12.8" cy="9.8" r="1.15"/>' +
+      '<path d="M8.5 12 Q10.8 13.5 13 12" fill="none" stroke-width="0.7" stroke-linecap="round" class="rbs-accent-line"/>' +
+      /* Cylindrical Locomotive Boiler Body */
+      '<rect x="17" y="6.8" width="33" height="17.2" rx="3" fill="url(#rbs-boiler)" stroke="#444a54" stroke-width="0.5"/>' +
+      /* Brass / orange boiler bands */
+      '<line x1="26" y1="6.8" x2="26" y2="24" stroke="var(--rbs-accent)" stroke-width="0.8" opacity="0.75"/>' +
+      '<line x1="36" y1="6.8" x2="36" y2="24" stroke="var(--rbs-accent)" stroke-width="0.8" opacity="0.75"/>' +
+      '<line x1="46" y1="6.8" x2="46" y2="24" stroke="var(--rbs-accent)" stroke-width="0.8" opacity="0.75"/>' +
+      /* Running board / chassis base */
+      '<rect x="2" y="22" width="52" height="3" fill="#0d0f13" rx="1"/>' +
+      '<circle class="rbs-light" cx="21" cy="23.5" r="0.8"/>' +
+      '<circle class="rbs-light rbs-l2" cx="31" cy="23.5" r="0.8"/>' +
+      '<circle class="rbs-light rbs-l3" cx="41" cy="23.5" r="0.8"/>' +
+      /* Cowcatcher / Front Pilot wedge */
+      '<polygon points="50,15 57,18.5 57,25 50,25" fill="#14181f" stroke="var(--rbs-accent)" stroke-width="0.6"/>' +
+      '<line x1="51.5" y1="18" x2="56" y2="23" stroke="var(--rbs-accent)" stroke-width="0.5"/>' +
+      '<line x1="51.5" y1="21" x2="54" y2="24" stroke="var(--rbs-accent)" stroke-width="0.5"/>' +
+      /* Big Cyclops Train Lantern Headlight */
+      '<rect x="49.5" y="10.5" width="3" height="6.5" rx="1.2" fill="#1b1e24" stroke="var(--rbs-accent)" stroke-width="0.6"/>' +
+      '<circle cx="51" cy="13.7" r="2.2" fill="#fff2de"/>' +
+      /* Wheel arch cutouts */
+      '<circle cx="14" cy="25.5" r="5.6" fill="#050608"/>' +
+      '<circle cx="28" cy="25.5" r="5.6" fill="#050608"/>' +
+      '<circle cx="42" cy="25.5" r="5.6" fill="#050608"/>' +
+      /* 3 rotating train wheels with spokes and steel rims */
+      wheel('rbs-wheel', 14, 25.5) +
+      wheel('rbs-wheel', 28, 25.5) +
+      wheel('rbs-wheel', 42, 25.5) +
+      /* Connecting / Side Coupling Rod across all 3 driving wheels */
+      '<line class="rbs-rod" x1="14" y1="25.5" x2="42" y2="25.5" stroke="var(--rbs-accent)" stroke-width="1.6" stroke-linecap="round"/>' +
+      '<circle cx="14" cy="25.5" r="1.1" fill="#ffe2bd"/>' +
+      '<circle cx="28" cy="25.5" r="1.1" fill="#ffe2bd"/>' +
+      '<circle cx="42" cy="25.5" r="1.1" fill="#ffe2bd"/>' +
     '</g>' +
     '</svg>';
 
   function wheel(cls, cx, cy) {
     return '<g class="' + cls + '" data-cx="' + cx + '" data-cy="' + cy + '">' +
-      '<circle cx="' + cx + '" cy="' + cy + '" r="4.6" fill="#14171c" stroke="#30353d" stroke-width="0.6"/>' +
-      '<circle cx="' + cx + '" cy="' + cy + '" r="2.9" fill="url(#rbs-rim)"/>' +
-      '<path d="M' + cx + ' ' + (cy - 2.9) + 'V' + (cy + 2.9) + 'M' + (cx - 2.9) + ' ' + cy + 'H' + (cx + 2.9) +
-        '" stroke="var(--rbs-accent)" stroke-width="0.7" stroke-linecap="round" class="rbs-accent-line" fill="none"/>' +
-      '<circle cx="' + cx + '" cy="' + cy + '" r="0.9" fill="#0a0b0d"/>' +
+      /* Outer train wheel flange */
+      '<circle cx="' + cx + '" cy="' + cy + '" r="5.2" fill="#0f1115" stroke="#3d4450" stroke-width="0.5"/>' +
+      /* Inner steel tyre / rim */
+      '<circle cx="' + cx + '" cy="' + cy + '" r="4.2" fill="url(#rbs-rim)"/>' +
+      /* Train wheel spokes */
+      '<path d="M' + cx + ' ' + (cy - 3.8) + 'V' + (cy + 3.8) + 'M' + (cx - 3.8) + ' ' + cy + 'H' + (cx + 3.8) +
+        'M' + (cx - 2.6) + ' ' + (cy - 2.6) + 'L' + (cx + 2.6) + ' ' + (cy + 2.6) +
+        'M' + (cx - 2.6) + ' ' + (cy + 2.6) + 'L' + (cx + 2.6) + ' ' + (cy - 2.6) +
+        '" stroke="var(--rbs-accent)" stroke-width="0.6" stroke-linecap="round" class="rbs-accent-line" fill="none"/>' +
+      /* Axle pin */
+      '<circle cx="' + cx + '" cy="' + cy + '" r="1.1" fill="#0a0b0d"/>' +
     '</g>';
   }
 
@@ -1177,4 +1214,4 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
 })();
-/* ============ /ROBOT BUS SCROLLBAR JS ============ */
+/* ============ /ROBOT TRAIN SCROLLBAR JS ============ */

@@ -3056,8 +3056,8 @@ html:not(.page-loading) #mascot.ready,
 
 /* =========================================================
    [NEW ANIMATION / අලුතින් එක් කළ කොටස]
-   ORYTINGO – Robot Bus Scrollbar Styles
-   (පිටුවේ දකුණු පසින් දිවෙන Robot Bus Scrollbar එකේ CSS කොටස)
+   ORYTINGO – Robot Train Engine & Railway Road Scrollbar Styles
+   (පිටුවේ දකුණු පසින් දිවෙන Robot Train Engine සහ Railway Road Scrollbar එකේ CSS කොටස)
    ========================================================= */
 
 /* Hide native scrollbars cleanly */
@@ -3120,26 +3120,42 @@ html.page-loading .rbs-rail {
   width: 100%;
 }
 
-/* ---------- Track (the "road") ---------- */
+/* ---------- Track (Railway Road / Steel Rails & Ties) ---------- */
 .rbs-track {
   position: absolute;
   top: 0;
   bottom: 0;
-  left: 0;
-  width: 3px;
-  border-radius: 3px;
-  background: linear-gradient(90deg, #0c0e11, #232830 55%, #12151a);
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.05);
+  left: 2px;
+  width: 14px;
+  border-radius: 2px;
+  /* Dual steel rails + railroad sleepers/ties pattern */
+  background-image:
+    /* Left steel rail */
+    linear-gradient(90deg, #4f5866 0px, #a6b5ca 1.5px, #262c35 2.5px, transparent 2.5px),
+    /* Right steel rail */
+    linear-gradient(90deg, transparent 11.5px, #4f5866 11.5px, #a6b5ca 12.5px, #262c35 14px),
+    /* Repeating railroad ties / sleepers */
+    repeating-linear-gradient(180deg,
+      transparent 0px,
+      transparent 7px,
+      #14171d 7px,
+      #2d333e 8.5px,
+      #171a20 11.5px,
+      transparent 11.5px,
+      transparent 15px
+    );
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.7);
   overflow: hidden;
 }
-/* Orange trail showing how far the bus has driven */
+/* Orange trail showing energy flowing through the railway */
 .rbs-fill {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(255, 129, 62, 0.15), var(--rbs-accent));
+  background: linear-gradient(180deg, rgba(255, 129, 62, 0.25), var(--rbs-accent));
   transform-origin: 50% 0;
   transform: scaleY(0);
   will-change: transform;
+  opacity: 0.65;
 }
 
 /* Wider invisible strip so the road is easy to click (mouse only) */
@@ -3154,7 +3170,7 @@ html.page-loading .rbs-rail {
   cursor: pointer;
 }
 
-/* ---------- The bus ---------- */
+/* ---------- The train engine ---------- */
 .rbs-bus {
   position: absolute;
   top: 0;
@@ -3191,7 +3207,7 @@ html.page-loading .rbs-rail {
 }
 .rbs--moving .rbs-glow { opacity: 0.8; }
 
-/* Running lights chasing along the belt line */
+/* Running lights chasing along the train body */
 .rbs-light {
   fill: var(--rbs-accent);
   opacity: 0.35;
@@ -3206,12 +3222,32 @@ html.page-loading .rbs-rail {
   40%      { opacity: 1; }
 }
 
-/* Antenna beacon + friendly eye blink */
-.rbs-beacon { animation: rbs-beacon 2.4s ease-in-out infinite; }
-@keyframes rbs-beacon {
-  0%, 100% { opacity: 0.35; }
-  50%      { opacity: 1; }
+/* Steam smoke puff from train chimney */
+.rbs-steam {
+  opacity: 0.2;
+  transform-origin: 44px 0px;
+  animation: rbs-puff 1.5s ease-in-out infinite;
 }
+.rbs-steam-2 {
+  animation-delay: 0.5s;
+  opacity: 0.12;
+}
+.rbs--moving .rbs-steam {
+  animation-duration: 0.65s;
+  opacity: 0.55;
+}
+@keyframes rbs-puff {
+  0%, 100% {
+    transform: translateY(0) scale(0.9);
+    opacity: 0.2;
+  }
+  50% {
+    transform: translateY(-2.2px) scale(1.3);
+    opacity: 0.6;
+  }
+}
+
+/* Friendly robot driver eye blink */
 .rbs-eye {
   -webkit-transform-box: fill-box;
   transform-box: fill-box;
@@ -3224,7 +3260,7 @@ html.page-loading .rbs-rail {
   97%           { transform: scaleY(0.1); }
 }
 
-/* Headlight beam only while driving */
+/* Train headlight beam only while driving */
 .rbs-beam { opacity: 0.25; transition: opacity 0.3s ease; }
 .rbs--moving .rbs-beam { opacity: 0.95; }
 
@@ -3233,10 +3269,25 @@ html.page-loading .rbs-rail {
   .rbs-rail { --rbs-w: 24px; --rbs-bus-w: 22px; --rbs-pad: 6px; }
 }
 @media (max-width: 600px) {
-  .rbs-rail { --rbs-w: 19px; --rbs-bus-w: 17px; --rbs-pad: 4px; }
+  .rbs-rail { --rbs-w: 20px; --rbs-bus-w: 18px; --rbs-pad: 4px; }
+  .rbs-track {
+    width: 11px;
+    background-image:
+      linear-gradient(90deg, #4f5866 0px, #a6b5ca 1px, #262c35 2px, transparent 2px),
+      linear-gradient(90deg, transparent 9px, #4f5866 9px, #a6b5ca 10px, #262c35 11px),
+      repeating-linear-gradient(180deg,
+        transparent 0px,
+        transparent 6px,
+        #14171d 6px,
+        #2d333e 7.5px,
+        #171a20 9.5px,
+        transparent 9.5px,
+        transparent 13px
+      );
+  }
 }
 
-/* Touch devices: only the bus itself is grabbable so edge swipes still scroll */
+/* Touch devices: only the train itself is grabbable so edge swipes still scroll */
 @media (pointer: coarse) {
   .rbs-hit { pointer-events: none; }
 }
