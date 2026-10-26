@@ -243,6 +243,18 @@
       }
     },
     {
+      name: "Adhithya Kumarasinhe",
+      role: "Software Engineer",
+      bio: "Designs and supports reliable business networks, helping organizations stay connected, secure, and ready to grow.",
+      image: "adi.jpeg",
+      focus: "50% 22%",
+      social: {
+        linkedin: "",
+        github: "",
+        facebook: ""
+      }
+    },
+    {
       name: "Avishka Wijekoon",
       role: "Software Engineer",
       bio: "Builds reliable software solutions with a focus on clean development, practical problem solving, and maintainable systems.",
@@ -256,9 +268,22 @@
     },
     {
       name: "Hasitha Sudasinghe",
-      role: "Networking Engineer",
+      role: "Software Engineer",
       bio: "Designs and supports reliable business networks, helping organizations stay connected, secure, and ready to grow.",
       image: "hasitha.jpeg",
+      focus: "50% 22%",
+      social: {
+        linkedin: "",
+        github: "",
+        facebook: ""
+      }
+    },
+
+    {
+      name: "Isuru Sandaruwan",
+      role: "Networking Engineer",
+      bio: "Designs and supports reliable business networks, helping organizations stay connected, secure, and ready to grow.",
+      image: "isuru.jpeg",
       focus: "50% 22%",
       social: {
         linkedin: "",
