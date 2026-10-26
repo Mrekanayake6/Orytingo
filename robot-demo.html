@@ -335,33 +335,32 @@ body::-webkit-scrollbar {
   position: absolute;
   top: 0;
   bottom: 0;
-  left: 2px;
-  width: 14px;
-  border-radius: 2px;
-  /* Dual steel rails + railroad sleepers/ties pattern */
+  left: 0;
+  width: 3px;
+  border-radius: 3px;
+  /* Single Steel Railway Rail with metallic sheen & subtle rail joints */
   background-image:
-    linear-gradient(90deg, #4f5866 0px, #a6b5ca 1.5px, #262c35 2.5px, transparent 2.5px),
-    linear-gradient(90deg, transparent 11.5px, #4f5866 11.5px, #a6b5ca 12.5px, #262c35 14px),
+    /* Subtle periodic rail joint / sleeper fastener notches */
     repeating-linear-gradient(180deg,
       transparent 0px,
-      transparent 7px,
-      #14171d 7px,
-      #2d333e 8.5px,
-      #171a20 11.5px,
-      transparent 11.5px,
+      transparent 11px,
+      rgba(255, 255, 255, 0.16) 11px,
+      rgba(0, 0, 0, 0.5) 13px,
       transparent 15px
-    );
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.7);
+    ),
+    /* Polished steel rail metallic crown gradient */
+    linear-gradient(90deg, #2d323b 0%, #6e7a8c 45%, #46505e 70%, #15181e 100%);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.05), 0 0 4px rgba(0, 0, 0, 0.5);
   overflow: hidden;
 }
 .rbs-fill {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(255, 122, 26, 0.25), var(--rbs-accent));
+  background: linear-gradient(180deg, rgba(255, 122, 26, 0.2), var(--rbs-accent));
   transform-origin: 50% 0;
   transform: scaleY(0);
   will-change: transform;
-  opacity: 0.65;
+  box-shadow: 0 0 4px var(--rbs-accent-soft);
 }
 .rbs-hit {
   position: absolute;
