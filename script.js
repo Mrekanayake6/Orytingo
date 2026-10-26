@@ -730,13 +730,11 @@
 
   const flip = robot.querySelector('.flip');
   const tilt = robot.querySelector('.tilt');
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const NS = 'http://www.w3.org/2000/svg';
   const root = document.documentElement;
-
   const CFG = { step: 8, idleMs: 140, particles: 10, tail: 4.5 };
 
-  const dots = reduce ? [] : Array.from({ length: CFG.particles }, () => {
+  const dots = Array.from({ length: CFG.particles }, () => {
     const c = document.createElementNS(NS, 'circle');
     c.setAttribute('class', 'dot');
     svg.appendChild(c);

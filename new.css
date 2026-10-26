@@ -3052,8 +3052,5 @@ html:not(.page-loading) #mascot.ready,
   #robot, #mascot-trail .glow { filter: none; }
   #mascot-trail .glow { stroke-width: 2.2; }
 }
-@media (prefers-reduced-motion: reduce) {
-  #robot.run * { animation: none !important; -webkit-animation: none !important; }
-}
 /* ============ /MASCOT CSS ============ */
 

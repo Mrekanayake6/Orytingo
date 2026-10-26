@@ -286,9 +286,6 @@ p{color:var(--muted);max-width:52ch;margin:0 0 20px}
 @media (max-width: 768px) { #robot { --size: 22px; } :root { --lane: 32px; } }
 @media (max-width: 480px) { #robot { --size: 19px; } :root { --lane: 28px; } }
 @media (hover: none), (pointer: coarse) { #robot, #mascot-trail .glow { filter: none; } #mascot-trail .glow { stroke-width: 2.2; } }
-@media (prefers-reduced-motion: reduce) {
-  #robot.run * { animation: none !important; -webkit-animation: none !important; }
-}
 /* ============ /MASCOT CSS ============ */
 </style>
 </head>
@@ -416,11 +413,10 @@ p{color:var(--muted);max-width:52ch;margin:0 0 20px}
   const $ = (s) => document.querySelector(s);
   const layer = $('#mascot'), svg = $('#mascot-trail'), base = $('#m-base'), glow = $('#m-glow');
   const robot = $('#robot'), flip = robot.querySelector('.flip'), tilt = robot.querySelector('.tilt');
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const NS = 'http://www.w3.org/2000/svg';
   const root = document.documentElement;
 
-  const dots = reduce ? [] : Array.from({ length: CFG.particles }, () => {
+  const dots = Array.from({ length: CFG.particles }, () => {
     const c = document.createElementNS(NS, 'circle'); c.setAttribute('class', 'dot'); svg.appendChild(c); return c;
   });
 
