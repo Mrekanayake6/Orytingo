@@ -712,3 +712,164 @@
   /* START AUTO-PLAY */
   startAutoPlay();
 })();
+
+/* ============================================================
+   [NEW ANIMATION / අලුතින් එක් කළ කොටස]
+   Top-edge Robot Mascot Scroll Animation Logic
+   (පිටුව scroll කරද්දී Robot Mascot එක smoothව දුවන JavaScript කොටස)
+============================================================ */
+(() => {
+  const layer = document.getElementById('mascot');
+  if (!layer) return;
+
+  const CFG = { step: 8, idleMs: 140, particles: 10, tail: 4.5 /* x robot width */ };
+  const svg = document.getElementById('mascot-trail');
+  const base = document.getElementById('m-base');
+  const glow = document.getElementById('m-glow');
+  const robot = document.getElementById('robot');
+  if (!svg || !base || !glow || !robot) return;
+
+  const flip = robot.querySelector('.flip');
+  const tilt = robot.querySelector('.tilt');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const NS = 'http://www.w3.org/2000/svg';
+  const root = document.documentElement;
+
+  const dots = reduce ? [] : Array.from({ length: CFG.particles }, () => {
+    const c = document.createElementNS(NS, 'circle');
+    c.setAttribute('class', 'dot');
+    svg.appendChild(c);
+    return c;
+  });
+
+  let vw = 0, Wr = 0, Hr = 0, amp = 0, baseY = 0, wl = 0, x0 = 0, x1 = 0, lens = [], total = 0, maxScroll = 0;
+  let cur = 0, dir = 1, lastY = 0, lastScroll = 0, lastSpawn = 0, di = 0, raf = 0, prevT = 0, running = false;
+
+  const calcMax = () => Math.max(0, root.scrollHeight - root.clientHeight);
+  const readY = () => Math.min(Math.max(window.pageYOffset || root.scrollTop || 0, 0), maxScroll);
+  const yAt = (x) => baseY - amp * Math.sin(((x - x0) / wl) * Math.PI * 2);
+  const slopeAt = (x) => -amp * Math.cos(((x - x0) / wl) * Math.PI * 2) * (Math.PI * 2 / wl);
+  const targetX = () => x0 + (maxScroll ? readY() / maxScroll : 0) * (x1 - x0);
+
+  function build() {
+    vw = layer.clientWidth;
+    Wr = robot.offsetWidth || 26;
+    Hr = robot.offsetHeight || 29;
+    maxScroll = calcMax();
+    amp = Math.max(2, Wr * 0.1);
+    baseY = Hr * 0.96 + amp + 1;
+    layer.style.height = Math.ceil(baseY + amp + 3) + 'px';
+    x0 = Wr * 0.6 + 4;
+    x1 = Math.max(x0 + 40, vw - Wr * 0.6 - 4);
+    wl = Math.max(160, (x1 - x0) / 2.2);
+
+    let d = '', acc = 0, px, py;
+    lens = [];
+    for (let x = x0; ; x += CFG.step) {
+      const xx = Math.min(x, x1), y = yAt(xx);
+      if (px !== undefined) acc += Math.hypot(xx - px, y - py);
+      d += (d ? 'L' : 'M') + xx.toFixed(1) + ' ' + y.toFixed(1);
+      lens.push(acc);
+      px = xx;
+      py = y;
+      if (xx >= x1) break;
+    }
+    total = acc;
+    base.setAttribute('d', d);
+    glow.setAttribute('d', d);
+    lastY = readY();
+    cur = targetX();
+    render(true);
+  }
+
+  function sync() {
+    if (!lens.length || layer.clientWidth !== vw || robot.offsetWidth !== Wr) return build();
+    maxScroll = calcMax();
+    if (!running) {
+      cur = targetX();
+      render(true);
+    }
+  }
+
+  function spawn(x, y, now) {
+    if (!dots.length || now - lastSpawn < 70) return;
+    lastSpawn = now;
+    const c = dots[di++ % dots.length];
+    c.setAttribute('cx', x - dir * Wr * 0.3);
+    c.setAttribute('cy', y - 1);
+    c.setAttribute('r', 0.9 + Math.random() * 1.1);
+    c.animate([
+      { opacity: 0.85, transform: 'translate(0,0)' },
+      { opacity: 0, transform: `translate(${-dir * (8 + Math.random() * 10)}px,${-Math.random() * 7}px)` }
+    ], { duration: 600, easing: 'ease-out' });
+  }
+
+  function render(force) {
+    const y = yAt(cur);
+    robot.style.transform = `translate3d(${(cur - Wr / 2).toFixed(1)}px,${(y - Hr * 0.96).toFixed(1)}px,0)`;
+    if (flip) flip.style.setProperty('--face', dir);
+    if (tilt) tilt.style.transform = `rotate(${(Math.atan(slopeAt(cur)) * 57.3).toFixed(1)}deg)`;
+    const i = Math.min(lens.length - 1, Math.max(0, Math.round((cur - x0) / CFG.step)));
+    const l = lens[i] || 0, t = Wr * CFG.tail;
+    const start = dir > 0 ? Math.max(0, l - t) : l;
+    const len = dir > 0 ? l - start : Math.min(t, total - l);
+    glow.style.strokeDasharray = `0 ${start} ${len} ${total + 10}`;
+    if (!force && running) spawn(cur, y, performance.now());
+  }
+
+  function frame(t) {
+    const dt = Math.min(0.05, (t - prevT) / 1000 || 0.016);
+    prevT = t;
+    const target = targetX();
+    cur += (target - cur) * (1 - Math.exp(-dt * 14));
+    if (Math.abs(target - cur) < 0.15) cur = target;
+    const moving = t - lastScroll < CFG.idleMs || Math.abs(target - cur) > 1;
+    if (moving !== running) {
+      running = moving;
+      robot.classList.toggle('run', running);
+      layer.classList.toggle('run', running);
+    }
+    render();
+    raf = (running || cur !== target) ? requestAnimationFrame(frame) : 0;
+  }
+
+  const wake = () => {
+    if (!raf) {
+      prevT = performance.now();
+      raf = requestAnimationFrame(frame);
+    }
+  };
+
+  window.addEventListener('scroll', () => {
+    const y = readY(), dy = y - lastY;
+    if (Math.abs(dy) >= 0.5) {
+      dir = dy > 0 ? 1 : -1;
+      lastY = y;
+      lastScroll = performance.now();
+    }
+    wake();
+  }, { passive: true });
+
+  let rz = 0;
+  const onResize = () => {
+    cancelAnimationFrame(rz);
+    rz = requestAnimationFrame(() => {
+      sync();
+      wake();
+    });
+  };
+
+  window.addEventListener('resize', onResize);
+  window.addEventListener('load', onResize);
+  window.addEventListener('pageshow', onResize);
+  window.addEventListener('orientationchange', () => setTimeout(onResize, 250));
+  if (window.visualViewport) visualViewport.addEventListener('resize', onResize);
+  if ('ResizeObserver' in window) new ResizeObserver(onResize).observe(document.body);
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', build);
+  } else {
+    build();
+  }
+})();
+/* ============ /MASCOT JS ============ */

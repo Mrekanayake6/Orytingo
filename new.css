@@ -2840,3 +2840,150 @@ body {
   max-width: 100%;
   overflow-x: clip;
 }
+
+/* ============================================================
+   [NEW ANIMATION / අලුතින් එක් කළ කොටස]
+   Top-edge Robot Mascot Scroll Animation Styles
+   (පිටුව scroll කරද්දී උඩින් දුවන Robot Mascot Animation එකේ CSS කොටස)
+============================================================ */
+:root {
+  --lane: 38px;
+}
+@media (max-width: 719px) {
+  :root { --lane: 33px; }
+  #robot { --size: 22px !important; }
+}
+@media (max-width: 479px) {
+  :root { --lane: 30px; }
+  #robot { --size: 20px !important; }
+}
+
+#mascot {
+  position: fixed;
+  top: env(safe-area-inset-top, 0px);
+  left: env(safe-area-inset-left, 0px);
+  right: env(safe-area-inset-right, 0px);
+  height: 38px;
+  z-index: 2147483000;
+  pointer-events: none;
+  overflow: hidden;
+  contain: layout paint;
+  transform: translateZ(0);
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+#mascot * {
+  pointer-events: none;
+}
+#mascot-trail {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+#mascot-trail .base {
+  fill: none;
+  stroke: rgba(255, 129, 62, 0.18);
+  stroke-width: 1.2;
+  stroke-dasharray: 2 7;
+  stroke-linecap: round;
+}
+#mascot-trail .glow {
+  fill: none;
+  stroke: var(--orange, #ff813e);
+  stroke-width: 2;
+  stroke-linecap: round;
+  opacity: 0;
+  transition: opacity 0.45s ease;
+  filter: drop-shadow(0 0 4px rgba(255, 129, 62, 0.6));
+}
+#mascot.run .glow {
+  opacity: 0.75;
+}
+#mascot-trail .dot {
+  fill: var(--orange-light, #ff9c67);
+  opacity: 0;
+}
+#robot {
+  --size: 26px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--size);
+  height: calc(var(--size) * 1.125);
+  will-change: transform;
+  filter: drop-shadow(0 0 3px rgba(255, 129, 62, 0.35));
+}
+#robot .tilt {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.3s ease-out;
+}
+#robot .flip {
+  width: 100%;
+  height: 100%;
+  transform: scaleX(var(--face, 1));
+  transition: transform 0.28s cubic-bezier(0.3, 1.4, 0.5, 1);
+}
+#robot svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+#robot .px {
+  transform-box: view-box;
+}
+#robot .breath {
+  animation: mascot-breath 2.6s ease-in-out infinite;
+}
+#robot .eye {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: mascot-blink 4.2s infinite;
+}
+#robot .eye.r {
+  animation-delay: 0.02s;
+}
+#robot .core {
+  animation: mascot-pulse 1.8s ease-in-out infinite;
+}
+#robot .bulb {
+  animation: mascot-pulse 1.2s ease-in-out infinite;
+}
+
+#robot.run .breath { animation: mascot-bob 0.3s ease-in-out infinite; }
+#robot.run .thigh { animation: mascot-thigh 0.6s ease-in-out infinite; }
+#robot.run .shin { animation: mascot-shin 0.6s ease-in-out infinite; }
+#robot.run .arm { animation: mascot-arm 0.6s ease-in-out infinite; }
+
+#robot.run .thigh.l, #robot.run .shin.l, #robot.run .arm.r { animation-delay: -0.3s; }
+#robot.run .thigh.r, #robot.run .shin.r, #robot.run .arm.l { animation-delay: 0s; }
+
+#robot .thigh.l { transform-origin: 34px 66px; }
+#robot .thigh.r { transform-origin: 46px 66px; }
+#robot .shin.l { transform-origin: 34px 74px; }
+#robot .shin.r { transform-origin: 46px 74px; }
+#robot .arm.l { transform-origin: 25.5px 51px; }
+#robot .arm.r { transform-origin: 54.5px 51px; }
+
+@keyframes mascot-thigh { 0%, 100% { transform: rotate(-38deg); } 50% { transform: rotate(38deg); } }
+@keyframes mascot-shin { 0%, 100% { transform: rotate(6deg); } 30% { transform: rotate(62deg); } 60% { transform: rotate(6deg); } }
+@keyframes mascot-arm { 0%, 100% { transform: rotate(32deg); } 50% { transform: rotate(-32deg); } }
+@keyframes mascot-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-2.6px); } }
+@keyframes mascot-breath { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-1px); } }
+@keyframes mascot-blink { 0%, 94%, 100% { transform: scaleY(1); } 97% { transform: scaleY(0.1); } }
+@keyframes mascot-pulse { 0%, 100% { opacity: 0.75; } 50% { opacity: 1; } }
+
+@media (hover: none), (pointer: coarse) {
+  #robot, #mascot-trail .glow { filter: none; }
+  #mascot-trail .glow { stroke-width: 2.4; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #robot.run * { animation: none !important; }
+}
+/* ============ /MASCOT CSS ============ */
+

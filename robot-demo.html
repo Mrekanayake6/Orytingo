@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ember Labs – Top-edge robot mascot</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0d0f12; --panel:#15181d; --line:#262b33; --text:#e9ecf0; --muted:#98a0ab;
+  --orange:#ff7a1a; --orange-soft:#ffb066;
+  color-scheme:dark; box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*,*::before,*::after{box-sizing:inherit}
+
+/* ========================================================
+   [NEW ANIMATION / අලුතින් එක් කළ කොටස]
+   1. Smooth Scrolling Behavior
+   ======================================================== */
+html{
+  height:100%;
+  scroll-padding-top:calc(var(--lane, 38px) + 50px);
+  scroll-behavior: smooth;
+}
+
+body{margin:0;background:var(--bg);color:var(--text);font:400 17px/1.6 Sora,system-ui,sans-serif;overflow-x:hidden;position:relative}
+
+/* ========================================================
+   [NEW ANIMATION / අලුතින් එක් කළ කොටස]
+   2. Background Ambient Glow Pulse
+   ======================================================== */
+body::before {
+  content: "";
+  position: fixed;
+  top: -10vw;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(850px, 100vw);
+  height: min(600px, 80vh);
+  background: radial-gradient(ellipse at center, rgba(255, 122, 26, 0.08) 0%, rgba(13, 15, 18, 0) 70%);
+  pointer-events: none;
+  z-index: 0;
+  animation: ambientGlow 9s ease-in-out infinite alternate;
+}
+@keyframes ambientGlow {
+  0% { opacity: 0.5; transform: translateX(-50%) scale(0.95); }
+  100% { opacity: 1; transform: translateX(-50%) scale(1.1); }
+}
+
+.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;display:flex;align-items:center;gap:24px;height:calc(var(--lane) + 40px);padding:var(--lane) clamp(16px,5vw,64px) 0;background:rgba(13,15,18,.82);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+
+/* ========================================================
+   [NEW ANIMATION / අලුතින් එක් කළ කොටස]
+   3. Brand Logo Micro-interaction
+   ======================================================== */
+.brand{display:flex;align-items:center;gap:10px;color:var(--text);text-decoration:none;font-weight:700;font-size:18px;transition:opacity 0.25s ease}
+.brand:hover{opacity:0.95}
+.brand i{
+  width:26px;height:26px;border-radius:8px;background:linear-gradient(145deg,#ffb066,#ff7a1a);position:relative;
+  transition:transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+}
+.brand:hover i{
+  transform:rotate(12deg) scale(1.08);
+  box-shadow:0 0 16px rgba(255,122,26,0.6);
+}
+.brand i::after{content:"";position:absolute;inset:8px;border-radius:3px;background:#1a0d00}
+
+/* ========================================================
+   [NEW ANIMATION / අලුතින් එක් කළ කොටස]
+   4. Navbar Links Hover Animation
+   ======================================================== */
+.topbar nav{display:flex;gap:6px;margin-left:auto}
+.topbar nav a{
+  color:var(--muted);text-decoration:none;font-size:15px;padding:8px 14px;border-radius:8px;
+  position:relative;
+  transition:color .25s ease, background .25s ease, transform .25s ease;
+}
+.topbar nav a:hover,.topbar nav a:focus-visible{
+  color:var(--text);
+  background:rgba(255,122,26,.12);
+  transform: translateY(-1px);
+  outline:none;
+}
+
+/* ========================================================
+   [NEW ANIMATION / අලුතින් එක් කළ කොටස]
+   5. Buttons: Glow + Light Sweep / Shimmer Effect
+   ======================================================== */
+.topbar .cta{
+  background:var(--orange);color:#1a0d00;font-weight:600;font-size:14px;text-decoration:none;padding:9px 18px;border-radius:9px;
+  position:relative;overflow:hidden;
+  transition:transform .25s ease, box-shadow .25s ease, background-color .25s ease;
+}
+.topbar .cta:hover{
+  transform:translateY(-2px);
+  box-shadow:0 6px 20px rgba(255,122,26,0.38);
+}
+.topbar .cta:active{transform:translateY(0) scale(0.98)}
+
+.btn{
+  display:inline-block;background:var(--orange);color:#1a0d00;padding:13px 26px;border-radius:10px;font-weight:600;text-decoration:none;
+  position:relative;overflow:hidden;z-index:1;
+  transition:transform .25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow .25s ease;
+}
+.btn::after {
+  content:"";
+  position:absolute;
+  top:-50%;
+  left:-70%;
+  width:50%;
+  height:200%;
+  background:linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  transform:rotate(25deg);
+  pointer-events:none;
+  transition:none;
+}
+.btn:hover::after {
+  left:130%;
+  transition:left 0.75s ease-in-out;
+}
+.btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 25px rgba(255,122,26,0.42);
+}
+.btn:active{transform:translateY(0) scale(0.98)}
+
+@media (max-width:640px){.topbar nav{display:none}.topbar .cta{margin-left:auto}}
+
+section{min-height:92vh;padding:12vh clamp(20px,5vw,64px);max-width:1100px;position:relative;z-index:2}
+h1{font-size:clamp(36px,6vw,72px);line-height:1.05;margin:0 0 22px;max-width:14ch}
+h2{font-size:clamp(28px,4vw,44px);margin:0 0 14px}
+p{color:var(--muted);max-width:52ch;margin:0 0 20px}
+
+/* ========================================================
+   [NEW ANIMATION / අලුතින් එක් කළ කොටස]
+   6. Cards: 3D Hover Lift, Border Glow & Shadow
+   ======================================================== */
+.row{display:flex;gap:16px;flex-wrap:wrap;margin-top:28px}
+.row div{
+  background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px;flex:1 1 220px;max-width:300px;
+  position:relative;
+  transition:transform .35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow .35s cubic-bezier(0.16, 1, 0.3, 1), border-color .35s ease;
+  will-change:transform;
+}
+.row div:hover{
+  transform:translateY(-6px);
+  border-color:rgba(255,122,26,0.48);
+  box-shadow:0 14px 30px -8px rgba(255,122,26,0.22);
+}
+.row b{display:block;margin-bottom:6px;transition:color .25s ease}
+.row div:hover b{color:var(--orange-soft)}
+
+/* ========================================================
+   [NEW ANIMATION / අලුතින් එක් කළ කොටස]
+   7. Hero Section Load-in Animation
+   ======================================================== */
+.hero-load {
+  opacity:0;
+  transform:translateY(24px);
+  animation:heroFadeIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.hero-load.d-1 { animation-delay: 0.15s; }
+.hero-load.d-2 { animation-delay: 0.3s; }
+.hero-load.d-3 { animation-delay: 0.45s; }
+
+@keyframes heroFadeIn {
+  to {
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+/* ========================================================
+   [NEW ANIMATION / අලුතින් එක් කළ කොටස]
+   8. Scroll Reveal Animations
+   ======================================================== */
+.reveal-item {
+  opacity:0;
+  transform:translateY(32px);
+  transition:opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change:opacity, transform;
+}
+.reveal-item.revealed {
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* ============ MASCOT: CSS ============ */
+#mascot{position:fixed;top:env(safe-area-inset-top,0px);left:env(safe-area-inset-left,0px);right:env(safe-area-inset-right,0px);height:38px;z-index:2147483000;pointer-events:none;overflow:hidden;contain:layout paint;transform:translateZ(0);-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+#mascot *{pointer-events:none}
+#mascot-trail{position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible}
+#mascot-trail .base{fill:none;stroke:rgba(255,122,26,.18);stroke-width:1.2;stroke-dasharray:2 7;stroke-linecap:round}
+#mascot-trail .glow{fill:none;stroke:var(--orange);stroke-width:2;stroke-linecap:round;opacity:0;transition:opacity .45s ease;filter:drop-shadow(0 0 3px rgba(255,122,26,.6))}
+#mascot.run .glow{opacity:.75}
+#mascot-trail .dot{fill:var(--orange-soft);opacity:0}
+#robot{--size:26px;position:absolute;left:0;top:0;width:var(--size);height:calc(var(--size)*1.125);will-change:transform;
+  filter:drop-shadow(0 0 3px rgba(255,122,26,.28))}
+#robot .tilt{width:100%;height:100%;transition:transform .3s ease-out}
+#robot .flip{width:100%;height:100%;transform:scaleX(var(--face,1));transition:transform .28s cubic-bezier(.3,1.4,.5,1)}
+#robot svg{display:block;width:100%;height:100%;overflow:visible}
+#robot .px{transform-box:view-box}
+#robot .breath{animation:breath 2.6s ease-in-out infinite}
+#robot .eye{transform-box:fill-box;transform-origin:center;animation:blink 4.2s infinite}
+#robot .eye.r{animation-delay:.02s}
+#robot .core{animation:pulse 1.8s ease-in-out infinite}
+#robot .bulb{animation:pulse 1.2s ease-in-out infinite}
+#robot.run .breath{animation:bob .3s ease-in-out infinite}
+#robot.run .thigh{animation:thigh .6s ease-in-out infinite}
+#robot.run .shin{animation:shin .6s ease-in-out infinite}
+#robot.run .arm{animation:arm .6s ease-in-out infinite}
+#robot.run .thigh.l,#robot.run .shin.l,#robot.run .arm.r{animation-delay:-.3s}
+#robot.run .thigh.r,#robot.run .shin.r,#robot.run .arm.l{animation-delay:0s}
+#robot .thigh.l{transform-origin:34px 66px}#robot .thigh.r{transform-origin:46px 66px}
+#robot .shin.l{transform-origin:34px 74px}#robot .shin.r{transform-origin:46px 74px}
+#robot .arm.l{transform-origin:25.5px 51px}#robot .arm.r{transform-origin:54.5px 51px}
+@keyframes thigh{0%,100%{transform:rotate(-38deg)}50%{transform:rotate(38deg)}}
+@keyframes shin{0%,100%{transform:rotate(6deg)}30%{transform:rotate(62deg)}60%{transform:rotate(6deg)}}
+@keyframes arm{0%,100%{transform:rotate(32deg)}50%{transform:rotate(-32deg)}}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-2.6px)}}
+@keyframes breath{0%,100%{transform:translateY(0)}50%{transform:translateY(-1px)}}
+@keyframes blink{0%,94%,100%{transform:scaleY(1)}97%{transform:scaleY(.1)}}
+@keyframes pulse{0%,100%{opacity:.75}50%{opacity:1}}
+:root{--lane:38px}
+@media (max-width:719px){#robot{--size:22px}:root{--lane:33px}}
+@media (max-width:479px){#robot{--size:20px}:root{--lane:30px}}
+@media (hover:none),(pointer:coarse){#robot,#mascot-trail .glow{filter:none}#mascot-trail .glow{stroke-width:2.4}}
+@media (prefers-reduced-motion:reduce){
+  #robot.run *{animation:none!important}
+  .reveal-item, .hero-load {opacity:1!important;transform:none!important;animation:none!important;transition:none!important}
+}
+/* ============ /MASCOT CSS ============ */
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="#top"><i></i>Ember Labs</a>
+  <nav aria-label="Main">
+    <a href="#build">Build</a>
+    <a href="#platform">Platform</a>
+    <a href="#work">Work</a>
+    <a href="#contact">Contact</a>
+  </nav>
+  <a class="cta" href="#contact">Get in touch</a>
+</header>
+
+<section id="top">
+  <h1 class="hero-load d-1">Software that ships calm.</h1>
+  <p class="hero-load d-2">Scroll down and the robot runs left to right along the top edge. Scroll up and it runs back. Stop, and it stops.</p>
+  <div class="hero-load d-3">
+    <a class="btn" href="#contact">Start a project</a>
+  </div>
+</section>
+
+<section id="build" class="reveal-item">
+  <h2>What we build</h2>
+  <p>Web apps, internal tools, and data pipelines for teams that would rather not think about infrastructure.</p>
+  <div class="row">
+    <div class="reveal-item"><b>Product engineering</b>Design to production in one team.</div>
+    <div class="reveal-item"><b>Cloud and DevOps</b>Deploys that nobody notices.</div>
+    <div class="reveal-item"><b>AI integration</b>Useful, measured, and testable.</div>
+  </div>
+</section>
+
+<section id="platform" class="reveal-item">
+  <h2>Platform</h2>
+  <p>One dashboard for builds, releases, and uptime. Text and buttons stay fully clickable while the mascot passes over them.</p>
+  <a class="btn" href="#platform">Explore the platform</a>
+</section>
+
+<section id="work" class="reveal-item">
+  <h2>Selected work</h2>
+  <p>Logistics routing, clinic scheduling, and a fintech ledger that closes its books in minutes.</p>
+  <div class="row">
+    <div class="reveal-item"><b>Routefinder</b>Fleet planning for 400 vehicles.</div>
+    <div class="reveal-item"><b>Clinic Hub</b>Booking for 60 locations.</div>
+    <div class="reveal-item"><b>Ledgerline</b>Real-time reconciliation.</div>
+  </div>
+</section>
+
+<section class="reveal-item">
+  <h2>How we work</h2>
+  <p>Short cycles, weekly demos, and one shared board. You always know what shipped and what is next.</p>
+</section>
+
+<section id="contact" class="reveal-item">
+  <h2>Talk to us</h2>
+  <p>Tell us what you are building and we will reply within one working day.</p>
+  <a class="btn" href="#contact">hello@emberlabs.example</a>
+</section>
+
+<div id="mascot" aria-hidden="true">
+  <svg id="mascot-trail" xmlns="http://www.w3.org/2000/svg">
+    <path class="base" id="m-base"/>
+    <path class="glow" id="m-glow"/>
+  </svg>
+  <div id="robot">
+    <div class="tilt"><div class="flip">
+      <svg viewBox="0 0 80 90" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="metal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a616c"/><stop offset=".45" stop-color="#2c3139"/><stop offset="1" stop-color="#171a1f"/></linearGradient>
+          <linearGradient id="eyeg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd0a0"/><stop offset="1" stop-color="#ff7a1a"/></linearGradient>
+          <radialGradient id="coreg"><stop offset="0" stop-color="#fff2e0"/><stop offset=".5" stop-color="#ff8a2a"/><stop offset="1" stop-color="#ff7a1a" stop-opacity="0"/></radialGradient>
+        </defs>
+        <ellipse cx="40" cy="86" rx="16" ry="2.4" fill="#000" opacity=".28"/>
+        <g class="px thigh l"><rect x="31.5" y="65" width="5" height="10" rx="2.5" fill="url(#metal)" stroke="#3b4048" stroke-width=".6"/>
+          <g class="px shin l"><rect x="31.5" y="73" width="5" height="9" rx="2.5" fill="#20242a"/><rect x="29.5" y="80" width="10" height="4.5" rx="2.2" fill="#ff7a1a"/></g></g>
+        <g class="px thigh r"><rect x="43.5" y="65" width="5" height="10" rx="2.5" fill="url(#metal)" stroke="#3b4048" stroke-width=".6"/>
+          <g class="px shin r"><rect x="43.5" y="73" width="5" height="9" rx="2.5" fill="#20242a"/><rect x="41.5" y="80" width="10" height="4.5" rx="2.2" fill="#ff7a1a"/></g></g>
+        <g class="px breath">
+          <g class="px arm l"><rect x="23" y="49" width="5" height="14" rx="2.5" fill="#20242a" stroke="#3b4048" stroke-width=".6"/><circle cx="25.5" cy="63" r="2.4" fill="#ff7a1a"/></g>
+          <rect x="27" y="46" width="26" height="21" rx="8" fill="url(#metal)" stroke="#3b4048" stroke-width=".8"/>
+          <path d="M31 62h18" stroke="#ff7a1a" stroke-width="1" stroke-linecap="round" opacity=".7"/>
+          <circle class="core" cx="40" cy="55" r="7" fill="url(#coreg)"/><circle cx="40" cy="55" r="2.6" fill="#fff1de"/>
+          <g class="px arm r"><rect x="52" y="49" width="5" height="14" rx="2.5" fill="#20242a" stroke="#3b4048" stroke-width=".6"/><circle cx="54.5" cy="63" r="2.4" fill="#ff7a1a"/></g>
+          <rect x="35" y="42" width="10" height="5" rx="2" fill="#1b1e23"/>
+          <path d="M40 15V8" stroke="#6b727d" stroke-width="1.6" stroke-linecap="round"/><circle class="bulb" cx="40" cy="6" r="3.2" fill="#ff8a2a"/>
+          <rect x="14" y="25" width="6" height="11" rx="3" fill="#ff7a1a"/><rect x="60" y="25" width="6" height="11" rx="3" fill="#ff7a1a"/>
+          <rect x="19" y="14" width="42" height="31" rx="13" fill="url(#metal)" stroke="#434952" stroke-width=".9"/>
+          <path d="M27 17.5h26" stroke="#fff" stroke-opacity=".28" stroke-width="1.4" stroke-linecap="round"/>
+          <rect x="24.5" y="21" width="31" height="19" rx="9.5" fill="#080a0d" stroke="#ff7a1a" stroke-opacity=".5" stroke-width=".8"/>
+          <rect class="eye" x="30" y="25" width="7" height="10" rx="3.5" fill="url(#eyeg)"/>
+          <rect class="eye r" x="43" y="25" width="7" height="10" rx="3.5" fill="url(#eyeg)"/>
+          <path d="M37 37.6q3 2 6 0" stroke="#ff9a4a" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+        </g>
+      </svg>
+    </div></div>
+  </div>
+</div>
+
+<script>
+(() => {
+  const reveals = document.querySelectorAll('.reveal-item');
+  if (!reveals.length) return;
+
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const delay = entry.target.closest('.row') ? (Array.from(entry.target.parentNode.children).indexOf(entry.target) * 120) : 0;
+        setTimeout(() => {
+          entry.target.classList.add('revealed');
+        }, delay);
+        obs.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.15,
+    rootMargin: '0px 0px -40px 0px'
+  });
+
+  reveals.forEach(el => observer.observe(el));
+})();
+
+(() => {
+  const CFG = { step: 8, idleMs: 140, particles: 10, tail: 4.5 };
+  const $ = (s) => document.querySelector(s);
+  const layer = $('#mascot'), svg = $('#mascot-trail'), base = $('#m-base'), glow = $('#m-glow');
+  const robot = $('#robot'), flip = robot.querySelector('.flip'), tilt = robot.querySelector('.tilt');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const NS = 'http://www.w3.org/2000/svg';
+  const root = document.documentElement;
+
+  const dots = reduce ? [] : Array.from({ length: CFG.particles }, () => {
+    const c = document.createElementNS(NS, 'circle'); c.setAttribute('class', 'dot'); svg.appendChild(c); return c;
+  });
+
+  let vw = 0, Wr = 0, Hr, amp, baseY, wl, x0, x1, lens, total, maxScroll = 0;
+  let cur = 0, dir = 1, lastY = 0, lastScroll = 0, lastSpawn = 0, di = 0, raf = 0, prevT = 0, running = false;
+
+  const calcMax = () => Math.max(0, root.scrollHeight - root.clientHeight);
+  const readY = () => Math.min(Math.max(window.pageYOffset || root.scrollTop || 0, 0), maxScroll);
+  const yAt = (x) => baseY - amp * Math.sin(((x - x0) / wl) * Math.PI * 2);
+  const slopeAt = (x) => -amp * Math.cos(((x - x0) / wl) * Math.PI * 2) * (Math.PI * 2 / wl);
+  const targetX = () => x0 + (maxScroll ? readY() / maxScroll : 0) * (x1 - x0);
+
+  function build() {
+    vw = layer.clientWidth; Wr = robot.offsetWidth; Hr = robot.offsetHeight; maxScroll = calcMax();
+    amp = Math.max(2, Wr * 0.1); baseY = Hr * 0.96 + amp + 1;
+    layer.style.height = Math.ceil(baseY + amp + 3) + 'px';
+    x0 = Wr * 0.6 + 4; x1 = Math.max(x0 + 40, vw - Wr * 0.6 - 4); wl = Math.max(160, (x1 - x0) / 2.2);
+
+    let d = '', acc = 0, px, py; lens = [];
+    for (let x = x0; ; x += CFG.step) {
+      const xx = Math.min(x, x1), y = yAt(xx);
+      if (px !== undefined) acc += Math.hypot(xx - px, y - py);
+      d += (d ? 'L' : 'M') + xx.toFixed(1) + ' ' + y.toFixed(1);
+      lens.push(acc); px = xx; py = y;
+      if (xx >= x1) break;
+    }
+    total = acc;
+    base.setAttribute('d', d); glow.setAttribute('d', d);
+    lastY = readY(); cur = targetX(); render(true);
+  }
+
+  function sync() {
+    if (!lens || layer.clientWidth !== vw || robot.offsetWidth !== Wr) return build();
+    maxScroll = calcMax();
+    if (!running) { cur = targetX(); render(true); }
+  }
+
+  function spawn(x, y, now) {
+    if (!dots.length || now - lastSpawn < 70) return; lastSpawn = now;
+    const c = dots[di++ % dots.length];
+    c.setAttribute('cx', x - dir * Wr * 0.3); c.setAttribute('cy', y - 1); c.setAttribute('r', 0.9 + Math.random() * 1.1);
+    c.animate([{ opacity: .85, transform: 'translate(0,0)' },
+      { opacity: 0, transform: `translate(${-dir * (8 + Math.random() * 10)}px,${-Math.random() * 7}px)` }],
+      { duration: 600, easing: 'ease-out' });
+  }
+
+  function render(force) {
+    const y = yAt(cur);
+    robot.style.transform = `translate3d(${(cur - Wr / 2).toFixed(1)}px,${(y - Hr * 0.96).toFixed(1)}px,0)`;
+    flip.style.setProperty('--face', dir);
+    tilt.style.transform = `rotate(${(Math.atan(slopeAt(cur)) * 57.3).toFixed(1)}deg)`;
+    const i = Math.min(lens.length - 1, Math.max(0, Math.round((cur - x0) / CFG.step)));
+    const l = lens[i], t = Wr * CFG.tail;
+    const start = dir > 0 ? Math.max(0, l - t) : l;
+    const len = dir > 0 ? l - start : Math.min(t, total - l);
+    glow.style.strokeDasharray = `0 ${start} ${len} ${total + 10}`;
+    if (!force && running) spawn(cur, y, performance.now());
+  }
+
+  function frame(t) {
+    const dt = Math.min(0.05, (t - prevT) / 1000 || 0.016); prevT = t;
+    const target = targetX();
+    cur += (target - cur) * (1 - Math.exp(-dt * 14));
+    if (Math.abs(target - cur) < 0.15) cur = target;
+    const moving = t - lastScroll < CFG.idleMs || Math.abs(target - cur) > 1;
+    if (moving !== running) { running = moving; robot.classList.toggle('run', running); layer.classList.toggle('run', running); }
+    render();
+    raf = (running || cur !== target) ? requestAnimationFrame(frame) : 0;
+  }
+  const wake = () => { if (!raf) { prevT = performance.now(); raf = requestAnimationFrame(frame); } };
+
+  addEventListener('scroll', () => {
+    const y = readY(), dy = y - lastY;
+    if (Math.abs(dy) >= 0.5) { dir = dy > 0 ? 1 : -1; lastY = y; lastScroll = performance.now(); }
+    wake();
+  }, { passive: true });
+
+  let rz = 0;
+  const onResize = () => { cancelAnimationFrame(rz); rz = requestAnimationFrame(() => { sync(); wake(); }); };
+  addEventListener('resize', onResize);
+  addEventListener('load', onResize);
+  addEventListener('pageshow', onResize);
+  addEventListener('orientationchange', () => setTimeout(onResize, 250));
+  if (window.visualViewport) visualViewport.addEventListener('resize', onResize);
+  if ('ResizeObserver' in window) new ResizeObserver(onResize).observe(document.body);
+  build();
+})();
+</script>
+</body>
+</html>
