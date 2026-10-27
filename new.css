@@ -3081,7 +3081,7 @@ body::-webkit-scrollbar {
   --rbs-accent: var(--orange, #ff813e);
   --rbs-accent-soft: rgba(255, 129, 62, 0.35);
   --rbs-w: 22px;
-  --rbs-bus-w: 18px;
+  --rbs-bus-w: 10px;
   --rbs-pad: 8px;
 
   position: fixed;
