@@ -423,7 +423,6 @@
     image.draggable = false;
     image.style.objectPosition = member.focus || "50% 25%";
 
-    if (index > 0) image.src = member.image;
 
     image.addEventListener("error", () => {
       figure.classList.add("is-missing");
@@ -466,27 +465,36 @@
   const bodySlides = [...bodies.querySelectorAll(".ot-carousel__body")];
   const progressTicks = [...progress.querySelectorAll("span")];
 
-  const loadFirstPhoto = () => {
-    const firstImage = photoImages[0];
-    if (!firstImage || firstImage.hasAttribute("src")) return;
+  const loadPhoto = (index) => {
+    const img = photoImages[index];
+    if (img && !img.hasAttribute("src") && TEAM[index]) {
+      img.src = TEAM[index].image;
+    }
+  };
 
-    firstImage.loading = "eager";
-    firstImage.src = TEAM[0].image;
+  const preloadAllPhotos = () => {
+    photoImages.forEach((img, i) => loadPhoto(i));
   };
 
   if ("IntersectionObserver" in window) {
     const photoObserver = new IntersectionObserver(
       (entries, obs) => {
         if (entries.some((entry) => entry.isIntersecting)) {
-          loadFirstPhoto();
+          loadPhoto(0);
+          loadPhoto(1);
+          if ("requestIdleCallback" in window) {
+            requestIdleCallback(() => preloadAllPhotos(), { timeout: 2500 });
+          } else {
+            setTimeout(preloadAllPhotos, 1200);
+          }
           obs.disconnect();
         }
       },
-      { rootMargin: "1200px 0px" }
+      { rootMargin: "600px 0px" }
     );
     photoObserver.observe(root);
   } else {
-    loadFirstPhoto();
+    preloadAllPhotos();
   }
 
   /* INITIAL STATE */
@@ -509,6 +517,8 @@
 
   /* CHANGE MEMBER */
   function showMember(nextIndex, direction = "next") {
+    loadPhoto((nextIndex + total) % total);
+    loadPhoto((nextIndex + 1 + total) % total);
     if (isAnimating) {
       queuedStep += direction === "prev" ? -1 : 1;
       return;
@@ -1227,13 +1237,6 @@
       el.addEventListener('pointercancel', onUp);
       el.addEventListener('lostpointercapture', onUp);
     });
-    if (false) {
-      el.addEventListener('pointerdown', onDown);
-      el.addEventListener('pointermove', onMove);
-      el.addEventListener('pointerup', onUp);
-      el.addEventListener('pointercancel', onUp);
-      el.addEventListener('lostpointercapture', onUp);
-    }
 
     measure();
     cur = target;

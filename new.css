@@ -3095,6 +3095,7 @@ body::-webkit-scrollbar {
   z-index: 9995; /* Above page content & navbar, below page loader (10000) */
   pointer-events: none;
   contain: layout style;
+  
   opacity: 1;
   transition: opacity 0.3s ease;
   -webkit-user-select: none;
