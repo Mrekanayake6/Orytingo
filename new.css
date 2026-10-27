@@ -3081,7 +3081,7 @@ body::-webkit-scrollbar {
   --rbs-accent: var(--orange, #ff813e);
   --rbs-accent-soft: rgba(255, 129, 62, 0.35);
   --rbs-w: 22px;
-  --rbs-bus-w: 20px;
+  --rbs-bus-w: 18px;
   --rbs-pad: 8px;
 
   position: fixed;
@@ -3288,4 +3288,4 @@ html.page-loading .rbs-rail {
   .rbs-rail { display: none !important; }
 }
 /* ============ /ROBOT BUS SCROLLBAR CSS ============ */
-
+
