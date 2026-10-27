@@ -3080,8 +3080,8 @@ body::-webkit-scrollbar {
 .rbs-rail {
   --rbs-accent: var(--orange, #ff813e);
   --rbs-accent-soft: rgba(255, 129, 62, 0.35);
-  --rbs-w: 28px;
-  --rbs-bus-w: 26px;
+  --rbs-w: 22px;
+  --rbs-bus-w: 20px;
   --rbs-pad: 8px;
 
   position: fixed;
@@ -3125,9 +3125,9 @@ html.page-loading .rbs-rail {
   position: absolute;
   top: 0;
   left: 0;
-  width: 3px;
+  width: 2.5px;
   height: 0; /* Dynamic: JS loads the track height up to the train engine as you scroll */
-  border-radius: 3px;
+  border-radius: 2.5px;
   opacity: 0; /* Hidden when idle, only loads/shows when scrolling */
   transition: opacity 0.4s ease;
   /* Single Steel Railway Rail with metallic sheen & subtle rail joints */
@@ -3269,12 +3269,12 @@ html.page-loading .rbs-rail {
 
 /* ---------- Tablet / phone sizing ---------- */
 @media (max-width: 1024px) {
-  .rbs-rail { --rbs-w: 24px; --rbs-bus-w: 22px; --rbs-pad: 6px; }
+  .rbs-rail { --rbs-w: 19px; --rbs-bus-w: 17px; --rbs-pad: 6px; }
 }
 @media (max-width: 600px) {
-  .rbs-rail { --rbs-w: 20px; --rbs-bus-w: 18px; --rbs-pad: 4px; }
+  .rbs-rail { --rbs-w: 16px; --rbs-bus-w: 14px; --rbs-pad: 4px; }
   .rbs-track {
-    width: 2.5px;
+    width: 2px;
     left: 0;
   }
 }

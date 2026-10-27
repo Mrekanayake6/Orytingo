@@ -309,8 +309,8 @@ body::-webkit-scrollbar {
 .rbs-rail {
   --rbs-accent: var(--orange, #ff7a1a);
   --rbs-accent-soft: rgba(255, 122, 26, 0.35);
-  --rbs-w: 28px;
-  --rbs-bus-w: 26px;
+  --rbs-w: 22px;
+  --rbs-bus-w: 20px;
   --rbs-pad: 8px;
   position: fixed;
   top: 0;
@@ -335,9 +335,9 @@ body::-webkit-scrollbar {
   position: absolute;
   top: 0;
   left: 0;
-  width: 3px;
+  width: 2.5px;
   height: 0;
-  border-radius: 3px;
+  border-radius: 2.5px;
   opacity: 0;
   transition: opacity 0.4s ease;
   background-image:
@@ -449,12 +449,12 @@ body::-webkit-scrollbar {
 .rbs-beam { opacity: 0.25; transition: opacity 0.3s ease; }
 .rbs--moving .rbs-beam { opacity: 0.95; }
 @media (max-width: 1024px) {
-  .rbs-rail { --rbs-w: 24px; --rbs-bus-w: 22px; --rbs-pad: 6px; }
+  .rbs-rail { --rbs-w: 19px; --rbs-bus-w: 17px; --rbs-pad: 6px; }
 }
 @media (max-width: 600px) {
-  .rbs-rail { --rbs-w: 20px; --rbs-bus-w: 18px; --rbs-pad: 4px; }
+  .rbs-rail { --rbs-w: 16px; --rbs-bus-w: 14px; --rbs-pad: 4px; }
   .rbs-track {
-    width: 2.5px;
+    width: 2px;
     left: 0;
   }
 }
