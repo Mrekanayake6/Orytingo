@@ -56,17 +56,42 @@
   </div>
 
   <div class="page-loader" id="pageLoader" aria-hidden="true" inert>
-    <div class="loader-card">
-      <div class="loader-brand">
-        <div class="loader-brand-left">
-          <img src="logo.webp" alt="OryTingo" class="loader-brand-logo" width="32" height="20">
-          <span class="loader-brand-title">ORYTINGO</span>
+    <div class="loader-orbit-stage" id="loaderStage">
+      <!-- Ambient Outer Ring Glow -->
+      <div class="loader-orbit-glow" aria-hidden="true"></div>
+
+      <!-- Circular SVG Track -->
+      <svg class="loader-orbit-svg" viewBox="0 0 260 260" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs>
+          <linearGradient id="loaderOrbitGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#ffa05c" />
+            <stop offset="50%" stop-color="#ff7a1a" />
+            <stop offset="100%" stop-color="#ff4500" />
+          </linearGradient>
+        </defs>
+        <!-- Subtle tech radar decorative ring -->
+        <circle class="loader-orbit-decor" cx="130" cy="130" r="114" fill="none" stroke="rgba(255, 129, 62, 0.15)" stroke-width="1" stroke-dasharray="3 7" />
+        <!-- Background track -->
+        <circle class="loader-orbit-bg" cx="130" cy="130" r="96" fill="none" stroke="rgba(255, 255, 255, 0.08)" stroke-width="3" />
+        <!-- Dynamic Progress Track -->
+        <circle class="loader-orbit-progress" id="loaderCircleProgress" cx="130" cy="130" r="96" fill="none" stroke="url(#loaderOrbitGrad)" stroke-width="4" stroke-linecap="round" stroke-dasharray="603.19" stroke-dashoffset="603.19" transform="rotate(-90 130 130)" />
+      </svg>
+
+      <!-- Center Brand Content: Logo + ORYTINGO + Tag + % -->
+      <div class="loader-center-content">
+        <div class="loader-center-glow" aria-hidden="true"></div>
+        <img src="logo.webp" alt="OryTingo" class="loader-center-logo" width="44" height="26" decoding="async">
+        <div class="loader-center-brand">ORYTINGO</div>
+        <div class="loader-center-tag">NETWORKS &amp; SOFTWARE</div>
+        <div class="loader-center-counter">
+          <span id="loaderPercent">0</span><span class="loader-center-pct">%</span>
         </div>
-        <span class="loader-badge">SYSTEM V2.0</span>
       </div>
 
-      <div class="loader-stage" id="loaderStage">
-        <div class="loader-runner" id="loaderRunner">
+      <!-- Orbit Rotator with the Running Robot Mascot -->
+      <div class="loader-orbit-rotator" id="loaderOrbitRotator">
+        <div class="loader-orbit-runner" id="loaderOrbitRunner">
+          <span class="loader-orbit-spark" aria-hidden="true"></span>
           <div class="loader-robot run" id="loaderRobot">
             <div class="tilt"><div class="flip">
               <svg viewBox="0 0 80 90" xmlns="http://www.w3.org/2000/svg">
@@ -100,25 +125,13 @@
             </div></div>
           </div>
         </div>
-
-        <div class="loader-track-wrap">
-          <div class="loader-track">
-            <div class="loader-track-fill" id="loaderTrackFill">
-              <span class="loader-track-lead" aria-hidden="true"></span>
-            </div>
-          </div>
-        </div>
       </div>
+    </div>
 
-      <div class="loader-meta">
-        <div class="loader-status">
-          <span class="loader-pulse-dot" aria-hidden="true"></span>
-          <span class="loader-status-text" id="loaderStatusText">INITIALIZING CORE...</span>
-        </div>
-        <div class="loader-counter">
-          <span class="loader-percent" id="loaderPercent">0</span><span class="loader-percent-symbol">%</span>
-        </div>
-      </div>
+    <!-- Bottom Status Telemetry -->
+    <div class="loader-status-pill">
+      <span class="loader-pulse-dot" aria-hidden="true"></span>
+      <span class="loader-status-text" id="loaderStatusText">INITIALIZING CORE...</span>
     </div>
   </div>
 

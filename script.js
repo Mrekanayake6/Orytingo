@@ -22,11 +22,13 @@
   }
 
   const robot = document.getElementById("loaderRobot");
-  const runner = document.getElementById("loaderRunner");
-  const trackFill = document.getElementById("loaderTrackFill");
+  const rotator = document.getElementById("loaderOrbitRotator");
+  const runner = document.getElementById("loaderOrbitRunner");
+  const circleProgress = document.getElementById("loaderCircleProgress");
   const percentEl = document.getElementById("loaderPercent");
   const statusEl = document.getElementById("loaderStatusText");
-  const stage = runner ? runner.parentElement : null;
+
+  const CIRCLE_CIRCUMFERENCE = 603.19;
 
   let currentPercent = 0;
   let isPageLoaded = false;
@@ -42,13 +44,18 @@
   ];
 
   const updateUI = (pct) => {
-    const rounded = Math.min(100, Math.max(0, Math.floor(pct)));
+    const clamped = Math.min(100, Math.max(0, pct));
+    const rounded = Math.floor(clamped);
     if (percentEl) percentEl.textContent = String(rounded);
-    if (trackFill) trackFill.style.width = `${rounded}%`;
 
-    if (runner && stage) {
-      const travel = Math.max(0, stage.clientWidth - runner.clientWidth);
-      runner.style.transform = `translateX(${(travel * (rounded / 100)).toFixed(1)}px)`;
+    if (circleProgress) {
+      const offset = CIRCLE_CIRCUMFERENCE - (CIRCLE_CIRCUMFERENCE * (clamped / 100));
+      circleProgress.style.strokeDashoffset = offset.toFixed(2);
+    }
+
+    if (rotator) {
+      const angle = (clamped / 100) * 360;
+      rotator.style.transform = `rotate(${angle.toFixed(2)}deg)`;
     }
 
     if (statusEl) {
@@ -88,7 +95,7 @@
         if (event.target === loader) cleanUp();
       }, { once: true });
       window.setTimeout(cleanUp, 450);
-    }, 240);
+    }, 280);
   };
 
   const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
