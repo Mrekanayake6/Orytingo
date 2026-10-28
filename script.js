@@ -12,7 +12,8 @@
   const fallbackTimer = root.dataset.pageLoaderFallback
     ? Number(root.dataset.pageLoaderFallback)
     : null;
-  if (root.dataset.pageLoaderExpired === "true" || document.readyState === "complete") {
+
+  if (root.dataset.pageLoaderExpired === "true") {
     if (fallbackTimer !== null) clearTimeout(fallbackTimer);
     delete root.dataset.pageLoaderFallback;
     root.classList.remove("page-loading");
@@ -20,30 +21,128 @@
     return;
   }
 
-  let removalTimer;
+  const robot = document.getElementById("loaderRobot");
+  const runner = document.getElementById("loaderRunner");
+  const trackFill = document.getElementById("loaderTrackFill");
+  const percentEl = document.getElementById("loaderPercent");
+  const statusEl = document.getElementById("loaderStatusText");
+  const stage = runner ? runner.parentElement : null;
 
-  const hideLoader = () => {
-    if (!root.classList.contains("page-loading")) return;
+  let currentPercent = 0;
+  let isPageLoaded = false;
+  let isFinished = false;
+  let rafId = null;
 
-    if (fallbackTimer !== null) clearTimeout(fallbackTimer);
-    delete root.dataset.pageLoaderFallback;
-    root.classList.remove("page-loading");
-    loader.classList.add("is-hiding");
+  const statusMessages = [
+    { threshold: 0, text: "INITIALIZING CORE..." },
+    { threshold: 28, text: "CONNECTING INFRASTRUCTURE..." },
+    { threshold: 60, text: "SYNCHRONIZING ASSETS..." },
+    { threshold: 88, text: "FINALIZING SECURITY MESH..." },
+    { threshold: 100, text: "ALL SYSTEMS ONLINE" }
+  ];
 
-    loader.addEventListener("transitionend", (event) => {
-      if (event.target === loader && event.propertyName === "opacity") {
-        clearTimeout(removalTimer);
-        loader.remove();
+  const updateUI = (pct) => {
+    const rounded = Math.min(100, Math.max(0, Math.floor(pct)));
+    if (percentEl) percentEl.textContent = String(rounded);
+    if (trackFill) trackFill.style.width = `${rounded}%`;
+
+    if (runner && stage) {
+      const travel = Math.max(0, stage.clientWidth - runner.clientWidth);
+      runner.style.transform = `translateX(${(travel * (rounded / 100)).toFixed(1)}px)`;
+    }
+
+    if (statusEl) {
+      for (let i = statusMessages.length - 1; i >= 0; i--) {
+        if (rounded >= statusMessages[i].threshold) {
+          if (statusEl.textContent !== statusMessages[i].text) {
+            statusEl.textContent = statusMessages[i].text;
+          }
+          break;
+        }
       }
-    }, { once: true });
-
-    removalTimer = window.setTimeout(() => loader.remove(), 350);
+    }
   };
 
-  window.addEventListener("load", hideLoader, { once: true });
+  const finishLoader = () => {
+    if (isFinished) return;
+    isFinished = true;
+    if (rafId) cancelAnimationFrame(rafId);
+    if (fallbackTimer !== null) clearTimeout(fallbackTimer);
+    delete root.dataset.pageLoaderFallback;
+
+    updateUI(100);
+    if (robot) robot.classList.remove("run");
+
+    window.setTimeout(() => {
+      loader.classList.add("is-hiding");
+      root.classList.remove("page-loading");
+
+      let cleaned = false;
+      const cleanUp = () => {
+        if (cleaned) return;
+        cleaned = true;
+        loader.remove();
+      };
+
+      loader.addEventListener("transitionend", (event) => {
+        if (event.target === loader) cleanUp();
+      }, { once: true });
+      window.setTimeout(cleanUp, 450);
+    }, 240);
+  };
+
+  const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (prefersReduced) {
+    finishLoader();
+    return;
+  }
+
+  const startTime = performance.now();
+  const minDuration = 1100; // ms minimum duration to clearly see the mascot mini-run
+  const maxTimeout = 4000; // ms safety timeout
+
+  const step = (now) => {
+    const elapsed = now - startTime;
+
+    if (isPageLoaded && elapsed >= minDuration) {
+      currentPercent += 3.4;
+    } else if (isPageLoaded) {
+      currentPercent += 1.4;
+    } else {
+      if (currentPercent < 30) currentPercent += 1.2;
+      else if (currentPercent < 60) currentPercent += 0.7;
+      else if (currentPercent < 85) currentPercent += 0.35;
+      else if (currentPercent < 94) currentPercent += 0.08;
+    }
+
+    if (currentPercent >= 100 || elapsed >= maxTimeout) {
+      finishLoader();
+      return;
+    }
+
+    updateUI(currentPercent);
+    rafId = requestAnimationFrame(step);
+  };
+
+  rafId = requestAnimationFrame(step);
+
+  const markPageLoaded = () => {
+    isPageLoaded = true;
+  };
+
+  if (document.readyState === "complete") {
+    markPageLoaded();
+  } else {
+    window.addEventListener("load", markPageLoaded, { once: true });
+  }
+
   window.addEventListener("pageshow", (event) => {
-    if (event.persisted) hideLoader();
+    if (event.persisted) finishLoader();
   }, { once: true });
+
+  window.addEventListener("resize", () => {
+    if (!isFinished) updateUI(currentPercent);
+  }, { passive: true });
 })();
 
 (() => {
