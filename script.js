@@ -170,8 +170,9 @@
         entries.forEach((entry) => {
           const { target, isIntersecting } = entry;
 
-          if (revealTargets.has(target)) {
-            target.classList.toggle("is-revealed", isIntersecting);
+          if (revealTargets.has(target) && isIntersecting) {
+            target.classList.add("is-revealed");
+            animationObserver.unobserve(target);
           }
 
           if (animationTargets.has(target)) {
@@ -181,15 +182,20 @@
       },
       {
         threshold: 0.01,
-        rootMargin: "100px 0px"
+        rootMargin: "250px 0px"
       }
     );
 
     animationObserverTargets.forEach((element) => {
       const rect = element.getBoundingClientRect();
-      if (rect.bottom >= -100 && rect.top <= window.innerHeight + 100) {
-        if (revealTargets.has(element)) element.classList.add("is-revealed");
-        if (animationTargets.has(element)) element.classList.add("animation-visible");
+      if (rect.bottom >= -250 && rect.top <= window.innerHeight + 250) {
+        if (revealTargets.has(element)) {
+          element.classList.add("is-revealed");
+          return;
+        }
+        if (animationTargets.has(element)) {
+          element.classList.add("animation-visible");
+        }
       }
       animationObserver.observe(element);
     });
