@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page Not Found — 404 | ORYTINGO</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <link rel="icon" href="android-chrome-512x512.png" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="new.css">
+
+  <style>
+    .error-hero {
+      min-height: 85vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 100px 24px 60px;
+      position: relative;
+      z-index: 1;
+    }
+    .error-box {
+      max-width: 600px;
+    }
+    .error-code {
+      font-size: clamp(80px, 16vw, 150px);
+      font-weight: 700;
+      line-height: 1;
+      margin: 0;
+      background: linear-gradient(135deg, #ff813e 0%, #ff9c67 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.04em;
+    }
+    .error-title {
+      font-size: clamp(24px, 4vw, 36px);
+      margin: 16px 0 12px;
+      color: var(--text, #ffffff);
+    }
+    .error-desc {
+      color: var(--text-dim, #9ca3af);
+      font-size: 16px;
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+    .error-actions {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="bg-field" aria-hidden="true">
+    <div class="glow glow-blue"></div>
+    <div class="glow glow-violet"></div>
+    <div class="grid-overlay"></div>
+  </div>
+
+  <header class="nav-bar" id="navBar">
+    <div class="nav-inner">
+      <a href="index.html" class="logo">
+        <img src="logo.webp" alt="OryTingo logo" class="logo-mark-img" width="42" height="24" decoding="async">
+        <span class="logo-text">ORYTINGO</span>
+      </a>
+      <a href="index.html" class="btn btn-primary nav-cta">Go to Home</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="error-hero">
+      <div class="error-box">
+        <h1 class="error-code">404</h1>
+        <h2 class="error-title">Page Not Found</h2>
+        <p class="error-desc">
+          The page you are looking for might have been removed, had its name changed,
+          or is temporarily unavailable.
+        </p>
+        <div class="error-actions">
+          <a href="index.html" class="btn btn-primary">
+            <i class="fa-solid fa-house"></i> Back to Home
+          </a>
+          <a href="mailto:orytingons@gmail.com" class="btn btn-ghost">
+            <i class="fa-solid fa-envelope"></i> Contact Support
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-bottom">
+      <p>&copy; ORYTINGO. All rights reserved.</p>
+    </div>
+  </footer>
+
+</body>
+</html>
+

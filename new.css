@@ -2788,39 +2788,68 @@ section {
 
 
 /* ============================================================
-   Scroll reveals
+   Scroll reveals (Bidirectional Enter & Exit)
 ============================================================ */
 
 .reveal-item {
   transition-property: opacity, transform;
-  transition-duration: 420ms;
-  transition-timing-function: var(--ease);
+  transition-duration: 440ms;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
 }
 
 .reveal-item.pillar-card {
-  transition: opacity 420ms var(--ease), transform 420ms var(--ease), border-color .3s var(--ease), box-shadow .3s var(--ease);
+  transition: opacity 440ms cubic-bezier(0.16, 1, 0.3, 1), transform 440ms cubic-bezier(0.16, 1, 0.3, 1), border-color .3s var(--ease), box-shadow .3s var(--ease);
   transition-delay: var(--reveal-delay, 0ms), var(--reveal-delay, 0ms), 0s, 0s;
 }
 
 .reveal-item.why-card,
 .reveal-item.service-card {
-  transition: opacity 420ms var(--ease), transform 420ms var(--ease), border-color .25s var(--ease), background .25s var(--ease);
+  transition: opacity 440ms cubic-bezier(0.16, 1, 0.3, 1), transform 440ms cubic-bezier(0.16, 1, 0.3, 1), border-color .25s var(--ease), background .25s var(--ease);
   transition-delay: var(--reveal-delay, 0ms), var(--reveal-delay, 0ms), 0s, 0s;
 }
 
 .tech-badges>span.reveal-item {
-  transition: opacity 420ms var(--ease), transform 420ms var(--ease), color .2s var(--ease), border-color .2s var(--ease);
+  transition: opacity 440ms cubic-bezier(0.16, 1, 0.3, 1), transform 440ms cubic-bezier(0.16, 1, 0.3, 1), color .2s var(--ease), border-color .2s var(--ease);
   transition-delay: var(--reveal-delay, 0ms), var(--reveal-delay, 0ms), 0s, 0s;
 }
 
 .scroll-reveal-enabled .reveal-item:not(.is-revealed) {
   opacity: 0;
-  transform: translateY(16px);
+  transform: translateY(22px);
+  transition-duration: 250ms;
+  transition-delay: 0s !important;
+}
+
+.scroll-reveal-enabled .reveal-item.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .scroll-reveal-enabled .reveal-item {
   transition-delay: var(--reveal-delay, 0ms), var(--reveal-delay, 0ms), 0s, 0s;
+}
+
+/* Mobile: Full rich animation on scroll up and down, with instant trigger response */
+@media (max-width: 768px) {
+  .reveal-item,
+  .scroll-reveal-enabled .reveal-item {
+    transition-duration: 400ms !important;
+    transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1) !important;
+    transition-delay: 0s !important;
+    will-change: opacity, transform;
+  }
+  .scroll-reveal-enabled .reveal-item:not(.is-revealed) {
+    opacity: 0 !important;
+    transform: translateY(18px) !important;
+    transition-duration: 220ms !important;
+    transition-delay: 0s !important;
+  }
+  .scroll-reveal-enabled .reveal-item.is-revealed {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+  }
 }
 
 
