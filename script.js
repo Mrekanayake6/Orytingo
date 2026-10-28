@@ -76,6 +76,9 @@
     window.setTimeout(() => {
       loader.classList.add("is-hiding");
       root.classList.remove("page-loading");
+      if (typeof window.triggerHeroEntrance === "function") {
+        window.triggerHeroEntrance();
+      }
 
       let cleaned = false;
       const cleanUp = () => {
@@ -143,6 +146,44 @@
   window.addEventListener("resize", () => {
     if (!isFinished) updateUI(currentPercent);
   }, { passive: true });
+})();
+
+/* ============================================================
+   DartCodes Style Hero Typography Entrance Controller
+============================================================ */
+(() => {
+  const root = document.documentElement;
+  let heroTriggered = false;
+
+  const triggerHeroEntrance = () => {
+    if (heroTriggered) return;
+    heroTriggered = true;
+    window.requestAnimationFrame(() => {
+      root.classList.add("hero-animated");
+    });
+  };
+  window.triggerHeroEntrance = triggerHeroEntrance;
+
+  const initHeroAnimation = () => {
+    const heroHeadline = document.querySelector(".hero-headline");
+    if (!heroHeadline) return;
+
+    root.classList.add("hero-anim-ready");
+
+    const loader = document.getElementById("pageLoader");
+    if (!loader || !document.body.contains(loader) || root.dataset.pageLoaderExpired === "true") {
+      window.setTimeout(triggerHeroEntrance, 120);
+    } else {
+      // Safety timer so hero is never stuck un-animated even if loader fails
+      window.setTimeout(triggerHeroEntrance, 2600);
+    }
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initHeroAnimation, { once: true });
+  } else {
+    initHeroAnimation();
+  }
 })();
 
 (() => {
