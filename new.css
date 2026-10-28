@@ -2831,6 +2831,78 @@ section {
   transition-delay: var(--reveal-delay, 0ms), var(--reveal-delay, 0ms), 0s, 0s;
 }
 
+/* ------------------------------------------------------------
+   Section Head Choreographed Motion (DartCodes / Linear style)
+   h2 and p animate with smooth upward float & staggered elegance
+------------------------------------------------------------ */
+
+/* 1. Eyebrow badge */
+.reveal-item[class*="eyebrow"],
+.section-head [class*="eyebrow"].reveal-item,
+.about-copy [class*="eyebrow"].reveal-item {
+  transition-duration: 500ms;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: 0ms;
+}
+.scroll-reveal-enabled .section-head [class*="eyebrow"].reveal-item:not(.is-revealed),
+.scroll-reveal-enabled .about-copy [class*="eyebrow"].reveal-item:not(.is-revealed) {
+  opacity: 0;
+  transform: translateY(14px) scale(0.97);
+}
+.scroll-reveal-enabled .section-head [class*="eyebrow"].reveal-item.is-revealed,
+.scroll-reveal-enabled .about-copy [class*="eyebrow"].reveal-item.is-revealed {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* 2. Section Head H2 */
+.section-head h2.reveal-item,
+.about-copy h2.reveal-item,
+.cta-inner h2.reveal-item {
+  transition-duration: 620ms;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: 70ms;
+}
+.scroll-reveal-enabled .section-head h2.reveal-item:not(.is-revealed),
+.scroll-reveal-enabled .about-copy h2.reveal-item:not(.is-revealed),
+.scroll-reveal-enabled .cta-inner h2.reveal-item:not(.is-revealed) {
+  opacity: 0;
+  transform: translateY(28px);
+}
+.scroll-reveal-enabled .section-head h2.reveal-item.is-revealed,
+.scroll-reveal-enabled .about-copy h2.reveal-item.is-revealed,
+.scroll-reveal-enabled .cta-inner h2.reveal-item.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 3. Section Head P (Description) */
+.section-head p.reveal-item:not([class*="eyebrow"]),
+.about-copy p.reveal-item:not([class*="eyebrow"]),
+.cta-inner p.reveal-item {
+  transition-duration: 660ms;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: 150ms;
+}
+.scroll-reveal-enabled .section-head p.reveal-item:not([class*="eyebrow"]):not(.is-revealed),
+.scroll-reveal-enabled .about-copy p.reveal-item:not([class*="eyebrow"]):not(.is-revealed),
+.scroll-reveal-enabled .cta-inner p.reveal-item:not(.is-revealed) {
+  opacity: 0;
+  transform: translateY(22px);
+}
+.scroll-reveal-enabled .section-head p.reveal-item:not([class*="eyebrow"]).is-revealed,
+.scroll-reveal-enabled .about-copy p.reveal-item:not([class*="eyebrow"]).is-revealed,
+.scroll-reveal-enabled .cta-inner p.reveal-item.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 4. CTA Actions */
+.cta-actions.reveal-item {
+  transition-duration: 620ms;
+  transition-delay: 220ms;
+}
+
 /* Mobile: Full rich animation on scroll up and down, with instant trigger response */
 @media (max-width: 768px) {
   .reveal-item,
@@ -2847,6 +2919,46 @@ section {
     transition-delay: 0s !important;
   }
   .scroll-reveal-enabled .reveal-item.is-revealed {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+  }
+
+  /* Section Head H2 on mobile */
+  .section-head h2.reveal-item,
+  .about-copy h2.reveal-item,
+  .cta-inner h2.reveal-item {
+    transition-duration: 520ms !important;
+    transition-delay: 40ms !important;
+  }
+  .scroll-reveal-enabled .section-head h2.reveal-item:not(.is-revealed),
+  .scroll-reveal-enabled .about-copy h2.reveal-item:not(.is-revealed),
+  .scroll-reveal-enabled .cta-inner h2.reveal-item:not(.is-revealed) {
+    opacity: 0 !important;
+    transform: translateY(22px) !important;
+  }
+  .scroll-reveal-enabled .section-head h2.reveal-item.is-revealed,
+  .scroll-reveal-enabled .about-copy h2.reveal-item.is-revealed,
+  .scroll-reveal-enabled .cta-inner h2.reveal-item.is-revealed {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+  }
+
+  /* Section Head P on mobile */
+  .section-head p.reveal-item:not([class*="eyebrow"]),
+  .about-copy p.reveal-item:not([class*="eyebrow"]),
+  .cta-inner p.reveal-item {
+    transition-duration: 540ms !important;
+    transition-delay: 90ms !important;
+  }
+  .scroll-reveal-enabled .section-head p.reveal-item:not([class*="eyebrow"]):not(.is-revealed),
+  .scroll-reveal-enabled .about-copy p.reveal-item:not([class*="eyebrow"]):not(.is-revealed),
+  .scroll-reveal-enabled .cta-inner p.reveal-item:not(.is-revealed) {
+    opacity: 0 !important;
+    transform: translateY(16px) !important;
+  }
+  .scroll-reveal-enabled .section-head p.reveal-item:not([class*="eyebrow"]).is-revealed,
+  .scroll-reveal-enabled .about-copy p.reveal-item:not([class*="eyebrow"]).is-revealed,
+  .scroll-reveal-enabled .cta-inner p.reveal-item.is-revealed {
     opacity: 1 !important;
     transform: translateY(0) !important;
   }

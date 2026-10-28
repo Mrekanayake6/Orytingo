@@ -148,11 +148,14 @@
     });
   };
 
-  addRevealGroup(".section-head > *", true);
-  addRevealGroup(".pillar-card, .why-card, .service-card, .timeline li, .tech-badges > span", true);
   addRevealGroup(
-    ".modern-tech-marquee, .about-visual, .about-copy > *, .ot-carousel, .cta-inner > *"
+    ".section-head [class*='eyebrow'], .section-head h2, .section-head p, " +
+    ".about-copy [class*='eyebrow'], .about-copy h2, .about-copy p, " +
+    ".cta-inner [class*='eyebrow'], .cta-inner h2, .cta-inner p, .cta-actions",
+    false
   );
+  addRevealGroup(".pillar-card, .why-card, .service-card, .timeline li, .tech-badges > span", true);
+  addRevealGroup(".modern-tech-marquee, .about-visual, .ot-carousel");
   addRevealGroup(
     ".software-service-card, .project-card, .package-card, .benefit-card, " +
     ".software-process-grid > div, .software-tech-grid > div, " +
