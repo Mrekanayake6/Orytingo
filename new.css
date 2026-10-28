@@ -3369,6 +3369,14 @@ html:not(.page-loading) #mascot.ready,
   will-change: transform;
 }
 
+#robot .arm,
+.loader-robot .arm {
+  -webkit-transform-box: fill-box !important;
+  transform-box: fill-box !important;
+  -webkit-transform-origin: 50% 12% !important;
+  transform-origin: 50% 12% !important;
+}
+
 #robot.run .breath,
 .loader-robot.run .breath {
   -webkit-animation: mascot-bob 0.3s ease-in-out infinite;
@@ -3386,27 +3394,25 @@ html:not(.page-loading) #mascot.ready,
 }
 #robot.run .arm,
 .loader-robot.run .arm {
-  -webkit-animation: mascot-arm 0.6s ease-in-out infinite;
-  animation: mascot-arm 0.6s ease-in-out infinite;
+  -webkit-animation: mascot-arm 0.6s ease-in-out infinite !important;
+  animation: mascot-arm 0.6s ease-in-out infinite !important;
 }
 
 #robot.run .thigh.l, #robot.run .shin.l, #robot.run .arm.r,
 .loader-robot.run .thigh.l, .loader-robot.run .shin.l, .loader-robot.run .arm.r {
-  -webkit-animation-delay: -0.3s;
-  animation-delay: -0.3s;
+  -webkit-animation-delay: -0.3s !important;
+  animation-delay: -0.3s !important;
 }
 #robot.run .thigh.r, #robot.run .shin.r, #robot.run .arm.l,
 .loader-robot.run .thigh.r, .loader-robot.run .shin.r, .loader-robot.run .arm.l {
-  -webkit-animation-delay: 0s;
-  animation-delay: 0s;
+  -webkit-animation-delay: 0s !important;
+  animation-delay: 0s !important;
 }
 
 #robot .thigh.l, .loader-robot .thigh.l { -webkit-transform-origin: 34px 66px; transform-origin: 34px 66px; }
 #robot .thigh.r, .loader-robot .thigh.r { -webkit-transform-origin: 46px 66px; transform-origin: 46px 66px; }
 #robot .shin.l, .loader-robot .shin.l { -webkit-transform-origin: 34px 74px; transform-origin: 34px 74px; }
 #robot .shin.r, .loader-robot .shin.r { -webkit-transform-origin: 46px 74px; transform-origin: 46px 74px; }
-#robot .arm.l, .loader-robot .arm.l { -webkit-transform-origin: 25.5px 51px; transform-origin: 25.5px 51px; }
-#robot .arm.r, .loader-robot .arm.r { -webkit-transform-origin: 54.5px 51px; transform-origin: 54.5px 51px; }
 
 @-webkit-keyframes mascot-thigh { 0%, 100% { -webkit-transform: rotate(-38deg); transform: rotate(-38deg); } 50% { -webkit-transform: rotate(38deg); transform: rotate(38deg); } }
 @keyframes mascot-thigh { 0%, 100% { -webkit-transform: rotate(-38deg); transform: rotate(-38deg); } 50% { -webkit-transform: rotate(38deg); transform: rotate(38deg); } }
@@ -3414,8 +3420,8 @@ html:not(.page-loading) #mascot.ready,
 @-webkit-keyframes mascot-shin { 0%, 100% { -webkit-transform: rotate(6deg); transform: rotate(6deg); } 30% { -webkit-transform: rotate(62deg); transform: rotate(62deg); } 60% { -webkit-transform: rotate(6deg); transform: rotate(6deg); } }
 @keyframes mascot-shin { 0%, 100% { -webkit-transform: rotate(6deg); transform: rotate(6deg); } 30% { -webkit-transform: rotate(62deg); transform: rotate(62deg); } 60% { -webkit-transform: rotate(6deg); transform: rotate(6deg); } }
 
-@-webkit-keyframes mascot-arm { 0%, 100% { -webkit-transform: rotate(32deg); transform: rotate(32deg); } 50% { -webkit-transform: rotate(-32deg); transform: rotate(-32deg); } }
-@keyframes mascot-arm { 0%, 100% { -webkit-transform: rotate(32deg); transform: rotate(32deg); } 50% { -webkit-transform: rotate(-32deg); transform: rotate(-32deg); } }
+@-webkit-keyframes mascot-arm { 0%, 100% { -webkit-transform: rotate(44deg); transform: rotate(44deg); } 50% { -webkit-transform: rotate(-44deg); transform: rotate(-44deg); } }
+@keyframes mascot-arm { 0%, 100% { -webkit-transform: rotate(44deg); transform: rotate(44deg); } 50% { -webkit-transform: rotate(-44deg); transform: rotate(-44deg); } }
 
 @-webkit-keyframes mascot-bob { 0%, 100% { -webkit-transform: translateY(0); transform: translateY(0); } 50% { -webkit-transform: translateY(-2.6px); transform: translateY(-2.6px); } }
 @keyframes mascot-bob { 0%, 100% { -webkit-transform: translateY(0); transform: translateY(0); } 50% { -webkit-transform: translateY(-2.6px); transform: translateY(-2.6px); } }
