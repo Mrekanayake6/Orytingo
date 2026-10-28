@@ -2823,17 +2823,6 @@ section {
   transition-delay: var(--reveal-delay, 0ms), var(--reveal-delay, 0ms), 0s, 0s;
 }
 
-@media (max-width: 768px) {
-  .reveal-item,
-  .scroll-reveal-enabled .reveal-item {
-    transition-duration: 220ms !important;
-    transition-delay: 0s !important;
-  }
-  .scroll-reveal-enabled .reveal-item:not(.is-revealed) {
-    transform: translateY(8px);
-  }
-}
-
 
 @media (max-width: 360px) {
   .page-loader-mark {
@@ -3106,7 +3095,6 @@ body::-webkit-scrollbar {
   z-index: 9995; /* Above page content & navbar, below page loader (10000) */
   pointer-events: none;
   contain: layout style;
-  
   opacity: 1;
   transition: opacity 0.3s ease;
   -webkit-user-select: none;
