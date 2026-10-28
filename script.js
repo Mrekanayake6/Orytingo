@@ -204,25 +204,56 @@
   const mobileMenu = document.getElementById("mobileMenu");
 
   if (hamburger && mobileMenu) {
-    hamburger.addEventListener("click", () => {
-      const open = mobileMenu.classList.toggle("open");
-      hamburger.classList.toggle("open", open);
-      hamburger.setAttribute("aria-expanded", String(open));
+    const navBarEl = document.getElementById("navBar");
+
+    const setMenuState = (isOpen) => {
+      mobileMenu.classList.toggle("open", isOpen);
+      hamburger.classList.toggle("open", isOpen);
+      hamburger.setAttribute("aria-expanded", String(isOpen));
+      if (navBarEl) {
+        navBarEl.classList.toggle("menu-open", isOpen);
+      }
+    };
+
+    hamburger.addEventListener("click", (event) => {
+      event.stopPropagation();
+      const isOpen = !mobileMenu.classList.contains("open");
+      setMenuState(isOpen);
     });
+
+    // Close when tapping outside the menu or navbar
+    document.addEventListener("click", (event) => {
+      if (!mobileMenu.classList.contains("open")) return;
+      if (!mobileMenu.contains(event.target) && !hamburger.contains(event.target)) {
+        setMenuState(false);
+      }
+    });
+
+    // Close on Escape key
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && mobileMenu.classList.contains("open")) {
+        setMenuState(false);
+        hamburger.focus();
+      }
+    });
+
+    // Auto-close on resize to desktop/tablet landscape
+    window.addEventListener("resize", () => {
+      if (window.innerWidth > 1024 && mobileMenu.classList.contains("open")) {
+        setMenuState(false);
+      }
+    }, { passive: true });
 
     /* The open menu pushes the page down (it sits in the header's flow). If the browser
        scrolled to an #anchor while it was open, the page would jump up ~400px once the
        menu collapsed and overshoot the section. So: close the menu first, then scroll
        after the collapse transition (.35s) has finished. */
-    const MENU_COLLAPSE_MS = 380;
+    const MENU_COLLAPSE_MS = 360;
 
     mobileMenu.querySelectorAll("a").forEach((link) => {
       link.addEventListener("click", (event) => {
         const wasOpen = mobileMenu.classList.contains("open");
-
-        mobileMenu.classList.remove("open");
-        hamburger.classList.remove("open");
-        hamburger.setAttribute("aria-expanded", "false");
+        setMenuState(false);
 
         const href = link.getAttribute("href");
         if (!wasOpen || !href || href.length < 2 || href.charAt(0) !== "#") return;
@@ -232,7 +263,7 @@
 
         event.preventDefault();
 
-        setTimeout(() => {
+        window.setTimeout(() => {
           target.scrollIntoView({ behavior: "smooth", block: "start" });
           history.pushState(null, "", href);
         }, MENU_COLLAPSE_MS);
