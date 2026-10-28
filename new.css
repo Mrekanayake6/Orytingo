@@ -527,13 +527,11 @@ button {
 }
 
 /* padding intentionally unchanged on scroll (no height jump) */
-.nav-bar.scrolled,
-.nav-bar.menu-open,
-.nav-bar:has(.mobile-menu.open) {
-  background: rgba(8, 9, 11, 0.92);
+.nav-bar.scrolled {
+  background: rgba(8, 9, 11, 0.88);
 
-  backdrop-filter: blur(18px) saturate(140%);
-  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
 
   border-bottom: 1px solid var(--border-soft);
 }
@@ -614,35 +612,20 @@ button {
   justify-content: center;
   flex-direction: column;
   gap: 5px;
-  width: 42px;
-  height: 42px;
-  min-width: 42px;
-  min-height: 42px;
+  width: 38px;
+  height: 38px;
   padding: 0;
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 10px;
   cursor: pointer;
   box-sizing: border-box;
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
-  transition: background .2s var(--ease), border-color .2s var(--ease), transform .15s var(--ease);
-}
-
-.hamburger:hover,
-.hamburger:focus-visible {
-  background: rgba(255, 129, 62, 0.12);
-  border-color: rgba(255, 129, 62, 0.4);
-}
-
-.hamburger:active {
-  transform: scale(0.93);
 }
 
 .hamburger span {
   display: block;
-  width: 18px;
-  height: 1.6px;
+  width: 16px;
+  height: 1.5px;
   margin: 0;
   padding: 0;
   flex: 0 0 auto;
@@ -650,115 +633,86 @@ button {
   border-radius: 999px;
   transform-origin: center;
   transition:
-    transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-    opacity 0.2s linear,
-    background 0.2s var(--ease);
-}
-
-.hamburger.open {
-  background: rgba(255, 129, 62, 0.15);
-  border-color: rgba(255, 129, 62, 0.45);
-}
-
-.hamburger.open span {
-  background: var(--orange);
+    transform 0.25s var(--ease),
+    opacity 0.25s var(--ease);
 }
 
 .hamburger.open span:nth-child(1) {
-  transform: translateY(6.6px) rotate(45deg);
+  transform: translateY(6.5px) rotate(45deg);
 }
 
 .hamburger.open span:nth-child(2) {
   opacity: 0;
-  transform: scaleX(0);
 }
 
 .hamburger.open span:nth-child(3) {
-  transform: translateY(-6.6px) rotate(-45deg);
+  transform: translateY(-6.5px) rotate(-45deg);
 }
 
 .mobile-menu {
   display: none;
   flex-direction: column;
-  gap: 2px;
+  gap: 4px;
   max-height: 0;
   overflow: hidden;
   padding: 0 32px;
   visibility: hidden;
-  transition: max-height .35s cubic-bezier(0.16, 1, 0.3, 1), padding .35s cubic-bezier(0.16, 1, 0.3, 1), visibility 0s linear .35s;
+  transition: max-height .35s var(--ease), padding .35s var(--ease), visibility 0s linear .35s;
 }
 
 .mobile-menu.open {
-  max-height: 480px;
-  padding: 14px 32px 24px;
+  max-height: 420px;
+  padding: 14px 32px 22px;
   visibility: visible;
   transition-delay: 0s;
 }
 
+
+
 /* MOBILE MENU LINKS */
 .mobile-menu a {
   position: relative;
-  display: block;
-  width: 100%;
-  padding: 13px 4px;
+  padding: 12px 4px;
   border-bottom: 1px solid var(--border-soft);
   color: var(--text-muted);
-  font-size: 1.02rem;
   font-weight: 500;
-  transition: color .2s var(--ease), padding-left .2s var(--ease);
-  -webkit-tap-highlight-color: transparent;
 }
 
-.mobile-menu a:hover,
-.mobile-menu a:focus-visible {
-  color: #fff;
-  padding-left: 6px;
+.mobile-menu .mobile-project-btn {
+  color: var(--bg);
+}
+
+/* NORMAL MENU LINKS - CONTENT WIDTH */
+.mobile-menu a:not(:last-child) {
+  display: inline-block;
+  width: fit-content;
 }
 
 /* ACTIVE */
 .mobile-menu a.active {
-  color: var(--orange);
-  font-weight: 600;
+  color: var(--text);
 }
 
+/* UNDERLINE = CONTENT WIDTH */
 .mobile-menu a.active::after {
   content: '';
   position: absolute;
   left: 0;
-  bottom: 0;
-  width: 24px;
+  bottom: 5px;
+  width: 100%;
   height: 2px;
   background: var(--orange);
   border-radius: 999px;
 }
 
 /* LAST BUTTON */
-.mobile-menu a.mobile-project-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  margin-top: 14px;
-  padding: 13px 20px;
+.mobile-menu a:last-child {
   border-bottom: none;
-  color: #0b0c10 !important;
-  background: var(--grad-brand);
-  border-radius: 999px;
-  font-weight: 700;
-  font-size: 0.95rem;
-  box-shadow: 0 8px 24px -6px rgba(255, 129, 62, 0.55);
+  margin-top: 8px;
   text-align: center;
-  letter-spacing: 0.02em;
-  transition: transform .2s var(--ease), box-shadow .2s var(--ease);
 }
 
-.mobile-menu a.mobile-project-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 12px 28px -6px rgba(255, 129, 62, 0.7);
-  padding-left: 20px;
-}
-
-.mobile-menu a.mobile-project-btn::after {
+.mobile-menu a:last-child::after {
   display: none;
 }
 
@@ -798,114 +752,11 @@ button {
   font-size: clamp(2.3rem, 4.4vw, 3.6rem);
   font-weight: 700;
   margin-bottom: 22px;
-  line-height: 1.15;
-}
-
-.hero-line-mask {
-  display: block;
-  overflow: hidden;
-  line-height: 1.18;
-  padding-bottom: 0.08em;
-}
-
-.hero-line {
-  display: inline-block;
-  will-change: transform, opacity, filter;
-  transition: transform 900ms cubic-bezier(0.16, 1, 0.3, 1),
-              opacity 900ms cubic-bezier(0.16, 1, 0.3, 1),
-              filter 900ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .hlp {
   color: #ff813e;
   font-weight: 900;
-  background: linear-gradient(135deg, #ffa86e 0%, #ff813e 50%, #ff5d18 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  display: inline-block;
-  filter: drop-shadow(0 0 24px rgba(255, 129, 62, 0.4));
-}
-
-/* ============================================================
-   DartCodes Style Staggered Hero Typography Entrance
-============================================================ */
-.hero-anim-ready .hero-kicker {
-  opacity: 0;
-  transform: translateY(14px);
-  filter: blur(4px);
-  transition: opacity 700ms cubic-bezier(0.16, 1, 0.3, 1),
-              transform 700ms cubic-bezier(0.16, 1, 0.3, 1),
-              filter 700ms cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.hero-anim-ready .hero-line {
-  opacity: 0;
-  transform: translateY(115%);
-  filter: blur(8px);
-}
-
-.hero-anim-ready .hero-desc {
-  opacity: 0;
-  transform: translateY(22px);
-  filter: blur(6px);
-  transition: opacity 800ms cubic-bezier(0.16, 1, 0.3, 1),
-              transform 800ms cubic-bezier(0.16, 1, 0.3, 1),
-              filter 800ms cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.hero-anim-ready .hero-actions {
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 800ms cubic-bezier(0.16, 1, 0.3, 1),
-              transform 800ms cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.hero-anim-ready .hero-stats {
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 850ms cubic-bezier(0.16, 1, 0.3, 1),
-              transform 850ms cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-/* When hero is revealed (animated state) */
-.hero-animated .hero-kicker {
-  opacity: 1;
-  transform: translateY(0);
-  filter: blur(0);
-  transition-delay: 80ms;
-}
-
-.hero-animated .hero-line-mask:nth-child(1) .hero-line {
-  opacity: 1;
-  transform: translateY(0);
-  filter: blur(0);
-  transition-delay: 180ms;
-}
-
-.hero-animated .hero-line-mask:nth-child(2) .hero-line {
-  opacity: 1;
-  transform: translateY(0);
-  filter: blur(0);
-  transition-delay: 360ms;
-}
-
-.hero-animated .hero-desc {
-  opacity: 1;
-  transform: translateY(0);
-  filter: blur(0);
-  transition-delay: 520ms;
-}
-
-.hero-animated .hero-actions {
-  opacity: 1;
-  transform: translateY(0);
-  transition-delay: 680ms;
-}
-
-.hero-animated .hero-stats {
-  opacity: 1;
-  transform: translateY(0);
-  transition-delay: 820ms;
 }
 
 .hero-desc {
@@ -2547,14 +2398,6 @@ section {
     padding: 0 20px;
   }
 
-  .mobile-menu {
-    padding: 0 20px;
-  }
-
-  .mobile-menu.open {
-    padding: 12px 20px 22px;
-  }
-
 
   /* Hero */
   .hero-headline {
@@ -3130,50 +2973,42 @@ section {
 .section-head h2.reveal-item,
 .about-copy h2.reveal-item,
 .cta-inner h2.reveal-item {
-  transition: opacity 720ms cubic-bezier(0.16, 1, 0.3, 1),
-              transform 720ms cubic-bezier(0.16, 1, 0.3, 1),
-              filter 720ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition-duration: 620ms;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   transition-delay: 70ms;
-  will-change: transform, opacity, filter;
 }
 .scroll-reveal-enabled .section-head h2.reveal-item:not(.is-revealed),
 .scroll-reveal-enabled .about-copy h2.reveal-item:not(.is-revealed),
 .scroll-reveal-enabled .cta-inner h2.reveal-item:not(.is-revealed) {
   opacity: 0;
-  transform: translateY(32px);
-  filter: blur(6px);
+  transform: translateY(28px);
 }
 .scroll-reveal-enabled .section-head h2.reveal-item.is-revealed,
 .scroll-reveal-enabled .about-copy h2.reveal-item.is-revealed,
 .scroll-reveal-enabled .cta-inner h2.reveal-item.is-revealed {
   opacity: 1;
   transform: translateY(0);
-  filter: blur(0);
 }
 
 /* 3. Section Head P (Description) */
 .section-head p.reveal-item:not([class*="eyebrow"]),
 .about-copy p.reveal-item:not([class*="eyebrow"]),
 .cta-inner p.reveal-item {
-  transition: opacity 750ms cubic-bezier(0.16, 1, 0.3, 1),
-              transform 750ms cubic-bezier(0.16, 1, 0.3, 1),
-              filter 750ms cubic-bezier(0.16, 1, 0.3, 1);
-  transition-delay: 170ms;
-  will-change: transform, opacity, filter;
+  transition-duration: 660ms;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: 150ms;
 }
 .scroll-reveal-enabled .section-head p.reveal-item:not([class*="eyebrow"]):not(.is-revealed),
 .scroll-reveal-enabled .about-copy p.reveal-item:not([class*="eyebrow"]):not(.is-revealed),
 .scroll-reveal-enabled .cta-inner p.reveal-item:not(.is-revealed) {
   opacity: 0;
-  transform: translateY(24px);
-  filter: blur(4px);
+  transform: translateY(22px);
 }
 .scroll-reveal-enabled .section-head p.reveal-item:not([class*="eyebrow"]).is-revealed,
 .scroll-reveal-enabled .about-copy p.reveal-item:not([class*="eyebrow"]).is-revealed,
 .scroll-reveal-enabled .cta-inner p.reveal-item.is-revealed {
   opacity: 1;
   transform: translateY(0);
-  filter: blur(0);
 }
 
 /* 4. CTA Actions */
@@ -3206,9 +3041,7 @@ section {
   .section-head h2.reveal-item,
   .about-copy h2.reveal-item,
   .cta-inner h2.reveal-item {
-    transition: opacity 540ms cubic-bezier(0.16, 1, 0.3, 1) !important,
-                transform 540ms cubic-bezier(0.16, 1, 0.3, 1) !important,
-                filter 540ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+    transition-duration: 520ms !important;
     transition-delay: 40ms !important;
   }
   .scroll-reveal-enabled .section-head h2.reveal-item:not(.is-revealed),
@@ -3216,70 +3049,44 @@ section {
   .scroll-reveal-enabled .cta-inner h2.reveal-item:not(.is-revealed) {
     opacity: 0 !important;
     transform: translateY(22px) !important;
-    filter: blur(4px) !important;
   }
   .scroll-reveal-enabled .section-head h2.reveal-item.is-revealed,
   .scroll-reveal-enabled .about-copy h2.reveal-item.is-revealed,
   .scroll-reveal-enabled .cta-inner h2.reveal-item.is-revealed {
     opacity: 1 !important;
     transform: translateY(0) !important;
-    filter: blur(0) !important;
   }
 
   /* Section Head P on mobile */
   .section-head p.reveal-item:not([class*="eyebrow"]),
   .about-copy p.reveal-item:not([class*="eyebrow"]),
   .cta-inner p.reveal-item {
-    transition: opacity 560ms cubic-bezier(0.16, 1, 0.3, 1) !important,
-                transform 560ms cubic-bezier(0.16, 1, 0.3, 1) !important,
-                filter 560ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+    transition-duration: 540ms !important;
     transition-delay: 90ms !important;
   }
   .scroll-reveal-enabled .section-head p.reveal-item:not([class*="eyebrow"]):not(.is-revealed),
   .scroll-reveal-enabled .about-copy p.reveal-item:not([class*="eyebrow"]):not(.is-revealed),
   .scroll-reveal-enabled .cta-inner p.reveal-item:not(.is-revealed) {
     opacity: 0 !important;
-    transform: translateY(18px) !important;
-    filter: blur(3px) !important;
+    transform: translateY(16px) !important;
   }
   .scroll-reveal-enabled .section-head p.reveal-item:not([class*="eyebrow"]).is-revealed,
   .scroll-reveal-enabled .about-copy p.reveal-item:not([class*="eyebrow"]).is-revealed,
   .scroll-reveal-enabled .cta-inner p.reveal-item.is-revealed {
     opacity: 1 !important;
     transform: translateY(0) !important;
-    filter: blur(0) !important;
   }
 }
 
 
 @media (max-width: 360px) {
-  .section-inner,
-  .hero-inner,
-  .nav-inner {
-    padding: 0 16px;
+  .page-loader-mark {
+    width: 126px;
   }
 
-  .mobile-menu {
-    padding: 0 16px;
-  }
-
-  .mobile-menu.open {
-    padding: 10px 16px 18px;
-  }
-
-  .hamburger {
-    width: 38px;
-    height: 38px;
-    min-width: 38px;
-    min-height: 38px;
-  }
-
-  .logo-text {
-    font-size: 1.05rem;
-  }
-
-  .logo-mark-img {
-    height: 26px;
+  .page-loader-caption {
+    font-size: .58rem;
+    letter-spacing: .12em;
   }
 }
 
