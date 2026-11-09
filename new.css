@@ -3838,11 +3838,12 @@ body.mobile-sheet-open {
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
+    will-change: transform;
     transition:
-      transform 0.38s cubic-bezier(0.16, 1, 0.3, 1),
-      opacity 0.25s ease,
-      visibility 0.38s ease,
-      box-shadow 0.3s ease;
+      transform 0.26s cubic-bezier(0.32, 0.72, 0, 1),
+      opacity 0.2s ease,
+      visibility 0.26s ease,
+      box-shadow 0.26s ease;
     overflow: hidden;
   }
 
@@ -3880,25 +3881,40 @@ body.mobile-sheet-open {
   }
 
   .mobile-sheet-close {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
+    width: 34px;
+    height: 34px;
+    padding: 0;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: rgba(255, 255, 255, 0.75);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.85);
     cursor: pointer;
-    font-size: 14px;
-    transition: all 0.2s ease;
+    transition: transform 0.15s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
     -webkit-tap-highlight-color: transparent;
+    flex-shrink: 0;
+  }
+
+  .mobile-sheet-close svg {
+    width: 16px;
+    height: 16px;
+    display: block;
+    pointer-events: none;
+    stroke: currentColor;
+    transition: transform 0.2s ease;
   }
 
   .mobile-sheet-close:hover {
     color: #FF813E;
-    border-color: rgba(255, 129, 62, 0.4);
-    background: rgba(255, 129, 62, 0.1);
+    border-color: rgba(255, 129, 62, 0.45);
+    background: rgba(255, 129, 62, 0.14);
+  }
+
+  .mobile-sheet-close:active {
+    transform: scale(0.9);
+    background: rgba(255, 129, 62, 0.22);
   }
 
   .mobile-sheet-body {
