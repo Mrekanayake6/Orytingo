@@ -222,6 +222,8 @@
     let isDraggingSheet = false;
 
     mobileSheet.addEventListener("touchstart", (e) => {
+      // ONLY allow drag gesture when sheet is actually open
+      if (!mobileSheet.classList.contains("open")) return;
       if (e.touches.length !== 1) return;
       const scrollTop = mobileSheetBody ? mobileSheetBody.scrollTop : 0;
       if (scrollTop <= 0) {
@@ -232,6 +234,7 @@
     }, { passive: true });
 
     mobileSheet.addEventListener("touchmove", (e) => {
+      if (!mobileSheet.classList.contains("open")) return;
       if (!isDraggingSheet || e.touches.length !== 1) return;
       touchCurrentY = e.touches[0].clientY;
       const diffY = touchCurrentY - touchStartY;
@@ -243,6 +246,7 @@
     mobileSheet.addEventListener("touchend", () => {
       if (!isDraggingSheet) return;
       isDraggingSheet = false;
+      if (!mobileSheet.classList.contains("open")) return;
       const diffY = touchCurrentY - touchStartY;
       if (diffY > 80) {
         setSheetOpen(false);
