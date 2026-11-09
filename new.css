@@ -3645,6 +3645,16 @@ html.page-loading .rbs-rail {
 }
 
 @media (max-width: 1024px) {
+  /* Hide the old bottom floating WhatsApp button on mobile (now in top header & dock sheet) */
+  .whatsapp-float {
+    display: none !important;
+  }
+
+  /* Footer safe padding so bottom floating dock never covers copyright text */
+  .footer-bottom {
+    padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px));
+  }
+
   .nav-whatsapp-btn {
     display: flex;
     align-items: center;
@@ -3695,14 +3705,20 @@ html.page-loading .rbs-rail {
   display: none;
 }
 
+/* Body scroll lock when sheet modal is open */
+body.mobile-sheet-open {
+  overflow: hidden !important;
+  touch-action: none;
+}
+
 @media (max-width: 1024px) {
   /* Floating Bottom Navigation Dock */
   .mobile-dock {
     display: block;
     position: fixed;
-    bottom: 14px;
-    left: 14px;
-    right: 14px;
+    bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+    left: max(12px, env(safe-area-inset-left, 0px));
+    right: max(12px, env(safe-area-inset-right, 0px));
     z-index: 9980;
     pointer-events: none;
   }
@@ -4017,5 +4033,29 @@ html.page-loading .rbs-rail {
   .mobile-sheet-whatsapp > i {
     font-size: 12px;
     color: #25D366;
+  }
+}
+
+/* Extra small mobile screens (iPhone SE, etc. <= 360px) */
+@media (max-width: 360px) {
+  .mobile-dock {
+    bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+    left: max(6px, env(safe-area-inset-left, 0px));
+    right: max(6px, env(safe-area-inset-right, 0px));
+  }
+
+  .mobile-dock-inner {
+    padding: 4px 2px;
+    border-radius: 22px;
+  }
+
+  .mobile-dock-icon {
+    width: 34px;
+    height: 34px;
+    font-size: 14px;
+  }
+
+  .mobile-dock-label {
+    font-size: 9px;
   }
 }
