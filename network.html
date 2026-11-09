@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
     <title>ORYTINGO — Networking Solutions</title>
 
@@ -31,7 +31,7 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <link rel="stylesheet" href="new.css">
+    <link rel="stylesheet" href="new.css?v=4.0">
     <link rel="stylesheet" href="network.css">
     <link rel="icon" href="android-chrome-512x512.png" />
 
@@ -95,49 +95,108 @@
             </a>
 
 
-            <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
-
-                <span></span>
-                <span></span>
-                <span></span>
-
-            </button>
-
-        </div>
-
-
-        <!-- MOBILE MENU -->
-        <div class="mobile-menu" id="mobileMenu">
-
-            <a href="index.html">Home</a>
-
-            <a href="index.html#software">
-                Software
-            </a>
-
-            <a href="network.html" class="active">
-                Networking
-            </a>
-
-            <a href="index.html#about">
-                About
-            </a>
-
-            <a href="index.html#services">
-                Services
-            </a>
-
-            <a href="#contact">
-                Contact
-            </a>
-
-            <a href="#contact" class="btn btn-primary mobile-project-btn">
-                Start a Project
-            </a>
+            <div class="nav-mobile-actions">
+                <a href="https://wa.me/94713872042?text=Hi%20OryTingo%2C%20I%20need%20help%20with%20your%20services."
+                   class="nav-whatsapp-btn"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   aria-label="Chat with OryTingo on WhatsApp">
+                    <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
+                </a>
+            </div>
 
         </div>
 
     </header>
+
+    <!-- DARTCODES-STYLE FLOATING BOTTOM DOCK -->
+    <nav class="mobile-dock" id="mobileDock" aria-label="Mobile Navigation">
+        <div class="mobile-dock-inner">
+            <a href="index.html" class="mobile-dock-item" data-dock="home" aria-label="Home">
+                <span class="mobile-dock-icon"><i class="fa-solid fa-house" aria-hidden="true"></i></span>
+                <span class="mobile-dock-label">Home</span>
+            </a>
+            <a href="software.html" class="mobile-dock-item" data-dock="software" aria-label="Software">
+                <span class="mobile-dock-icon"><i class="fa-solid fa-laptop-code" aria-hidden="true"></i></span>
+                <span class="mobile-dock-label">Software</span>
+            </a>
+            <a href="network.html" class="mobile-dock-item" data-dock="network" aria-label="Network">
+                <span class="mobile-dock-icon"><i class="fa-solid fa-network-wired" aria-hidden="true"></i></span>
+                <span class="mobile-dock-label">Network</span>
+            </a>
+            <a href="index.html#services" class="mobile-dock-item" data-dock="service" aria-label="Services">
+                <span class="mobile-dock-icon"><i class="fa-solid fa-briefcase" aria-hidden="true"></i></span>
+                <span class="mobile-dock-label">Services</span>
+            </a>
+            <button type="button" class="mobile-dock-item" id="mobileDockMore" data-dock="more" aria-label="More navigation items" aria-haspopup="dialog" aria-expanded="false">
+                <span class="mobile-dock-icon"><i class="fa-solid fa-bars" aria-hidden="true"></i></span>
+                <span class="mobile-dock-label">More</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- DARTCODES-STYLE SLIDE-UP BOTTOM SHEET -->
+    <div class="mobile-sheet-backdrop" id="mobileSheetBackdrop" aria-hidden="true"></div>
+    <div class="mobile-sheet" id="mobileSheet" role="dialog" aria-modal="true" aria-labelledby="mobileSheetTitle">
+        <div class="mobile-sheet-handle" aria-hidden="true"></div>
+        <div class="mobile-sheet-header">
+            <h3 class="mobile-sheet-title" id="mobileSheetTitle">Navigation</h3>
+            <button type="button" class="mobile-sheet-close" id="mobileSheetClose" aria-label="Close menu">
+                <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+            </button>
+        </div>
+        <div class="mobile-sheet-body">
+            <div class="mobile-sheet-group">
+                <a href="index.html" class="mobile-sheet-item" data-nav="home">
+                    <span class="mobile-sheet-icon"><i class="fa-solid fa-house" aria-hidden="true"></i></span>
+                    <span class="mobile-sheet-label">Home</span>
+                    <span class="mobile-sheet-arrow" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
+                </a>
+                <a href="software.html" class="mobile-sheet-item" data-nav="software">
+                    <span class="mobile-sheet-icon"><i class="fa-solid fa-laptop-code" aria-hidden="true"></i></span>
+                    <span class="mobile-sheet-label">Software Solutions</span>
+                    <span class="mobile-sheet-arrow" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
+                </a>
+                <a href="network.html" class="mobile-sheet-item" data-nav="network">
+                    <span class="mobile-sheet-icon"><i class="fa-solid fa-network-wired" aria-hidden="true"></i></span>
+                    <span class="mobile-sheet-label">Network Infrastructure</span>
+                    <span class="mobile-sheet-arrow" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
+                </a>
+                <a href="index.html#services" class="mobile-sheet-item" data-nav="service">
+                    <span class="mobile-sheet-icon"><i class="fa-solid fa-briefcase" aria-hidden="true"></i></span>
+                    <span class="mobile-sheet-label">Our Services</span>
+                    <span class="mobile-sheet-arrow" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
+                </a>
+                <a href="index.html#about" class="mobile-sheet-item" data-nav="about">
+                    <span class="mobile-sheet-icon"><i class="fa-solid fa-circle-info" aria-hidden="true"></i></span>
+                    <span class="mobile-sheet-label">About OryTingo</span>
+                    <span class="mobile-sheet-arrow" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
+                </a>
+                <a href="#contact" class="mobile-sheet-item" data-nav="contact">
+                    <span class="mobile-sheet-icon"><i class="fa-solid fa-phone" aria-hidden="true"></i></span>
+                    <span class="mobile-sheet-label">Contact Us</span>
+                    <span class="mobile-sheet-arrow" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
+                </a>
+            </div>
+
+            <a href="#contact" class="mobile-sheet-cta">
+                <span>Start a Project</span>
+            </a>
+
+            <a href="https://wa.me/94713872042?text=Hi%20OryTingo%2C%20I%20need%20help%20with%20your%20services."
+               class="mobile-sheet-whatsapp"
+               target="_blank"
+               rel="noopener noreferrer"
+               aria-label="Chat with OryTingo on WhatsApp">
+                <div class="mobile-sheet-wa-icon"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i></div>
+                <div class="mobile-sheet-wa-text">
+                    <strong>Chat on WhatsApp</strong>
+                    <span>Quick response guaranteed (+94 71 387 2042)</span>
+                </div>
+                <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+            </a>
+        </div>
+    </div>
 
 
 
@@ -1568,7 +1627,7 @@
     </div>
   </div>
 
-  <script src="script.js" defer></script>
+  <script src="script.js?v=4.1" defer></script>
 
 </body>
 

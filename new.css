@@ -259,15 +259,7 @@ button {
   filter: drop-shadow(0 4px 12px rgba(255, 129, 62, 0.35));
 }
 
-.loader-robot .tilt,
-.loader-robot .flip {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-
 .loader-robot svg {
-  display: block;
   width: 100%;
   height: 100%;
   overflow: visible;
@@ -616,160 +608,57 @@ button {
   font-size: 0.88rem;
 }
 
-.hamburger {
+/* ============================================================
+   Top Mobile Header Actions (WhatsApp Quick Access)
+============================================================ */
+.nav-whatsapp-btn {
   display: none;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
-  gap: 5px;
-  width: 44px;
-  height: 44px;
-  min-width: 44px;
-  min-height: 44px;
-  padding: 0;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  cursor: pointer;
-  box-sizing: border-box;
-  touch-action: manipulation;
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  min-height: 38px;
+  border-radius: 50%;
+  background: #25D366;
+  color: #FFFFFF !important;
+  font-size: 19px;
+  text-decoration: none;
+  border: none;
+  outline: none;
+  box-shadow: 0 4px 14px rgba(37, 211, 102, 0.4);
+  transition:
+    transform 0.2s var(--ease),
+    background 0.2s var(--ease),
+    box-shadow 0.2s var(--ease);
   -webkit-tap-highlight-color: transparent;
-  transition: background .2s var(--ease), border-color .2s var(--ease), transform .15s var(--ease);
+  flex-shrink: 0;
 }
 
-.hamburger:hover,
-.hamburger:focus-visible {
-  background: rgba(255, 129, 62, 0.12);
-  border-color: rgba(255, 129, 62, 0.4);
+.nav-whatsapp-btn:hover,
+.nav-whatsapp-btn:focus-visible {
+  background: #20BD5A;
+  color: #FFFFFF !important;
+  transform: scale(1.06);
+  box-shadow: 0 6px 18px rgba(37, 211, 102, 0.55);
 }
 
-.hamburger:active {
+.nav-whatsapp-btn:active {
   transform: scale(0.92);
 }
 
-.hamburger span {
-  display: block;
-  width: 18px;
-  height: 1.6px;
-  margin: 0;
-  padding: 0;
-  flex: 0 0 auto;
-  background: var(--text);
-  border-radius: 999px;
-  transform-origin: center;
-  transition:
-    transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-    opacity 0.2s linear,
-    background 0.2s var(--ease);
-}
-
-.hamburger.open {
-  background: rgba(255, 129, 62, 0.16);
-  border-color: rgba(255, 129, 62, 0.5);
-}
-
-.hamburger.open span {
-  background: var(--orange);
-}
-
-.hamburger.open span:nth-child(1) {
-  transform: translateY(6.6px) rotate(45deg);
-}
-
-.hamburger.open span:nth-child(2) {
-  opacity: 0;
-  transform: scaleX(0);
-}
-
-.hamburger.open span:nth-child(3) {
-  transform: translateY(-6.6px) rotate(-45deg);
-}
-
-.mobile-menu {
+/* ============================================================
+   DARTCODES-STYLE FLOATING BOTTOM NAVIGATION DOCK & SHEET
+============================================================ */
+.mobile-dock {
   display: none;
-  flex-direction: column;
-  gap: 2px;
-  max-height: 0;
-  overflow: hidden;
-  padding: 0 32px;
-  visibility: hidden;
-  transition: max-height .35s cubic-bezier(0.16, 1, 0.3, 1), padding .35s cubic-bezier(0.16, 1, 0.3, 1), visibility 0s linear .35s;
 }
 
-.mobile-menu.open {
-  max-height: min(500px, calc(100vh - 65px));
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  padding: 14px 32px 24px;
-  visibility: visible;
-  transition-delay: 0s;
+.mobile-sheet-backdrop {
+  display: none;
 }
 
-/* MOBILE MENU LINKS */
-.mobile-menu a {
-  position: relative;
-  display: block;
-  width: 100%;
-  padding: 13px 4px;
-  border-bottom: 1px solid var(--border-soft);
-  color: var(--text-muted);
-  font-size: 1.02rem;
-  font-weight: 500;
-  transition: color .2s var(--ease), padding-left .2s var(--ease);
-  -webkit-tap-highlight-color: transparent;
-}
-
-.mobile-menu a:hover,
-.mobile-menu a:focus-visible {
-  color: #fff;
-  padding-left: 6px;
-}
-
-/* ACTIVE */
-.mobile-menu a.active {
-  color: var(--orange);
-  font-weight: 600;
-}
-
-.mobile-menu a.active::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 24px;
-  height: 2px;
-  background: var(--orange);
-  border-radius: 999px;
-}
-
-/* LAST BUTTON */
-.mobile-menu a.mobile-project-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  margin-top: 14px;
-  padding: 13px 20px;
-  border-bottom: none;
-  color: #0b0c10 !important;
-  background: var(--grad-brand);
-  border-radius: 999px;
-  font-weight: 700;
-  font-size: 0.95rem;
-  box-shadow: 0 8px 24px -6px rgba(255, 129, 62, 0.55);
-  text-align: center;
-  letter-spacing: 0.02em;
-  transition: transform .2s var(--ease), box-shadow .2s var(--ease);
-  -webkit-tap-highlight-color: transparent;
-}
-
-.mobile-menu a.mobile-project-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 12px 28px -6px rgba(255, 129, 62, 0.7);
-  padding-left: 20px;
-}
-
-.mobile-menu a.mobile-project-btn::after {
+.mobile-sheet {
   display: none;
 }
 
@@ -1073,6 +962,11 @@ button {
 section {
   padding: 96px 0;
   position: relative;
+  scroll-margin-top: 80px;
+}
+
+article[id] {
+  scroll-margin-top: 80px;
 }
 
 /* ============================================================
@@ -2341,30 +2235,436 @@ section {
 
 @media (max-width: 1024px) {
 
-  /* Navbar stable */
+  /* Body safe padding for fixed top header and bottom floating dock */
+  body {
+    padding-top: calc(58px + env(safe-area-inset-top, 0px));
+    padding-bottom: calc(90px + env(safe-area-inset-bottom, 0px));
+  }
 
+  body.mobile-sheet-open {
+    overflow: hidden !important;
+    touch-action: none;
+  }
+
+  /* Hide old redundant floating button on mobile */
+  .whatsapp-float {
+    display: none !important;
+  }
+
+  /* Fixed Top Header (DartCodes style) */
   .nav-bar {
-    padding: 12px 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: auto;
+    z-index: 50;
+    padding-top: calc(8px + env(safe-area-inset-top, 0px));
+    padding-bottom: 8px;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    background: rgba(14, 16, 20, 0.94);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    border-top: none;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
   }
 
   .nav-inner {
-    min-height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 44px;
+    padding: 0;
+    width: 100%;
   }
 
-  .nav-links {
-    display: none;
+  .nav-links,
+  .nav-cta,
+  .hamburger,
+  .mobile-menu,
+  .nav-backdrop {
+    display: none !important;
   }
 
-  .nav-cta {
-    display: none;
-  }
-
-  .hamburger {
+  .nav-whatsapp-btn {
     display: flex;
   }
 
-  .mobile-menu {
+  /* ============================================================
+     Floating Bottom Navigation Dock (DartCodes Style)
+  ============================================================ */
+  .mobile-dock {
+    display: block;
+    position: fixed;
+    bottom: 14px;
+    left: 14px;
+    right: 14px;
+    z-index: 50;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    pointer-events: none;
+  }
+
+  .mobile-dock-inner {
+    pointer-events: auto;
+    max-width: 440px;
+    margin: 0 auto;
     display: flex;
+    align-items: stretch;
+    justify-content: space-around;
+    padding: 6px 6px;
+    border-radius: 28px;
+    background: rgba(14, 16, 20, 0.94);
+    backdrop-filter: blur(24px) saturate(160%);
+    -webkit-backdrop-filter: blur(24px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow:
+      0 12px 40px rgba(0, 0, 0, 0.65),
+      0 0 0 1px rgba(255, 255, 255, 0.05),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  /* Individual Tab in Dock */
+  .mobile-dock-item {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 4px 2px;
+    min-width: 0;
+    text-decoration: none;
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 0.15s var(--ease);
+  }
+
+  .mobile-dock-item:active {
+    transform: scale(0.93);
+  }
+
+  /* Icon Box */
+  .mobile-dock-icon {
+    display: flex;
+    width: 38px;
+    height: 38px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.5);
+    background: transparent;
+    transition:
+      background 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+      color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Label */
+  .mobile-dock-label {
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: 0.01em;
+    color: rgba(255, 255, 255, 0.5);
+    transition: color 0.25s var(--ease);
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+
+  .mobile-dock-item:hover .mobile-dock-icon {
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  .mobile-dock-item:hover .mobile-dock-label {
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  /* ACTIVE STATE (#FF813E Orange Accent - DartCodes Style) */
+  .mobile-dock-item.active .mobile-dock-icon {
+    background: #FF813E;
+    color: #FFFFFF;
+    box-shadow: 0 4px 14px rgba(255, 129, 62, 0.45);
+  }
+
+  .mobile-dock-item.active .mobile-dock-label {
+    color: #FF813E;
+    font-weight: 700;
+  }
+
+  /* ============================================================
+     Slide-Up Bottom Sheet Modal (DartCodes Style)
+  ============================================================ */
+  .mobile-sheet-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 9990;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+
+  .mobile-sheet-backdrop.open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .mobile-sheet {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 9991;
+    max-height: 85vh;
+    border-radius: 28px 28px 0 0;
+    background: #0E1014;
+    border-top: 1px solid rgba(255, 129, 62, 0.35);
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 -20px 50px rgba(0, 0, 0, 0.75);
+    transform: translateY(105%);
+    transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow: hidden;
+  }
+
+  .mobile-sheet.open {
+    transform: translateY(0);
+  }
+
+  .mobile-sheet-handle {
+    width: 38px;
+    height: 4px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.25);
+    margin: 10px auto 4px;
+    flex-shrink: 0;
+  }
+
+  .mobile-sheet-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    flex-shrink: 0;
+  }
+
+  .mobile-sheet-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin: 0;
+    letter-spacing: 0.01em;
+  }
+
+  .mobile-sheet-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.75);
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .mobile-sheet-close:hover {
+    color: #FF813E;
+    border-color: rgba(255, 129, 62, 0.4);
+    background: rgba(255, 129, 62, 0.1);
+  }
+
+  .mobile-sheet-body {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 16px 20px calc(24px + env(safe-area-inset-bottom, 0px));
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .mobile-sheet-group {
+    display: flex;
+    flex-direction: column;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    overflow: hidden;
+  }
+
+  .mobile-sheet-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 13px 16px;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.75);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    transition: background 0.2s ease, color 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .mobile-sheet-item:last-child {
+    border-bottom: none;
+  }
+
+  .mobile-sheet-item:hover,
+  .mobile-sheet-item:active {
+    background: rgba(255, 255, 255, 0.05);
+    color: #FFFFFF;
+  }
+
+  .mobile-sheet-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 14px;
+    flex-shrink: 0;
+    transition: color 0.2s ease, background 0.2s ease;
+  }
+
+  .mobile-sheet-label {
+    flex: 1;
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+
+  .mobile-sheet-arrow {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.3);
+  }
+
+  /* Sheet Item Active State */
+  .mobile-sheet-item.active {
+    color: #FF813E;
+    background: rgba(255, 129, 62, 0.08);
+  }
+
+  .mobile-sheet-item.active .mobile-sheet-icon {
+    background: #FF813E;
+    color: #FFFFFF;
+  }
+
+  .mobile-sheet-item.active .mobile-sheet-arrow {
+    color: #FF813E;
+  }
+
+  /* CTA Button inside sheet */
+  .mobile-sheet-cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 20px;
+    color: #0b0c10 !important;
+    background: var(--grad-brand);
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    box-shadow: 0 8px 24px -6px rgba(255, 129, 62, 0.55);
+    text-align: center;
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* WhatsApp direct link in sheet */
+  .mobile-sheet-whatsapp {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: 16px;
+    background: rgba(37, 211, 102, 0.1);
+    border: 1px solid rgba(37, 211, 102, 0.25);
+    text-decoration: none;
+    color: #FFFFFF;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .mobile-sheet-wa-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #25D366;
+    color: #FFFFFF;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .mobile-sheet-wa-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .mobile-sheet-wa-text strong {
+    font-size: 0.88rem;
+    color: #FFFFFF;
+  }
+
+  .mobile-sheet-wa-text span {
+    font-size: 0.76rem;
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .mobile-sheet-whatsapp > i {
+    font-size: 12px;
+    color: #25D366;
+  }
+}
+
+@media (max-width: 360px) {
+  .mobile-dock {
+    bottom: 10px;
+    left: 8px;
+    right: 8px;
+  }
+
+  .mobile-dock-inner {
+    padding: 4px 4px;
+    border-radius: 24px;
+  }
+
+  .mobile-dock-icon {
+    width: 34px;
+    height: 34px;
+    font-size: 14px;
+  }
+
+  .mobile-dock-label {
+    font-size: 9px;
   }
 
 
@@ -2452,15 +2752,19 @@ section {
   }
 
   .nav-inner {
-    padding: 0 20px;
+    padding: 0 16px;
+  }
+
+  .nav-mobile-actions {
+    gap: 10px;
   }
 
   .mobile-menu {
-    padding: 0 20px;
+    padding: 0 18px;
   }
 
   .mobile-menu.open {
-    padding: 12px 20px 22px;
+    padding: 10px 18px 18px;
   }
 
 
@@ -3151,12 +3455,16 @@ section {
     padding: 0 16px;
   }
 
-  .mobile-menu {
-    padding: 0 16px;
+  .nav-mobile-actions {
+    gap: 8px;
   }
 
-  .mobile-menu.open {
-    padding: 10px 16px 18px;
+  .nav-whatsapp-btn {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
+    font-size: 20px;
   }
 
   .hamburger {
@@ -3164,6 +3472,41 @@ section {
     height: 40px;
     min-width: 40px;
     min-height: 40px;
+    border-radius: 10px;
+  }
+
+  .hamburger span {
+    width: 18px;
+  }
+
+  .hamburger.open span:nth-child(1) {
+    transform: translateY(6.5px) rotate(45deg);
+  }
+
+  .hamburger.open span:nth-child(3) {
+    transform: translateY(-6.5px) rotate(-45deg);
+  }
+
+  .mobile-menu {
+    padding: 0 12px;
+  }
+
+  .mobile-menu.open {
+    padding: 8px 12px 16px;
+  }
+
+  .mobile-menu a.mobile-nav-item {
+    padding: 8px 10px;
+    gap: 8px;
+    min-height: 46px;
+  }
+
+  .mobile-nav-icon {
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+    min-height: 34px;
+    font-size: 14px;
   }
 
   .logo-text {
@@ -3343,14 +3686,6 @@ html:not(.page-loading) #mascot.ready,
   will-change: transform;
 }
 
-#robot .arm,
-.loader-robot .arm {
-  -webkit-transform-box: fill-box !important;
-  transform-box: fill-box !important;
-  -webkit-transform-origin: 50% 12% !important;
-  transform-origin: 50% 12% !important;
-}
-
 #robot.run .breath,
 .loader-robot.run .breath {
   -webkit-animation: mascot-bob 0.3s ease-in-out infinite;
@@ -3368,25 +3703,27 @@ html:not(.page-loading) #mascot.ready,
 }
 #robot.run .arm,
 .loader-robot.run .arm {
-  -webkit-animation: mascot-arm 0.6s ease-in-out infinite !important;
-  animation: mascot-arm 0.6s ease-in-out infinite !important;
+  -webkit-animation: mascot-arm 0.6s ease-in-out infinite;
+  animation: mascot-arm 0.6s ease-in-out infinite;
 }
 
 #robot.run .thigh.l, #robot.run .shin.l, #robot.run .arm.r,
 .loader-robot.run .thigh.l, .loader-robot.run .shin.l, .loader-robot.run .arm.r {
-  -webkit-animation-delay: -0.3s !important;
-  animation-delay: -0.3s !important;
+  -webkit-animation-delay: -0.3s;
+  animation-delay: -0.3s;
 }
 #robot.run .thigh.r, #robot.run .shin.r, #robot.run .arm.l,
 .loader-robot.run .thigh.r, .loader-robot.run .shin.r, .loader-robot.run .arm.l {
-  -webkit-animation-delay: 0s !important;
-  animation-delay: 0s !important;
+  -webkit-animation-delay: 0s;
+  animation-delay: 0s;
 }
 
 #robot .thigh.l, .loader-robot .thigh.l { -webkit-transform-origin: 34px 66px; transform-origin: 34px 66px; }
 #robot .thigh.r, .loader-robot .thigh.r { -webkit-transform-origin: 46px 66px; transform-origin: 46px 66px; }
 #robot .shin.l, .loader-robot .shin.l { -webkit-transform-origin: 34px 74px; transform-origin: 34px 74px; }
 #robot .shin.r, .loader-robot .shin.r { -webkit-transform-origin: 46px 74px; transform-origin: 46px 74px; }
+#robot .arm.l, .loader-robot .arm.l { -webkit-transform-origin: 25.5px 51px; transform-origin: 25.5px 51px; }
+#robot .arm.r, .loader-robot .arm.r { -webkit-transform-origin: 54.5px 51px; transform-origin: 54.5px 51px; }
 
 @-webkit-keyframes mascot-thigh { 0%, 100% { -webkit-transform: rotate(-38deg); transform: rotate(-38deg); } 50% { -webkit-transform: rotate(38deg); transform: rotate(38deg); } }
 @keyframes mascot-thigh { 0%, 100% { -webkit-transform: rotate(-38deg); transform: rotate(-38deg); } 50% { -webkit-transform: rotate(38deg); transform: rotate(38deg); } }
@@ -3394,8 +3731,8 @@ html:not(.page-loading) #mascot.ready,
 @-webkit-keyframes mascot-shin { 0%, 100% { -webkit-transform: rotate(6deg); transform: rotate(6deg); } 30% { -webkit-transform: rotate(62deg); transform: rotate(62deg); } 60% { -webkit-transform: rotate(6deg); transform: rotate(6deg); } }
 @keyframes mascot-shin { 0%, 100% { -webkit-transform: rotate(6deg); transform: rotate(6deg); } 30% { -webkit-transform: rotate(62deg); transform: rotate(62deg); } 60% { -webkit-transform: rotate(6deg); transform: rotate(6deg); } }
 
-@-webkit-keyframes mascot-arm { 0%, 100% { -webkit-transform: rotate(44deg); transform: rotate(44deg); } 50% { -webkit-transform: rotate(-44deg); transform: rotate(-44deg); } }
-@keyframes mascot-arm { 0%, 100% { -webkit-transform: rotate(44deg); transform: rotate(44deg); } 50% { -webkit-transform: rotate(-44deg); transform: rotate(-44deg); } }
+@-webkit-keyframes mascot-arm { 0%, 100% { -webkit-transform: rotate(32deg); transform: rotate(32deg); } 50% { -webkit-transform: rotate(-32deg); transform: rotate(-32deg); } }
+@keyframes mascot-arm { 0%, 100% { -webkit-transform: rotate(32deg); transform: rotate(32deg); } 50% { -webkit-transform: rotate(-32deg); transform: rotate(-32deg); } }
 
 @-webkit-keyframes mascot-bob { 0%, 100% { -webkit-transform: translateY(0); transform: translateY(0); } 50% { -webkit-transform: translateY(-2.6px); transform: translateY(-2.6px); } }
 @keyframes mascot-bob { 0%, 100% { -webkit-transform: translateY(0); transform: translateY(0); } 50% { -webkit-transform: translateY(-2.6px); transform: translateY(-2.6px); } }

@@ -76,9 +76,6 @@
     window.setTimeout(() => {
       loader.classList.add("is-hiding");
       root.classList.remove("page-loading");
-      if (typeof window.triggerHeroEntrance === "function") {
-        window.triggerHeroEntrance();
-      }
 
       let cleaned = false;
       const cleanUp = () => {
@@ -159,77 +156,251 @@
   }
 
 
-  /* =========================
-     Mobile Menu
-  ========================= */
+  /* ============================================================
+     Mobile Navigation: Bottom Dock & Slide-Up Sheet (DartCodes Style)
+  ============================================================ */
+  const mobileDockMore = document.getElementById("mobileDockMore");
+  const mobileSheet = document.getElementById("mobileSheet");
+  const mobileSheetBackdrop = document.getElementById("mobileSheetBackdrop");
+  const mobileSheetClose = document.getElementById("mobileSheetClose");
+  const mobileSheetBody = document.querySelector(".mobile-sheet-body");
+
+  // Legacy fallback handles (if present)
   const hamburger = document.getElementById("hamburger");
   const mobileMenu = document.getElementById("mobileMenu");
   const navBarEl = document.getElementById("navBar");
+  const navBackdrop = document.getElementById("navBackdrop");
 
+  let setSheetOpen = null;
+
+  if (mobileSheet && mobileSheetBackdrop) {
+    setSheetOpen = (isOpen) => {
+      mobileSheet.classList.toggle("open", isOpen);
+      mobileSheetBackdrop.classList.toggle("open", isOpen);
+      document.body.classList.toggle("mobile-sheet-open", isOpen);
+
+      if (mobileDockMore) {
+        mobileDockMore.setAttribute("aria-expanded", String(isOpen));
+      }
+
+      // Reset any drag offset
+      mobileSheet.style.transform = "";
+    };
+
+    if (mobileDockMore) {
+      mobileDockMore.addEventListener("click", (event) => {
+        event.stopPropagation();
+        const isOpen = !mobileSheet.classList.contains("open");
+        setSheetOpen(isOpen);
+      });
+    }
+
+    if (mobileSheetClose) {
+      mobileSheetClose.addEventListener("click", () => setSheetOpen(false));
+    }
+
+    mobileSheetBackdrop.addEventListener("click", () => setSheetOpen(false));
+
+    // Close on Escape key
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && mobileSheet.classList.contains("open")) {
+        setSheetOpen(false);
+        if (mobileDockMore) mobileDockMore.focus();
+      }
+    });
+
+    // Auto-close on resize to desktop (> 1024px)
+    window.addEventListener("resize", () => {
+      if (window.innerWidth > 1024 && mobileSheet.classList.contains("open")) {
+        setSheetOpen(false);
+      }
+    }, { passive: true });
+
+    // Native touch drag-to-dismiss gesture on bottom sheet
+    let touchStartY = 0;
+    let touchCurrentY = 0;
+    let isDraggingSheet = false;
+
+    mobileSheet.addEventListener("touchstart", (e) => {
+      if (e.touches.length !== 1) return;
+      const scrollTop = mobileSheetBody ? mobileSheetBody.scrollTop : 0;
+      if (scrollTop <= 0) {
+        touchStartY = e.touches[0].clientY;
+        touchCurrentY = touchStartY;
+        isDraggingSheet = true;
+      }
+    }, { passive: true });
+
+    mobileSheet.addEventListener("touchmove", (e) => {
+      if (!isDraggingSheet || e.touches.length !== 1) return;
+      touchCurrentY = e.touches[0].clientY;
+      const diffY = touchCurrentY - touchStartY;
+      if (diffY > 0) {
+        mobileSheet.style.transform = `translateY(${diffY}px)`;
+      }
+    }, { passive: true });
+
+    mobileSheet.addEventListener("touchend", () => {
+      if (!isDraggingSheet) return;
+      isDraggingSheet = false;
+      const diffY = touchCurrentY - touchStartY;
+      if (diffY > 80) {
+        setSheetOpen(false);
+      } else {
+        mobileSheet.style.transform = "";
+      }
+    }, { passive: true });
+
+    // Smooth navigation for links inside the sheet
+    mobileSheet.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", (event) => {
+        const href = link.getAttribute("href");
+        setSheetOpen(false);
+
+        if (!href) return;
+
+        // If in-page anchor
+        if (href.startsWith("#") && href.length > 1) {
+          const target = document.querySelector(href);
+          if (target) {
+            event.preventDefault();
+            window.setTimeout(() => {
+              target.scrollIntoView({ behavior: "smooth", block: "start" });
+              history.pushState(null, "", href);
+            }, 180);
+          }
+        }
+      });
+    });
+  }
+
+  // Support legacy hamburger / mobile-menu if still in DOM
   if (hamburger && mobileMenu) {
-    const setMenuState = (isOpen) => {
+    const setLegacyMenuState = (isOpen) => {
       mobileMenu.classList.toggle("open", isOpen);
       hamburger.classList.toggle("open", isOpen);
       hamburger.setAttribute("aria-expanded", String(isOpen));
-      if (navBarEl) {
-        navBarEl.classList.toggle("menu-open", isOpen);
-      }
+      if (navBarEl) navBarEl.classList.toggle("menu-open", isOpen);
+      if (navBackdrop) navBackdrop.classList.toggle("active", isOpen);
+      document.body.classList.toggle("mobile-menu-active", isOpen);
     };
 
     hamburger.addEventListener("click", (event) => {
       event.stopPropagation();
       const isOpen = !mobileMenu.classList.contains("open");
-      setMenuState(isOpen);
+      setLegacyMenuState(isOpen);
     });
 
-    // Close when tapping outside the menu or navbar
-    document.addEventListener("click", (event) => {
-      if (!mobileMenu.classList.contains("open")) return;
-      if (!mobileMenu.contains(event.target) && !hamburger.contains(event.target)) {
-        setMenuState(false);
-      }
-    });
-
-    // Close on Escape key
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape" && mobileMenu.classList.contains("open")) {
-        setMenuState(false);
-        hamburger.focus();
-      }
-    });
-
-    // Auto-close on resize to desktop/tablet landscape
-    window.addEventListener("resize", () => {
-      if (window.innerWidth > 1024 && mobileMenu.classList.contains("open")) {
-        setMenuState(false);
-      }
-    }, { passive: true });
-
-    /* The open menu pushes the page down (it sits in the header's flow). If the browser
-       scrolled to an #anchor while it was open, the page would jump up ~400px once the
-       menu collapsed and overshoot the section. So: close the menu first, then scroll
-       after the collapse transition (.35s) has finished. */
-    const MENU_COLLAPSE_MS = 360;
+    if (navBackdrop) {
+      navBackdrop.addEventListener("click", () => setLegacyMenuState(false));
+    }
 
     mobileMenu.querySelectorAll("a").forEach((link) => {
-      link.addEventListener("click", (event) => {
-        const wasOpen = mobileMenu.classList.contains("open");
-        setMenuState(false);
-
-        const href = link.getAttribute("href");
-        if (!wasOpen || !href || href.length < 2 || href.charAt(0) !== "#") return;
-
-        const target = document.querySelector(href);
-        if (!target) return;
-
-        event.preventDefault();
-
-        window.setTimeout(() => {
-          target.scrollIntoView({ behavior: "smooth", block: "start" });
-          history.pushState(null, "", href);
-        }, MENU_COLLAPSE_MS);
-      });
+      link.addEventListener("click", () => setLegacyMenuState(false));
     });
+  }
+
+  // Smooth scroll for dock items as well
+  document.querySelectorAll(".mobile-dock-item").forEach((link) => {
+    if (link.tagName === "A") {
+      link.addEventListener("click", (event) => {
+        const href = link.getAttribute("href");
+        if (href && href.startsWith("#") && href.length > 1) {
+          const target = document.querySelector(href);
+          if (target) {
+            event.preventDefault();
+            target.scrollIntoView({ behavior: "smooth", block: "start" });
+            history.pushState(null, "", href);
+          }
+        }
+      });
+    }
+  });
+
+
+  /* ============================================================
+     Dynamic Active Page Highlighting for Mobile Navigation (DartCodes Style)
+     Active state is bound to the current page (no scroll-based shifting).
+  ============================================================ */
+  let setActiveMobileNav = null;
+
+  const initMobileActiveNav = () => {
+    const dockItems = Array.from(document.querySelectorAll(".mobile-dock-item[data-dock]"));
+    const sheetItems = Array.from(document.querySelectorAll(".mobile-sheet-item[data-nav]"));
+    const legacyLinks = Array.from(document.querySelectorAll(".mobile-menu a[data-nav]"));
+
+    if (!dockItems.length && !sheetItems.length && !legacyLinks.length) return;
+
+    setActiveMobileNav = (navKey) => {
+      if (!navKey) return;
+
+      // 1. Highlight sheet links (exact match: home, software, network, service, about, contact)
+      sheetItems.forEach((link) => {
+        const isMatch = link.dataset.nav === navKey;
+        link.classList.toggle("active", isMatch);
+        if (isMatch) {
+          link.setAttribute("aria-current", "page");
+        } else {
+          link.removeAttribute("aria-current");
+        }
+      });
+
+      // 2. Highlight dock items (home, software, network, service; or 'more' if about/contact)
+      let targetDockKey = navKey;
+      if (navKey === "about" || navKey === "contact") {
+        targetDockKey = "more";
+      }
+
+      dockItems.forEach((item) => {
+        const isMatch = item.dataset.dock === targetDockKey;
+        item.classList.toggle("active", isMatch);
+        if (isMatch) {
+          item.setAttribute("aria-current", "page");
+        } else {
+          item.removeAttribute("aria-current");
+        }
+      });
+
+      // 3. Legacy mobile menu fallback
+      legacyLinks.forEach((link) => {
+        const isMatch = link.dataset.nav === navKey;
+        link.classList.toggle("active", isMatch);
+      });
+    };
+
+    const getActiveFromUrl = () => {
+      const pathname = (window.location.pathname || "").toLowerCase();
+
+      // Standalone page paths
+      if (pathname.includes("software.html") || pathname.endsWith("/software")) {
+        return "software";
+      }
+      if (pathname.includes("network.html") || pathname.endsWith("/network")) {
+        return "network";
+      }
+      if (pathname.includes("about.html") || pathname.endsWith("/about")) {
+        return "about";
+      }
+      if (pathname.includes("contact.html") || pathname.endsWith("/contact")) {
+        return "contact";
+      }
+      if (pathname.includes("service.html") || pathname.endsWith("/service")) {
+        return "service";
+      }
+
+      // Default for index.html / root / homepage
+      return "home";
+    };
+
+    // Set initial active state strictly based on the current page
+    setActiveMobileNav(getActiveFromUrl());
+  };
+
+  // Initialize mobile active nav
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initMobileActiveNav);
+  } else {
+    initMobileActiveNav();
   }
 
 

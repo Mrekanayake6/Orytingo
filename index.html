@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>ORYTINGO — Networks &amp; Software Solutions | Sri Lanka</title>
 
     <link rel="canonical" href="https://orytingo.lk/">
@@ -42,7 +42,7 @@
     rel="stylesheet">
   <link rel="icon" href="android-chrome-512x512.png" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="stylesheet" href="new.css?v=3.5">
+  <link rel="stylesheet" href="new.css?v=4.0">
 
 
 </head>
@@ -80,11 +80,12 @@
                   <g class="px shin l"><rect x="31.5" y="73" width="5" height="9" rx="2.5" fill="#20242a"/><rect x="29.5" y="80" width="10" height="4.5" rx="2.2" fill="#ff7a1a"/></g></g>
                 <g class="px thigh r"><rect x="43.5" y="65" width="5" height="10" rx="2.5" fill="url(#metal-loader)" stroke="#3b4048" stroke-width=".6"/>
                   <g class="px shin r"><rect x="43.5" y="73" width="5" height="9" rx="2.5" fill="#20242a"/><rect x="41.5" y="80" width="10" height="4.5" rx="2.2" fill="#ff7a1a"/></g></g>
-                <g class="px arm l"><rect x="23" y="49" width="5" height="14" rx="2.5" fill="#20242a" stroke="#3b4048" stroke-width=".6"/><circle cx="25.5" cy="63" r="2.4" fill="#ff7a1a"/></g>
                 <g class="px breath">
+                  <g class="px arm l"><rect x="23" y="49" width="5" height="14" rx="2.5" fill="#20242a" stroke="#3b4048" stroke-width=".6"/><circle cx="25.5" cy="63" r="2.4" fill="#ff7a1a"/></g>
                   <rect x="27" y="46" width="26" height="21" rx="8" fill="url(#metal-loader)" stroke="#3b4048" stroke-width=".8"/>
                   <path d="M31 62h18" stroke="#ff7a1a" stroke-width="1" stroke-linecap="round" opacity=".7"/>
                   <circle class="core" cx="40" cy="55" r="7" fill="url(#coreg-loader)"/><circle cx="40" cy="55" r="2.6" fill="#fff1de"/>
+                  <g class="px arm r"><rect x="52" y="49" width="5" height="14" rx="2.5" fill="#20242a" stroke="#3b4048" stroke-width=".6"/><circle cx="54.5" cy="63" r="2.4" fill="#ff7a1a"/></g>
                   <rect x="35" y="42" width="10" height="5" rx="2" fill="#1b1e23"/>
                   <path d="M40 15V8" stroke="#6b727d" stroke-width="1.6" stroke-linecap="round"/><circle class="bulb" cx="40" cy="6" r="3.2" fill="#ff8a2a"/>
                   <rect x="14" y="25" width="6" height="11" rx="3" fill="#ff7a1a"/><rect x="60" y="25" width="6" height="11" rx="3" fill="#ff7a1a"/>
@@ -95,7 +96,6 @@
                   <rect class="eye r" x="43" y="25" width="7" height="10" rx="3.5" fill="url(#eyeg-loader)"/>
                   <path d="M37 37.6q3 2 6 0" stroke="#ff9a4a" stroke-width="1.2" fill="none" stroke-linecap="round"/>
                 </g>
-                <g class="px arm r"><rect x="52" y="49" width="5" height="14" rx="2.5" fill="#20242a" stroke="#3b4048" stroke-width=".6"/><circle cx="54.5" cy="63" r="2.4" fill="#ff7a1a"/></g>
               </svg>
             </div></div>
           </div>
@@ -141,22 +141,106 @@
 
       <a href="#contact" class="btn btn-primary nav-cta">Start a Project</a>
 
-      <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false"
-        aria-controls="mobileMenu">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
-
-    <div class="mobile-menu" id="mobileMenu">
-      <a href="#home">Home</a>
-      <a href="#software">Software</a>
-      <a href="#networking">Networking</a>
-      <a href="#about">About</a>
-      <a href="#services">Services</a>
-      <a href="#contact">Contact</a>
-      <a href="#contact" class="btn btn-primary mobile-project-btn">Start a Project</a>
+      <div class="nav-mobile-actions">
+        <a href="https://wa.me/94713872042?text=Hi%20OryTingo%2C%20I%20need%20help%20with%20your%20services."
+          class="nav-whatsapp-btn"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Chat with OryTingo on WhatsApp">
+          <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
+        </a>
+      </div>
     </div>
   </header>
+
+  <!-- DARTCODES-STYLE FLOATING BOTTOM DOCK -->
+  <nav class="mobile-dock" id="mobileDock" aria-label="Mobile Navigation">
+    <div class="mobile-dock-inner">
+      <a href="#home" class="mobile-dock-item" data-dock="home" aria-label="Home">
+        <span class="mobile-dock-icon"><i class="fa-solid fa-house" aria-hidden="true"></i></span>
+        <span class="mobile-dock-label">Home</span>
+      </a>
+      <a href="#software" class="mobile-dock-item" data-dock="software" aria-label="Software">
+        <span class="mobile-dock-icon"><i class="fa-solid fa-laptop-code" aria-hidden="true"></i></span>
+        <span class="mobile-dock-label">Software</span>
+      </a>
+      <a href="#networking" class="mobile-dock-item" data-dock="network" aria-label="Network">
+        <span class="mobile-dock-icon"><i class="fa-solid fa-network-wired" aria-hidden="true"></i></span>
+        <span class="mobile-dock-label">Network</span>
+      </a>
+      <a href="#services" class="mobile-dock-item" data-dock="service" aria-label="Services">
+        <span class="mobile-dock-icon"><i class="fa-solid fa-briefcase" aria-hidden="true"></i></span>
+        <span class="mobile-dock-label">Services</span>
+      </a>
+      <button type="button" class="mobile-dock-item" id="mobileDockMore" data-dock="more" aria-label="More navigation items" aria-haspopup="dialog" aria-expanded="false">
+        <span class="mobile-dock-icon"><i class="fa-solid fa-bars" aria-hidden="true"></i></span>
+        <span class="mobile-dock-label">More</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- DARTCODES-STYLE SLIDE-UP BOTTOM SHEET -->
+  <div class="mobile-sheet-backdrop" id="mobileSheetBackdrop" aria-hidden="true"></div>
+  <div class="mobile-sheet" id="mobileSheet" role="dialog" aria-modal="true" aria-labelledby="mobileSheetTitle">
+    <div class="mobile-sheet-handle" aria-hidden="true"></div>
+    <div class="mobile-sheet-header">
+      <h3 class="mobile-sheet-title" id="mobileSheetTitle">Navigation</h3>
+      <button type="button" class="mobile-sheet-close" id="mobileSheetClose" aria-label="Close menu">
+        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="mobile-sheet-body">
+      <div class="mobile-sheet-group">
+        <a href="#home" class="mobile-sheet-item" data-nav="home">
+          <span class="mobile-sheet-icon"><i class="fa-solid fa-house" aria-hidden="true"></i></span>
+          <span class="mobile-sheet-label">Home</span>
+          <span class="mobile-sheet-arrow" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
+        </a>
+        <a href="#software" class="mobile-sheet-item" data-nav="software">
+          <span class="mobile-sheet-icon"><i class="fa-solid fa-laptop-code" aria-hidden="true"></i></span>
+          <span class="mobile-sheet-label">Software Solutions</span>
+          <span class="mobile-sheet-arrow" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
+        </a>
+        <a href="#networking" class="mobile-sheet-item" data-nav="network">
+          <span class="mobile-sheet-icon"><i class="fa-solid fa-network-wired" aria-hidden="true"></i></span>
+          <span class="mobile-sheet-label">Network Infrastructure</span>
+          <span class="mobile-sheet-arrow" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
+        </a>
+        <a href="#services" class="mobile-sheet-item" data-nav="service">
+          <span class="mobile-sheet-icon"><i class="fa-solid fa-briefcase" aria-hidden="true"></i></span>
+          <span class="mobile-sheet-label">Our Services</span>
+          <span class="mobile-sheet-arrow" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
+        </a>
+        <a href="#about" class="mobile-sheet-item" data-nav="about">
+          <span class="mobile-sheet-icon"><i class="fa-solid fa-circle-info" aria-hidden="true"></i></span>
+          <span class="mobile-sheet-label">About OryTingo</span>
+          <span class="mobile-sheet-arrow" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
+        </a>
+        <a href="#contact" class="mobile-sheet-item" data-nav="contact">
+          <span class="mobile-sheet-icon"><i class="fa-solid fa-phone" aria-hidden="true"></i></span>
+          <span class="mobile-sheet-label">Contact Us</span>
+          <span class="mobile-sheet-arrow" aria-hidden="true"><i class="fa-solid fa-chevron-right"></i></span>
+        </a>
+      </div>
+
+      <a href="#contact" class="mobile-sheet-cta">
+        <span>Start a Project</span>
+      </a>
+
+      <a href="https://wa.me/94713872042?text=Hi%20OryTingo%2C%20I%20need%20help%20with%20your%20services."
+        class="mobile-sheet-whatsapp"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Chat with OryTingo on WhatsApp">
+        <div class="mobile-sheet-wa-icon"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i></div>
+        <div class="mobile-sheet-wa-text">
+          <strong>Chat on WhatsApp</strong>
+          <span>Quick response guaranteed (+94 71 387 2042)</span>
+        </div>
+        <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+      </a>
+    </div>
+  </div>
 
   <main>
 
@@ -775,11 +859,12 @@
             <g class="px shin l"><rect x="31.5" y="73" width="5" height="9" rx="2.5" fill="#20242a"/><rect x="29.5" y="80" width="10" height="4.5" rx="2.2" fill="#ff7a1a"/></g></g>
           <g class="px thigh r"><rect x="43.5" y="65" width="5" height="10" rx="2.5" fill="url(#metal)" stroke="#3b4048" stroke-width=".6"/>
             <g class="px shin r"><rect x="43.5" y="73" width="5" height="9" rx="2.5" fill="#20242a"/><rect x="41.5" y="80" width="10" height="4.5" rx="2.2" fill="#ff7a1a"/></g></g>
-          <g class="px arm l"><rect x="23" y="49" width="5" height="14" rx="2.5" fill="#20242a" stroke="#3b4048" stroke-width=".6"/><circle cx="25.5" cy="63" r="2.4" fill="#ff7a1a"/></g>
           <g class="px breath">
+            <g class="px arm l"><rect x="23" y="49" width="5" height="14" rx="2.5" fill="#20242a" stroke="#3b4048" stroke-width=".6"/><circle cx="25.5" cy="63" r="2.4" fill="#ff7a1a"/></g>
             <rect x="27" y="46" width="26" height="21" rx="8" fill="url(#metal)" stroke="#3b4048" stroke-width=".8"/>
             <path d="M31 62h18" stroke="#ff7a1a" stroke-width="1" stroke-linecap="round" opacity=".7"/>
             <circle class="core" cx="40" cy="55" r="7" fill="url(#coreg)"/><circle cx="40" cy="55" r="2.6" fill="#fff1de"/>
+            <g class="px arm r"><rect x="52" y="49" width="5" height="14" rx="2.5" fill="#20242a" stroke="#3b4048" stroke-width=".6"/><circle cx="54.5" cy="63" r="2.4" fill="#ff7a1a"/></g>
             <rect x="35" y="42" width="10" height="5" rx="2" fill="#1b1e23"/>
             <path d="M40 15V8" stroke="#6b727d" stroke-width="1.6" stroke-linecap="round"/><circle class="bulb" cx="40" cy="6" r="3.2" fill="#ff8a2a"/>
             <rect x="14" y="25" width="6" height="11" rx="3" fill="#ff7a1a"/><rect x="60" y="25" width="6" height="11" rx="3" fill="#ff7a1a"/>
@@ -790,13 +875,12 @@
             <rect class="eye r" x="43" y="25" width="7" height="10" rx="3.5" fill="url(#eyeg)"/>
             <path d="M37 37.6q3 2 6 0" stroke="#ff9a4a" stroke-width="1.2" fill="none" stroke-linecap="round"/>
           </g>
-          <g class="px arm r"><rect x="52" y="49" width="5" height="14" rx="2.5" fill="#20242a" stroke="#3b4048" stroke-width=".6"/><circle cx="54.5" cy="63" r="2.4" fill="#ff7a1a"/></g>
         </svg>
       </div></div>
     </div>
   </div>
 
-  <script src="script.js?v=3.5" defer></script>
+  <script src="script.js?v=4.1" defer></script>
 
 </body>
 
