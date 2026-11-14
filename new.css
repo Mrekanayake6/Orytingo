@@ -3614,60 +3614,6 @@ html.page-loading .rbs-rail {
 .rbs-beam { opacity: 0.25; transition: opacity 0.3s ease; }
 .rbs--moving .rbs-beam { opacity: 0.95; }
 
-/* ---------- Train Horn Easter Egg: Visual Feedback & Interaction ---------- */
-.rbs-bus:focus-visible {
-  outline: 2px solid var(--rbs-accent);
-  outline-offset: 2px;
-  border-radius: 4px;
-}
-.rbs-bus:hover .rbs-svg {
-  filter: drop-shadow(0 0 5px var(--rbs-accent-soft));
-}
-
-/* Honk Active Visual Feedback */
-.rbs--honking .rbs-steam {
-  opacity: 0.95 !important;
-  animation: rbs-honk-puff 0.35s ease-in-out infinite alternate !important;
-}
-.rbs--honking .rbs-steam-2 {
-  animation-delay: 0.16s !important;
-}
-@keyframes rbs-honk-puff {
-  0% {
-    transform: translateY(0) scale(0.95);
-    opacity: 0.7;
-  }
-  100% {
-    transform: translateY(-4px) scale(1.65);
-    opacity: 1;
-    filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.9));
-  }
-}
-
-.rbs--honking .rbs-beam {
-  opacity: 1 !important;
-  filter: drop-shadow(0 0 7px rgba(255, 240, 212, 0.95));
-  animation: rbs-honk-beam 0.3s ease-in-out infinite alternate !important;
-}
-@keyframes rbs-honk-beam {
-  0% { opacity: 0.75; }
-  100% { opacity: 1; }
-}
-
-.rbs--honking .rbs-glow {
-  opacity: 1 !important;
-  animation: rbs-honk-glow 0.4s ease-in-out infinite alternate;
-}
-@keyframes rbs-honk-glow {
-  0% { opacity: 0.5; filter: drop-shadow(0 0 3px var(--rbs-accent)); }
-  100% { opacity: 1; filter: drop-shadow(0 0 9px var(--rbs-accent)); }
-}
-
-.rbs--honking .rbs-dome {
-  opacity: 1 !important;
-  filter: drop-shadow(0 0 3px var(--rbs-accent));
-}
-
 /* ---------- Tablet / phone sizing ---------- */
 @media (max-width: 1024px) {
   .rbs-rail { --rbs-w: 19px; --rbs-bus-w: 17px; --rbs-pad: 6px; }
