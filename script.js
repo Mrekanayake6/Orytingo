@@ -1302,7 +1302,7 @@
       '<rect x="42" y="3.2" width="4.8" height="4.5" rx="0.8" fill="#1b1e24" stroke="#444a54" stroke-width="0.5"/>' +
       '<ellipse cx="44.4" cy="3.2" rx="3.2" ry="1" class="rbs-accent"/>' +
       /* Brass steam dome / whistle */
-      '<path d="M26 4.5 Q28 2.5 30 4.5 L30 7.5 L26 7.5 Z" fill="var(--rbs-accent)" opacity="0.85"/>' +
+      '<path class="rbs-dome" d="M26 4.5 Q28 2.5 30 4.5 L30 7.5 L26 7.5 Z" fill="var(--rbs-accent)" opacity="0.85"/>' +
       /* Cab roof curved overhang */
       '<rect x="3" y="2.5" width="16" height="2" rx="1" fill="#20242b" stroke="var(--rbs-accent)" stroke-width="0.5"/>' +
       /* Engineer Cab (driver cabin) */
@@ -1384,6 +1384,73 @@
     var hit = rail.querySelector('.rbs-hit');
     var bus = rail.querySelector('.rbs-bus');
     var wheels = rail.querySelectorAll('.rbs-wheel');
+
+    /* Accessibility attributes for train horn easter egg */
+    bus.setAttribute('role', 'button');
+    bus.setAttribute('tabindex', '0');
+    bus.setAttribute('aria-label', 'Blow the locomotive train horn');
+    bus.setAttribute('title', 'Click to blow the train horn!');
+
+    /* Train Horn Sound Effect Logic */
+    var hornAudio = null;
+    var honkTimer = null;
+    var lastHonkTime = 0;
+
+    function getHornAudio() {
+      if (!hornAudio) {
+        try {
+          hornAudio = new Audio();
+          hornAudio.preload = 'auto';
+          var canMp3 = hornAudio.canPlayType && hornAudio.canPlayType('audio/mpeg');
+          hornAudio.src = canMp3 ? 'train-horn.mp3' : 'train-horn.wav';
+          hornAudio.load();
+        } catch (err) {
+          hornAudio = null;
+        }
+      }
+      return hornAudio;
+    }
+
+    function playHorn() {
+      var audio = getHornAudio();
+      if (audio) {
+        try {
+          audio.pause();
+          audio.currentTime = 0;
+          var p = audio.play();
+          if (p && typeof p.catch === 'function') {
+            p.catch(function () {});
+          }
+        } catch (err) {}
+      }
+
+      /* Trigger visual feedback: vigorous steam puff, bright headlight beam pulse, acoustic glow */
+      rail.classList.remove('rbs--honking');
+      void rail.offsetWidth; /* Force reflow to restart CSS animations cleanly */
+      rail.classList.add('rbs--honking');
+
+      if (honkTimer) clearTimeout(honkTimer);
+      honkTimer = setTimeout(function () {
+        rail.classList.remove('rbs--honking');
+        honkTimer = null;
+      }, 1400);
+    }
+
+    function triggerHorn() {
+      var now = Date.now();
+      if (now - lastHonkTime < 250) return; /* Debounce rapid double-fires (e.g. pointerup + click) */
+      lastHonkTime = now;
+      playHorn();
+    }
+
+    /* Preload audio on first user touch/pointer gesture so playback starts with 0ms latency */
+    function preloadAudioOnFirstGesture() {
+      getHornAudio();
+      window.removeEventListener('pointerdown', preloadAudioOnFirstGesture);
+      window.removeEventListener('touchstart', preloadAudioOnFirstGesture);
+    }
+    window.addEventListener('pointerdown', preloadAudioOnFirstGesture, { passive: true, once: true });
+    window.addEventListener('touchstart', preloadAudioOnFirstGesture, { passive: true, once: true });
 
     var maxScroll = 0, laneH = 0, busH = 0, travel = 0, wheelPx = 4.6;
     var cur = 0, target = 0, curY = 0, prevY = 0;
@@ -1511,6 +1578,9 @@
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(onResize);
 
     var grab = 0;
+    var downOnBus = false;
+    var downX = 0, downY = 0, downTime = 0;
+
     function posToScroll(clientY) {
       var r = lane.getBoundingClientRect();
       var p = travel > 0 ? (clientY - grab - r.top - busH / 2) / travel : 0;
@@ -1521,6 +1591,11 @@
       if (e.pointerType === 'mouse' && e.button !== 0) return;
       measure();
       var onBus = bus.contains(e.target);
+      downOnBus = onBus;
+      downX = e.clientX;
+      downY = e.clientY;
+      downTime = Date.now();
+
       if (onBus) {
         var br = bus.getBoundingClientRect();
         grab = e.clientY - (br.top + br.height / 2);
@@ -1533,7 +1608,16 @@
       posToScroll(e.clientY);
     }
     function onMove(e) { if (dragging) { setMoving(true); posToScroll(e.clientY); } }
-    function onUp() {
+    function onUp(e) {
+      if (downOnBus && e && typeof e.clientX === 'number') {
+        var dist = Math.hypot(e.clientX - downX, e.clientY - downY);
+        var elapsed = Date.now() - downTime;
+        /* If released without significant dragging (< 8px) in < 650ms, treat as train horn click/tap */
+        if (dist < 8 && elapsed < 650) {
+          triggerHorn();
+        }
+      }
+      downOnBus = false;
       if (!dragging) return;
       dragging = false;
       rail.classList.remove('rbs--drag');
@@ -1546,6 +1630,17 @@
       el.addEventListener('pointerup', onUp);
       el.addEventListener('pointercancel', onUp);
       el.addEventListener('lostpointercapture', onUp);
+    });
+
+    /* Click & Keyboard accessibility */
+    bus.addEventListener('click', function () {
+      triggerHorn();
+    });
+    bus.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        triggerHorn();
+      }
     });
 
     measure();
