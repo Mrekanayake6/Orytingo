@@ -530,14 +530,21 @@
 
 
 /* ============================================================
-   ORYTINGO — DYNAMIC TIME GREETING (Header Nav)
-   Visitor-local timezone greeting with live clock & fade transition
+   ORYTINGO — DYNAMIC DAY STATUS GREETING (Header Nav)
+   Visitor-local timezone day status greeting with smooth fade transition
 ============================================================ */
 (() => {
   const greetingEls = document.querySelectorAll(".nav-greeting, #navGreeting, .hero-greeting, #heroGreeting");
   const greetingTextEls = document.querySelectorAll(".nav-greeting-text, #navGreetingText, .hero-greeting-text, #heroGreetingText");
-  const greetingTimeEls = document.querySelectorAll(".nav-greeting-time, #navGreetingTime, .hero-greeting-time, #heroGreetingTime");
+  const greetingIconEls = document.querySelectorAll(".nav-greeting-icon");
   if (!greetingEls.length) return;
+
+  const GREETING_ICONS = {
+    "GOOD MORNING": '<circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>',
+    "GOOD AFTERNOON": '<circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>',
+    "GOOD EVENING": '<path d="M17 18a5 5 0 0 0-10 0M12 2v4M4.22 10.22l2.83 2.83M1 18h22M19.78 10.22l-2.83 2.83"></path>',
+    "GOOD NIGHT": '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>'
+  };
 
   let currentGreetingText = "";
   let fadeTimeout = null;
@@ -551,31 +558,27 @@
     }
   };
 
-  // Calculate greeting and time for a given Date object or simulated hour/minute
-  const calculateGreetingData = (dateObj, overrideHour, overrideMinute) => {
+  // Calculate greeting for a given Date object or simulated hour/minute
+  const calculateGreetingData = (dateObj, overrideHour) => {
     const now = dateObj || new Date();
     const timeZone = getVisitorTimeZone();
 
     let hour = typeof overrideHour === "number" ? overrideHour : now.getHours();
-    let minute = typeof overrideMinute === "number" ? overrideMinute : now.getMinutes();
 
-    // If using current date and timezone is available, extract local hour and minute via Intl
+    // If using current date and timezone is available, extract local hour via Intl
     if (typeof overrideHour !== "number" && timeZone) {
       try {
         const parts = new Intl.DateTimeFormat("en-US", {
           timeZone,
           hour: "numeric",
-          minute: "numeric",
           hour12: false
         }).formatToParts(now);
 
         for (const part of parts) {
           if (part.type === "hour") hour = parseInt(part.value, 10);
-          if (part.type === "minute") minute = parseInt(part.value, 10);
         }
       } catch (e) {
         hour = now.getHours();
-        minute = now.getMinutes();
       }
     }
 
@@ -598,41 +601,21 @@
       greeting = "GOOD NIGHT";
     }
 
-    // Format visitor's actual local time
-    let formattedTime = "";
-    if (typeof overrideHour === "number") {
-      const h12 = hour % 12 || 12;
-      const ampm = hour >= 12 ? "PM" : "AM";
-      const hStr = h12 < 10 ? `0${h12}` : `${h12}`;
-      const mStr = minute < 10 ? `0${minute}` : `${minute}`;
-      formattedTime = `${hStr}:${mStr} ${ampm}`;
-    } else {
-      try {
-        formattedTime = new Intl.DateTimeFormat(undefined, {
-          timeZone,
-          hour: "2-digit",
-          minute: "2-digit",
-          hour12: true
-        }).format(now);
-      } catch (e) {
-        const h12 = hour % 12 || 12;
-        const ampm = hour >= 12 ? "PM" : "AM";
-        const hStr = h12 < 10 ? `0${h12}` : `${h12}`;
-        const mStr = minute < 10 ? `0${minute}` : `${minute}`;
-        formattedTime = `${hStr}:${mStr} ${ampm}`;
-      }
-    }
-
-    return { greeting, formattedTime, timeZone, hour, minute };
+    return { greeting, timeZone, hour };
   };
 
-  const updateGreeting = (isInitial = false, overrideHour, overrideMinute) => {
-    const { greeting, formattedTime } = calculateGreetingData(undefined, overrideHour, overrideMinute);
+  const applyGreetingContent = (greeting) => {
+    greetingTextEls.forEach((el) => { el.textContent = greeting; });
+    const iconSvg = GREETING_ICONS[greeting] || GREETING_ICONS["GOOD MORNING"];
+    greetingIconEls.forEach((el) => { el.innerHTML = iconSvg; });
+  };
+
+  const updateGreeting = (isInitial = false, overrideHour) => {
+    const { greeting } = calculateGreetingData(undefined, overrideHour);
 
     if (isInitial || !currentGreetingText) {
       currentGreetingText = greeting;
-      greetingTextEls.forEach((el) => { el.textContent = greeting; });
-      greetingTimeEls.forEach((el) => { el.textContent = formattedTime; });
+      applyGreetingContent(greeting);
       greetingEls.forEach((el) => { el.classList.remove("fade-out"); });
       return;
     }
@@ -642,34 +625,18 @@
       if (fadeTimeout) clearTimeout(fadeTimeout);
       greetingEls.forEach((el) => { el.classList.add("fade-out"); });
       fadeTimeout = setTimeout(() => {
-        greetingTextEls.forEach((el) => { el.textContent = greeting; });
-        greetingTimeEls.forEach((el) => { el.textContent = formattedTime; });
+        applyGreetingContent(greeting);
         currentGreetingText = greeting;
         greetingEls.forEach((el) => { el.classList.remove("fade-out"); });
       }, 300);
-    } else {
-      // Just update time smoothly if changed
-      greetingTimeEls.forEach((el) => {
-        if (el.textContent !== formattedTime) {
-          el.textContent = formattedTime;
-        }
-      });
     }
   };
 
   // 1. Initial calculation on page load
   updateGreeting(true);
 
-  // 2. Synchronize to next exact minute turn, then repeat every 60 seconds
-  const scheduleNextMinute = () => {
-    const now = new Date();
-    const msUntilNextMinute = (60 - now.getSeconds()) * 1000 - now.getMilliseconds();
-    setTimeout(() => {
-      updateGreeting(false);
-      setInterval(() => updateGreeting(false), 60000);
-    }, Math.max(500, msUntilNextMinute));
-  };
-  scheduleNextMinute();
+  // 2. Check periodically for period shifts (every 60s)
+  setInterval(() => updateGreeting(false), 60000);
 
   // 3. Recalculate immediately when browser tab becomes active
   document.addEventListener("visibilitychange", () => {
@@ -685,64 +652,9 @@
 
   // 5. Test helper exposed for QA / automated verification
   window.__testHeroGreeting = (hour, minute = 0) => {
-    updateGreeting(false, hour, minute);
-    return calculateGreetingData(undefined, hour, minute);
+    updateGreeting(false, hour);
+    return calculateGreetingData(undefined, hour);
   };
-})();
-
-
-
-
-/* ============================================================
-   ORYTINGO — RUGZY-STYLE STACKING SECTIONS
-   Smooth scale-down & depth effect as sections stack
-============================================================ */
-(() => {
-  const stackSelectors = [
-    ".hero",
-    ".software-tech",
-    ".pillars",
-    ".why",
-    ".services-software",
-    ".services-networking",
-    ".process",
-    ".tech",
-    ".about",
-    ".ot-team"
-  ];
-  const stackSections = stackSelectors.map(sel => document.querySelector(sel)).filter(Boolean);
-  if (!stackSections.length) return;
-
-  let ticking = false;
-
-  const updateSectionStack = () => {
-    const vh = window.innerHeight;
-    const threshold = vh * 0.28;
-
-    for (let i = 0; i < stackSections.length - 1; i++) {
-      const current = stackSections[i];
-      const next = stackSections[i + 1];
-      const nextRect = next.getBoundingClientRect();
-
-      // When next section enters viewport and begins covering current section
-      if (nextRect.top < threshold && nextRect.bottom > 0) {
-        current.classList.add("section-stacked-behind");
-      } else {
-        current.classList.remove("section-stacked-behind");
-      }
-    }
-    ticking = false;
-  };
-
-  window.addEventListener("scroll", () => {
-    if (!ticking) {
-      window.requestAnimationFrame(updateSectionStack);
-      ticking = true;
-    }
-  }, { passive: true });
-
-  // Initial check on load
-  updateSectionStack();
 })();
 
 

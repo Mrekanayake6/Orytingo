@@ -603,7 +603,7 @@ button {
 }
 
 /* ============================================================
-   Dynamic Time Greeting (Header Nav)
+   Dynamic Day Status Greeting (Header Nav)
 ============================================================ */
 .nav-greeting {
   display: inline-flex;
@@ -643,20 +643,9 @@ button {
   letter-spacing: 0.06em;
 }
 
-.nav-greeting-dot {
-  color: rgba(255, 129, 62, 0.45);
-  font-size: 0.65rem;
-  line-height: 1;
-}
-
+.nav-greeting-dot,
 .nav-greeting-time {
-  color: rgba(255, 255, 255, 0.72);
-  font-family: 'Inter', system-ui, sans-serif;
-  font-size: 0.74rem;
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  font-variant-numeric: tabular-nums;
-  text-transform: none;
+  display: none !important;
 }
 
 @media (max-width: 1024px) {
@@ -668,14 +657,18 @@ button {
 }
 
 @media (max-width: 540px) {
-  .nav-greeting-text,
-  .nav-greeting-dot {
-    display: none;
-  }
   .nav-greeting {
-    padding: 6px 10px;
-    font-size: 0.74rem;
+    padding: 5px 10px;
+    font-size: 0.72rem;
     gap: 5px;
+  }
+}
+
+@media (max-width: 380px) {
+  .nav-greeting {
+    padding: 4px 8px;
+    font-size: 0.68rem;
+    gap: 4px;
   }
 }
 
@@ -1145,111 +1138,6 @@ section {
 }
 
 /* ============================================================
-   Rugzy-Style Stacking Section Transitions & Matching Dual Themes
-============================================================ */
-.hero,
-.software-tech,
-.pillars,
-.why,
-.services-software,
-.services-networking,
-.process,
-.tech,
-.about,
-.ot-team,
-.site-footer {
-  position: relative;
-  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.5s ease, filter 0.5s ease;
-  transform-origin: center top;
-  will-change: transform, opacity;
-}
-
-/* Layer Stacking Order */
-.hero { z-index: 1; }
-.software-tech { z-index: 2; }
-.pillars { z-index: 3; }
-.why { z-index: 4; }
-.services-software { z-index: 5; }
-.services-networking { z-index: 6; }
-.process { z-index: 7; }
-.tech { z-index: 8; }
-.about { z-index: 9; }
-.ot-team { z-index: 10; }
-.cta { position: relative; z-index: 11; }
-.site-footer { z-index: 12; }
-
-/* Rounded Card Top & Elevation Shadow (Curtain Stacking Effect) */
-.software-tech,
-.pillars,
-.why,
-.services-software,
-.services-networking,
-.process,
-.tech,
-.about,
-.ot-team,
-.site-footer {
-  border-top-left-radius: 36px;
-  border-top-right-radius: 36px;
-  box-shadow: 0 -26px 65px rgba(0, 0, 0, 0.72);
-  margin-top: -24px;
-}
-
-/* Matching Theme 1: OryTingo Deep Obsidian (Cyber Black) */
-.hero,
-.pillars,
-.services-software,
-.process,
-.about,
-.site-footer {
-  background-color: #08090B;
-  border-top: 1px solid rgba(255, 129, 62, 0.24);
-}
-
-/* Hero is the base layer */
-.hero {
-  border-top: none;
-  margin-top: 0;
-  border-radius: 0;
-  box-shadow: none;
-}
-
-/* Matching Theme 2: OryTingo Deep Slate Navy (Midnight Tech Dark) */
-.software-tech,
-.why,
-.services-networking,
-.tech,
-.ot-team {
-  background-color: #0C1017;
-  border-top: 1px solid rgba(255, 156, 103, 0.22);
-}
-
-/* Rugzy-style Outgoing Section Scale-down & Dimming */
-.section-stacked-behind {
-  transform: scale(0.965);
-  opacity: 0.82;
-  filter: brightness(0.9);
-}
-
-@media (max-width: 768px) {
-  .software-tech,
-  .pillars,
-  .why,
-  .services-software,
-  .services-networking,
-  .process,
-  .tech,
-  .about,
-  .ot-team,
-  .site-footer {
-    border-top-left-radius: 24px;
-    border-top-right-radius: 24px;
-    margin-top: -18px;
-    box-shadow: 0 -18px 45px rgba(0, 0, 0, 0.65);
-  }
-}
-
-/* ============================================================
    Pillars
 ============================================================ */
 .pillars {
@@ -1404,11 +1292,11 @@ section {
    Service blocks
 ============================================================ */
 .services-software {
-  background-image: linear-gradient(180deg, rgba(255, 129, 62, 0.04), transparent, rgba(255, 129, 62, 0.03));
+  background: linear-gradient(180deg, transparent, rgba(255, 129, 62, 0.035), transparent);
 }
 
 .services-networking {
-  background-image: linear-gradient(180deg, rgba(255, 156, 103, 0.04), transparent, rgba(255, 156, 103, 0.03));
+  background: linear-gradient(180deg, transparent, rgba(255, 156, 103, 0.035), transparent);
 }
 
 .service-grid {
