@@ -3707,15 +3707,8 @@ html.page-loading .rbs-rail {
 /* ============ /ROBOT BUS SCROLLBAR CSS ============ */
 
 
-/* ============================================================
-   Top Mobile Header Actions (WhatsApp Quick Access)
-============================================================ */
-.nav-whatsapp-btn {
-  display: none;
-}
-
 @media (max-width: 1024px) {
-  /* Hide the old bottom floating WhatsApp button on mobile (now in top header & dock sheet) */
+  /* Hide the old bottom floating WhatsApp button on mobile (dock takes bottom space) */
   .whatsapp-float {
     display: none !important;
   }
@@ -3723,36 +3716,6 @@ html.page-loading .rbs-rail {
   /* Footer safe padding so bottom floating dock never covers copyright text */
   .footer-bottom {
     padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px));
-  }
-
-  .nav-whatsapp-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 38px;
-    height: 38px;
-    min-width: 38px;
-    min-height: 38px;
-    border-radius: 50%;
-    background: #25D366;
-    color: #FFFFFF !important;
-    font-size: 19px;
-    text-decoration: none;
-    border: none;
-    outline: none;
-    box-shadow: 0 4px 14px rgba(37, 211, 102, 0.4);
-    transition: transform 0.2s var(--ease), background 0.2s var(--ease);
-    -webkit-tap-highlight-color: transparent;
-    flex-shrink: 0;
-  }
-
-  .nav-whatsapp-btn:hover {
-    background: #20BD5A;
-    transform: scale(1.06);
-  }
-
-  .nav-whatsapp-btn:active {
-    transform: scale(0.92);
   }
 
   .hamburger {
@@ -4082,54 +4045,6 @@ body.mobile-sheet-open {
     text-decoration: none;
     letter-spacing: 0.02em;
     -webkit-tap-highlight-color: transparent;
-  }
-
-  .mobile-sheet-whatsapp {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 16px;
-    border-radius: 16px;
-    background: rgba(37, 211, 102, 0.1);
-    border: 1px solid rgba(37, 211, 102, 0.25);
-    text-decoration: none;
-    color: #FFFFFF;
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  .mobile-sheet-wa-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: #25D366;
-    color: #FFFFFF;
-    font-size: 18px;
-    flex-shrink: 0;
-  }
-
-  .mobile-sheet-wa-text {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-  }
-
-  .mobile-sheet-wa-text strong {
-    font-size: 0.88rem;
-    color: #FFFFFF;
-  }
-
-  .mobile-sheet-wa-text span {
-    font-size: 0.76rem;
-    color: rgba(255, 255, 255, 0.6);
-  }
-
-  .mobile-sheet-whatsapp > i {
-    font-size: 12px;
-    color: #25D366;
   }
 }
 
