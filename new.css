@@ -602,6 +602,83 @@ button {
   width: 100%;
 }
 
+/* ============================================================
+   Dynamic Time Greeting (Header Nav)
+============================================================ */
+.nav-greeting {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(255, 129, 62, 0.07);
+  border: 1px solid rgba(255, 129, 62, 0.22);
+  font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #ff813e;
+  line-height: 1;
+  white-space: nowrap;
+  user-select: none;
+  opacity: 1;
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.2s ease, border-color 0.2s ease;
+}
+
+.nav-greeting.fade-out {
+  opacity: 0;
+}
+
+.nav-greeting-icon {
+  width: 13px;
+  height: 13px;
+  stroke: #ff813e;
+  flex-shrink: 0;
+  display: inline-block;
+}
+
+.nav-greeting-text {
+  color: #ff813e;
+  letter-spacing: 0.06em;
+}
+
+.nav-greeting-dot {
+  color: rgba(255, 129, 62, 0.45);
+  font-size: 0.65rem;
+  line-height: 1;
+}
+
+.nav-greeting-time {
+  color: rgba(255, 255, 255, 0.72);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.74rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+  text-transform: none;
+}
+
+@media (max-width: 1024px) {
+  .nav-greeting {
+    padding: 6px 12px;
+    font-size: 0.72rem;
+    gap: 6px;
+  }
+}
+
+@media (max-width: 540px) {
+  .nav-greeting-text,
+  .nav-greeting-dot {
+    display: none;
+  }
+  .nav-greeting {
+    padding: 6px 10px;
+    font-size: 0.74rem;
+    gap: 5px;
+  }
+}
+
 .nav-cta {
   margin-left: 8px;
   padding: 10px 22px;

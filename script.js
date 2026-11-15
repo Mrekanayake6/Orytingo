@@ -530,6 +530,170 @@
 
 
 /* ============================================================
+   ORYTINGO — DYNAMIC TIME GREETING (Header Nav)
+   Visitor-local timezone greeting with live clock & fade transition
+============================================================ */
+(() => {
+  const greetingEls = document.querySelectorAll(".nav-greeting, #navGreeting, .hero-greeting, #heroGreeting");
+  const greetingTextEls = document.querySelectorAll(".nav-greeting-text, #navGreetingText, .hero-greeting-text, #heroGreetingText");
+  const greetingTimeEls = document.querySelectorAll(".nav-greeting-time, #navGreetingTime, .hero-greeting-time, #heroGreetingTime");
+  if (!greetingEls.length) return;
+
+  let currentGreetingText = "";
+  let fadeTimeout = null;
+
+  // Resolve visitor's detected timezone using Intl API (never hardcoded)
+  const getVisitorTimeZone = () => {
+    try {
+      return Intl.DateTimeFormat().resolvedOptions().timeZone;
+    } catch (e) {
+      return undefined;
+    }
+  };
+
+  // Calculate greeting and time for a given Date object or simulated hour/minute
+  const calculateGreetingData = (dateObj, overrideHour, overrideMinute) => {
+    const now = dateObj || new Date();
+    const timeZone = getVisitorTimeZone();
+
+    let hour = typeof overrideHour === "number" ? overrideHour : now.getHours();
+    let minute = typeof overrideMinute === "number" ? overrideMinute : now.getMinutes();
+
+    // If using current date and timezone is available, extract local hour and minute via Intl
+    if (typeof overrideHour !== "number" && timeZone) {
+      try {
+        const parts = new Intl.DateTimeFormat("en-US", {
+          timeZone,
+          hour: "numeric",
+          minute: "numeric",
+          hour12: false
+        }).formatToParts(now);
+
+        for (const part of parts) {
+          if (part.type === "hour") hour = parseInt(part.value, 10);
+          if (part.type === "minute") minute = parseInt(part.value, 10);
+        }
+      } catch (e) {
+        hour = now.getHours();
+        minute = now.getMinutes();
+      }
+    }
+
+    // Normalize hour into 0-23 range (handles midnight transition where 24 -> 0)
+    hour = ((hour % 24) + 24) % 24;
+
+    // Greeting Schedule:
+    // 05:00–11:59 → GOOD MORNING
+    // 12:00–16:59 → GOOD AFTERNOON
+    // 17:00–20:59 → GOOD EVENING
+    // 21:00–04:59 → GOOD NIGHT
+    let greeting = "GOOD NIGHT";
+    if (hour >= 5 && hour < 12) {
+      greeting = "GOOD MORNING";
+    } else if (hour >= 12 && hour < 17) {
+      greeting = "GOOD AFTERNOON";
+    } else if (hour >= 17 && hour < 21) {
+      greeting = "GOOD EVENING";
+    } else {
+      greeting = "GOOD NIGHT";
+    }
+
+    // Format visitor's actual local time
+    let formattedTime = "";
+    if (typeof overrideHour === "number") {
+      const h12 = hour % 12 || 12;
+      const ampm = hour >= 12 ? "PM" : "AM";
+      const hStr = h12 < 10 ? `0${h12}` : `${h12}`;
+      const mStr = minute < 10 ? `0${minute}` : `${minute}`;
+      formattedTime = `${hStr}:${mStr} ${ampm}`;
+    } else {
+      try {
+        formattedTime = new Intl.DateTimeFormat(undefined, {
+          timeZone,
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: true
+        }).format(now);
+      } catch (e) {
+        const h12 = hour % 12 || 12;
+        const ampm = hour >= 12 ? "PM" : "AM";
+        const hStr = h12 < 10 ? `0${h12}` : `${h12}`;
+        const mStr = minute < 10 ? `0${minute}` : `${minute}`;
+        formattedTime = `${hStr}:${mStr} ${ampm}`;
+      }
+    }
+
+    return { greeting, formattedTime, timeZone, hour, minute };
+  };
+
+  const updateGreeting = (isInitial = false, overrideHour, overrideMinute) => {
+    const { greeting, formattedTime } = calculateGreetingData(undefined, overrideHour, overrideMinute);
+
+    if (isInitial || !currentGreetingText) {
+      currentGreetingText = greeting;
+      greetingTextEls.forEach((el) => { el.textContent = greeting; });
+      greetingTimeEls.forEach((el) => { el.textContent = formattedTime; });
+      greetingEls.forEach((el) => { el.classList.remove("fade-out"); });
+      return;
+    }
+
+    // If greeting category changed, execute subtle fade transition
+    if (greeting !== currentGreetingText) {
+      if (fadeTimeout) clearTimeout(fadeTimeout);
+      greetingEls.forEach((el) => { el.classList.add("fade-out"); });
+      fadeTimeout = setTimeout(() => {
+        greetingTextEls.forEach((el) => { el.textContent = greeting; });
+        greetingTimeEls.forEach((el) => { el.textContent = formattedTime; });
+        currentGreetingText = greeting;
+        greetingEls.forEach((el) => { el.classList.remove("fade-out"); });
+      }, 300);
+    } else {
+      // Just update time smoothly if changed
+      greetingTimeEls.forEach((el) => {
+        if (el.textContent !== formattedTime) {
+          el.textContent = formattedTime;
+        }
+      });
+    }
+  };
+
+  // 1. Initial calculation on page load
+  updateGreeting(true);
+
+  // 2. Synchronize to next exact minute turn, then repeat every 60 seconds
+  const scheduleNextMinute = () => {
+    const now = new Date();
+    const msUntilNextMinute = (60 - now.getSeconds()) * 1000 - now.getMilliseconds();
+    setTimeout(() => {
+      updateGreeting(false);
+      setInterval(() => updateGreeting(false), 60000);
+    }, Math.max(500, msUntilNextMinute));
+  };
+  scheduleNextMinute();
+
+  // 3. Recalculate immediately when browser tab becomes active
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) {
+      updateGreeting(false);
+    }
+  });
+
+  // 4. Recalculate on window focus (e.g. returning to browser window)
+  window.addEventListener("focus", () => {
+    updateGreeting(false);
+  });
+
+  // 5. Test helper exposed for QA / automated verification
+  window.__testHeroGreeting = (hour, minute = 0) => {
+    updateGreeting(false, hour, minute);
+    return calculateGreetingData(undefined, hour, minute);
+  };
+})();
+
+
+
+
+/* ============================================================
    ORYTINGO — TEAM CAROUSEL
    Auto-play + Manual Controls + Swipe
 ============================================================ */
