@@ -1165,6 +1165,551 @@
 })();
 
 /* ============================================================
+   ORYTINGO – Hero Ant Micro-Interaction & 3D Typography Logic
+   (Hero කොටසේ ඇති 3D අකුරු සහ Subtitle වටා දුවන Ant Animation එක)
+   ============================================================ */
+(() => {
+  const cv = document.getElementById('ant');
+  if (!cv) return;
+  const ctx = cv.getContext('2d');
+  const stage = cv.parentElement;
+  const sub = document.getElementById('sub');
+  if (!stage || !sub) return;
+
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* Split text into letters for staggered animation (layout stays identical) */
+  function split(el, base, gap) {
+    if (!el) return;
+    el.setAttribute('aria-label', el.textContent.trim());
+    let i = 0;
+    const walk = (n) => {
+      [...n.childNodes].forEach((c) => {
+        if (c.nodeType === 3) {
+          const f = document.createDocumentFragment();
+          for (const ch of c.textContent) {
+            const sp = document.createElement('span');
+            sp.className = 'ch';
+            sp.textContent = ch;
+            sp.setAttribute('aria-hidden', 'true');
+            sp.style.setProperty('--d', (base + i * gap).toFixed(2) + 's');
+            f.appendChild(sp);
+            i++;
+          }
+          c.replaceWith(f);
+        } else {
+          walk(c);
+        }
+      });
+    };
+    walk(el);
+  }
+
+  const wordEl = stage.querySelector('.word');
+  if (wordEl) split(wordEl, 0.1, 0.09);
+  split(sub, 1.1, 0.035);
+
+  /* ORYTINGO 3D hover / touch interaction (independent of the ant) */
+  (() => {
+    if (!wordEl) return;
+    wordEl.querySelectorAll('.ch').forEach((c) => {
+      const l = document.createElement('i');
+      l.className = 'lt';
+      l.textContent = c.textContent;
+      c.textContent = '';
+      c.appendChild(l);
+    });
+
+    const lts = [...wordEl.querySelectorAll('.lt')];
+    const n = lts.length;
+    if (reduce || !n) return;
+
+    const cl = (x, a, b) => Math.max(a, Math.min(b, x));
+    const coarse = window.matchMedia('(pointer:coarse)').matches;
+    const T0 = performance.now();
+    const st = lts.map(() => ({ rx: 0, ry: 0, tz: 0, sc: 1, hl: 0, mx: 50, my: 30 }));
+    let rects = [], wb = null, dirty = true;
+    let px = 0, py = 0, act = 0, actT = 0, press = 0, pressT = 0, raf = 0, last = 0, tm = 0, wtx = 0, wty = 0;
+
+    function measure() {
+      rects = lts.map((l) => l.parentNode.getBoundingClientRect());
+      if (!rects.length || !rects[0] || !rects[n - 1]) return;
+      wb = { l: rects[0].left, r: rects[n - 1].right, t: rects[0].top, b: rects[0].bottom };
+      dirty = false;
+    }
+
+    function kick() {
+      if (!raf) {
+        last = performance.now();
+        raf = requestAnimationFrame(tick);
+      }
+    }
+
+    function tick(now) {
+      const dt = Math.min(0.05, (now - last) / 1000);
+      last = now;
+      act += (actT - act) * (1 - Math.exp(-dt * (actT ? 12 : 5)));
+      press += (pressT - press) * (1 - Math.exp(-dt * 14));
+      const k = 1 - Math.exp(-dt * 9);
+      let delta = 0;
+
+      for (let i = 0; i < n; i++) {
+        const r = rects[i];
+        if (!r) continue;
+        const s = st[i];
+        const dx = px - (r.left + r.width / 2);
+        const dy = py - (r.top + r.height / 2);
+        const R = r.height * (coarse ? 2.8 : 2.3);
+        let q = Math.max(0, 1 - Math.hypot(dx, dy) / R);
+        q = q * q * (3 - 2 * q) * act;
+        const T = {
+          ry: cl(dx / (r.width * 1.2), -1, 1) * 18 * q,
+          rx: -cl(dy / (r.height * 0.9), -1, 1) * 13 * q,
+          tz: 30 * q * (1 - 0.7 * press),
+          sc: 1 + 0.05 * q,
+          hl: 0.8 * q
+        };
+        for (const key in T) {
+          delta += Math.abs(T[key] - s[key]);
+          s[key] += (T[key] - s[key]) * k;
+        }
+        if (q > 0.01) {
+          s.mx = cl(((px - r.left) / r.width) * 100, -30, 130);
+          s.my = cl(((py - r.top) / r.height) * 100, -30, 130);
+        }
+        const g = cl((s.tz / 30) * 1.1, 0, 1);
+        const l = lts[i];
+        l.style.transform = `perspective(600px) translateZ(${s.tz.toFixed(2)}px) rotateX(${s.rx.toFixed(2)}deg) rotateY(${s.ry.toFixed(2)}deg) scale(${s.sc.toFixed(3)})`;
+        l.style.setProperty('--hl', s.hl.toFixed(3));
+        l.style.setProperty('--mx', s.mx.toFixed(1) + '%');
+        l.style.setProperty('--my', s.my.toFixed(1) + '%');
+        const gl = Math.max(g, s.hl);
+        l.style.filter = gl > 0.02
+          ? `drop-shadow(0 0 ${(2 * gl).toFixed(1)}px rgba(255,170,100,${(0.55 * gl).toFixed(2)})) drop-shadow(0 0 ${(14 * gl).toFixed(1)}px rgba(255,140,66,${(0.5 * gl).toFixed(2)}))`
+          : '';
+      }
+
+      /* Very gentle whole-word tilt */
+      if (wb) {
+        const ww = wb.r - wb.l;
+        const wh = wb.b - wb.t;
+        const cx = (wb.l + wb.r) / 2;
+        const cy = (wb.t + wb.b) / 2;
+        const ox = Math.max(0, Math.abs(px - cx) - ww / 2);
+        const oy = Math.max(0, Math.abs(py - cy) - wh / 2);
+        let wq = Math.max(0, 1 - Math.hypot(ox, oy) / 220);
+        wq = wq * wq * (3 - 2 * wq) * act;
+        const ty = cl((px - cx) / (ww / 2), -1, 1) * 3.5 * wq;
+        const tx = -cl((py - cy) / (wh / 2 + 60), -1, 1) * 2.5 * wq;
+        delta += Math.abs(ty - wty) + Math.abs(tx - wtx);
+        wty += (ty - wty) * k;
+        wtx += (tx - wtx) * k;
+        wordEl.style.transform = `perspective(1100px) rotateX(${wtx.toFixed(2)}deg) rotateY(${wty.toFixed(2)}deg)`;
+      }
+
+      const moving = delta > 0.02 || Math.abs(actT - act) > 0.01 || Math.abs(pressT - press) > 0.01;
+      if (moving) {
+        raf = requestAnimationFrame(tick);
+        return;
+      }
+      raf = 0;
+      if (actT === 0) {
+        wordEl.style.transform = '';
+        lts.forEach((l) => {
+          l.style.transform = '';
+          l.style.filter = '';
+          l.style.removeProperty('--hl');
+        });
+      }
+    }
+
+    function onMove(e) {
+      if (performance.now() - T0 < 2000) return;
+      if (dirty) measure();
+      if (!wb) return;
+      px = e.clientX;
+      py = e.clientY;
+      const near = px > wb.l - 420 && px < wb.r + 420 && py > wb.t - 420 && py < wb.b + 420;
+      if (!near && !raf && act < 0.01) return;
+      actT = near ? 1 : 0;
+      clearTimeout(tm);
+      if (e.pointerType !== 'mouse') tm = setTimeout(() => { actT = 0; kick(); }, 700);
+      kick();
+    }
+
+    function release(e) {
+      pressT = 0;
+      if (e && e.pointerType !== 'mouse') {
+        clearTimeout(tm);
+        tm = setTimeout(() => { actT = 0; kick(); }, 600);
+      }
+      kick();
+    }
+
+    window.addEventListener('pointermove', onMove, { passive: true });
+    window.addEventListener('pointerdown', (e) => {
+      onMove(e);
+      if (actT) pressT = 1;
+      kick();
+    }, { passive: true });
+    window.addEventListener('pointerup', release);
+    window.addEventListener('pointercancel', release);
+    document.addEventListener('pointerleave', () => { actT = 0; kick(); });
+    window.addEventListener('blur', () => { actT = 0; kick(); });
+    window.addEventListener('resize', () => { dirty = true; });
+    window.addEventListener('scroll', () => { dirty = true; }, { passive: true });
+  })();
+
+  const PI = Math.PI, TAU = PI * 2, R = Math.random;
+  let W = 0, H = 0, S = 1, pts = [], cum = [], total = 0, ptr = null, dpr = 1;
+  const adiff = (a, b) => Math.atan2(Math.sin(a - b), Math.cos(a - b));
+  const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
+
+  /* ---------- Path around subtitle (stadium, clockwise) ---------- */
+  function build() {
+    if (!stage || !sub || !cv) return;
+    const sr = stage.getBoundingClientRect();
+    const tr = sub.getBoundingClientRect();
+    if (!sr.width || !sr.height) return;
+
+    const oldT = total, ratio = oldT ? s / oldT : 0;
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = sr.width;
+    H = sr.height;
+    cv.width = W * dpr;
+    cv.height = H * dpr;
+    S = W < 560 ? 0.8 : 0.95;
+
+    const pad = 16 * S;
+    const x0 = tr.left - sr.left - pad;
+    const x1 = tr.right - sr.left + pad;
+    const y0 = tr.top - sr.top - pad;
+    const y1 = tr.bottom - sr.top + pad;
+    const r = (y1 - y0) / 2;
+    const cy = (y0 + y1) / 2;
+
+    pts = [[x0 + r, y0], [x1 - r, y0]];
+    for (let i = 0; i <= 24; i++) {
+      const a = -PI / 2 + (PI * i) / 24;
+      pts.push([x1 - r + Math.cos(a) * r, cy + Math.sin(a) * r]);
+    }
+    pts.push([x0 + r, y1]);
+    for (let i = 0; i <= 24; i++) {
+      const a = PI / 2 + (PI * i) / 24;
+      pts.push([x0 + r + Math.cos(a) * r, cy + Math.sin(a) * r]);
+    }
+    pts.push(pts[0]);
+
+    cum = [0];
+    for (let i = 1; i < pts.length; i++) {
+      cum.push(cum[i - 1] + Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]));
+    }
+    total = cum[cum.length - 1];
+    s = oldT ? ratio * total : total * 0.1;
+  }
+
+  function at(q) {
+    q = ((q % total) + total) % total;
+    let lo = 0, hi = cum.length - 1;
+    while (hi - lo > 1) {
+      const m = (lo + hi) >> 1;
+      cum[m] <= q ? (lo = m) : (hi = m);
+    }
+    const L = cum[hi] - cum[lo] || 1;
+    const f = (q - cum[lo]) / L;
+    return {
+      x: pts[lo][0] + (pts[hi][0] - pts[lo][0]) * f,
+      y: pts[lo][1] + (pts[hi][1] - pts[lo][1]) * f
+    };
+  }
+
+  function tangent(q) {
+    const a = at(q - 3), b = at(q + 3);
+    return Math.atan2(b.y - a.y, b.x - a.x);
+  }
+
+  /* ---------- Ant state ---------- */
+  let s = 0, dir = 1, v = 0, vT = 0, phase = 0, flip = 0, flipT = 0, tAng = 0;
+  let state = 'walk', st = 0, dur = 4, head = 0, boost = 0, cool = 2, t = 0;
+  let aim = 0, aimAng = 0, flee = false, inited = false;
+
+  function go(n, d) { state = n; st = 0; dur = d; }
+  function startTurn() {
+    dir *= -1;
+    flipT = dir > 0 ? 0 : (R() < 0.5 ? 1 : -1) * PI;
+    go('turn', 0);
+  }
+  function lerpA(a, b, k) { return a + adiff(b, a) * k; }
+
+  function step(dt) {
+    t += dt;
+    st += dt;
+    cool -= dt;
+    boost = Math.max(0, boost - dt);
+    const sp = (reduce ? 0.35 : 1) * 22 * S * (boost > 0 ? 1.7 : 1);
+    const pos = at(s);
+    let d = 1e9, pa = 0;
+    if (ptr) {
+      d = Math.hypot(ptr.x - pos.x, ptr.y - pos.y);
+      pa = Math.atan2(ptr.y - pos.y, ptr.x - pos.x);
+    }
+    if ((state === 'walk' || state === 'pause') && d < 105 && cool <= 0) {
+      go('react', 0.9 + R() * 0.8);
+      cool = 3.5;
+      flee = d < 55;
+    }
+    if (state === 'walk') {
+      vT = sp;
+      if (st > dur) {
+        R() < 0.7 ? go('pause', 1 + R() * 1.4) : go('walk', 3 + R() * 4);
+      }
+    } else if (state === 'pause') {
+      vT = 0;
+      if (st > dur) {
+        if (R() < 0.4) startTurn();
+        else go('walk', 3 + R() * 4);
+      }
+    } else if (state === 'turn') {
+      vT = 0;
+      const dd = flipT - flip;
+      const stp = (dt * PI) / 1.1;
+      phase += dt * 1.1;
+      if (Math.abs(dd) <= stp) {
+        flip = flipT;
+        go('walk', 3 + R() * 4);
+      } else {
+        flip += Math.sign(dd) * stp;
+      }
+    } else if (state === 'react') {
+      vT = 0;
+      if (st > dur) {
+        if (flee && ptr) {
+          const a = at(s + dir * 40);
+          const b = at(s - dir * 40);
+          const want = Math.hypot(a.x - ptr.x, a.y - ptr.y) >= Math.hypot(b.x - ptr.x, b.y - ptr.y) ? dir : -dir;
+          boost = 2.6;
+          if (want !== dir) startTurn();
+          else go('walk', 3 + R() * 3);
+        } else {
+          go(R() < 0.5 ? 'pause' : 'walk', 1 + R() * 3);
+        }
+      }
+    }
+
+    v += (vT - v) * (1 - Math.exp(-dt * 4));
+    s += dir * v * dt;
+    phase += (v * dt) / (11.7 * S);
+    if (flip >= TAU || flip <= -TAU) { flip %= TAU; }
+    tAng = inited ? lerpA(tAng, tangent(s), 1 - Math.exp(-dt * 14)) : tangent(s);
+    inited = true;
+    const heading = tAng + flip;
+    const react = state === 'react';
+    const headT = react && ptr ? clamp(adiff(pa, heading), -0.8, 0.8) : Math.sin(t * 0.9) * (state === 'pause' ? 0.18 : 0.06);
+    head += (headT - head) * (1 - Math.exp(-dt * 8));
+    aim += ((react && ptr ? 1 : 0) - aim) * (1 - Math.exp(-dt * 6));
+    aimAng = clamp(adiff(pa, heading), -1.1, 1.1);
+    draw(at(s), heading, v / (22 * S));
+  }
+
+  /* ---------- Drawing ---------- */
+  function ell(cx, cy, rx, ry, rim) {
+    const g = ctx.createRadialGradient(cx - rx * 0.35, cy - ry * 0.45, 0.2, cx, cy, Math.max(rx, ry) * 1.05);
+    g.addColorStop(0, '#757a8a');
+    g.addColorStop(0.4, '#2a2c35');
+    g.addColorStop(1, '#06060a');
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.ellipse(cx, cy, rx, ry, 0, 0, TAU);
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(255,140,66,' + rim + ')';
+    ctx.lineWidth = 0.55;
+    ctx.stroke();
+    ctx.fillStyle = 'rgba(255,255,255,.16)';
+    ctx.beginPath();
+    ctx.ellipse(cx - rx * 0.3, cy - ry * 0.45, rx * 0.35, ry * 0.2, -0.2, 0, TAU);
+    ctx.fill();
+  }
+
+  const HIPS = [3, 1, -1.2], FOOT = [[6.5, 8], [1.2, 9.5], [-6.5, 8.5]], STR = [3, 3, 3.5], BEND = [1, 0.6, -1];
+  function leg(hx, hy, fx, fy, bend, k) {
+    const dx = fx - hx, dy = fy - hy, l1 = 5.2, l2 = 6.8;
+    let d = Math.hypot(dx, dy);
+    d = clamp(d, Math.abs(l1 - l2) + 0.1, l1 + l2 - 0.05);
+    const ux = dx / Math.hypot(dx, dy), uy = dy / Math.hypot(dx, dy);
+    const a = (l1 * l1 - l2 * l2 + d * d) / (2 * d);
+    const h = Math.sqrt(Math.max(0, l1 * l1 - a * a));
+    const px = -uy, py = ux, b = px ? bend / Math.sign(px) : 1;
+    const kx = hx + ux * a + px * h * b, ky = hy + uy * a + py * h * b;
+    ctx.strokeStyle = '#767a88';
+    ctx.lineWidth = 1.05;
+    ctx.beginPath();
+    ctx.moveTo(hx, hy);
+    ctx.lineTo(kx, ky);
+    ctx.stroke();
+    ctx.lineWidth = 0.8;
+    ctx.beginPath();
+    ctx.moveTo(kx, ky);
+    ctx.lineTo(fx, fy);
+    ctx.stroke();
+    ctx.fillStyle = 'rgba(255,140,66,.75)';
+    ctx.beginPath();
+    ctx.arc(kx, ky, 0.45, 0, TAU);
+    ctx.fill();
+  }
+
+  function antenna(k) {
+    const w = (Math.sin(t * (2.6 + k * 0.4) + k) * 0.22 + Math.sin(t * 7.3 + k * 2) * 0.06) * (state === 'pause' ? 1.5 : 1);
+    let a1 = k * 0.55 + w;
+    a1 += (aimAng + k * 0.18 - a1) * aim * 0.8;
+    const rx = 5.6, ry = k * 1.1;
+    const x1 = rx + Math.cos(a1) * 3.6, y1 = ry + Math.sin(a1) * 3.6;
+    const a2 = a1 - k * 0.7 + w * 0.8;
+    const x2 = x1 + Math.cos(a2) * 4.6, y2 = y1 + Math.sin(a2) * 4.6;
+    ctx.strokeStyle = '#8a8e9c';
+    ctx.lineWidth = 0.7;
+    ctx.beginPath();
+    ctx.moveTo(rx, ry);
+    ctx.lineTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.stroke();
+    ctx.fillStyle = 'rgba(255,140,66,.85)';
+    ctx.beginPath();
+    ctx.arc(x2, y2, 0.5, 0, TAU);
+    ctx.fill();
+  }
+
+  function draw(p, heading, mv) {
+    mv = clamp(mv, 0, 1.8);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+    ctx.save();
+    ctx.translate(p.x, p.y);
+    ctx.rotate(heading + Math.sin(phase * TAU) * 0.03 * Math.min(mv, 1));
+    ctx.scale(S, S);
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.shadowColor = 'rgba(255,140,66,.35)';
+    ctx.shadowBlur = 4;
+
+    /* Legs: alternating tripod gait */
+    for (let i = 0; i < 3; i++) {
+      for (const k of [-1, 1]) {
+        const pp = (phase + (((i + (k > 0 ? 1 : 0)) % 2) * 0.5)) % 1;
+        let u, lift = 0;
+        if (pp < 0.6) {
+          u = 1 - 2 * (pp / 0.6);
+        } else {
+          const q = (pp - 0.6) / 0.4;
+          u = -1 + 2 * (q * q * (3 - 2 * q));
+          lift = Math.sin(PI * q);
+        }
+        leg(HIPS[i], k * 1.3, FOOT[i][0] + STR[i] * u, k * (FOOT[i][1] + lift * 1.4), BEND[i], k);
+      }
+    }
+
+    /* Abdomen (swings opposite the stride) */
+    ctx.save();
+    ctx.translate(-3, 0);
+    ctx.rotate(Math.sin(phase * TAU) * 0.09 * Math.min(mv, 1));
+    ell(-5.2, 0, 5.6, 3.9, 0.5);
+    ctx.strokeStyle = 'rgba(255,140,66,.5)';
+    ctx.lineWidth = 0.6;
+    ctx.beginPath();
+    ctx.moveTo(-4.2, -3.3);
+    ctx.quadraticCurveTo(-3.5, 0, -4.2, 3.3);
+    ctx.stroke();
+    ctx.fillStyle = 'rgba(255,140,66,.6)';
+    ctx.beginPath();
+    ctx.ellipse(-10.4, 0, 1, 1.2, 0, 0, TAU);
+    ctx.fill();
+    ctx.restore();
+
+    ell(-3, 0, 1.2, 1.2, 0.4);
+    ell(0, 0, 3.8, 2.5, 0.5);
+    ell(2.2, 0, 2.1, 2, 0.4);
+
+    /* Head with neck pivot */
+    ctx.save();
+    ctx.translate(4, 0);
+    ctx.rotate(head);
+    antenna(-1);
+    antenna(1);
+    ctx.strokeStyle = '#9a9eac';
+    ctx.lineWidth = 0.7;
+    for (const k of [-1, 1]) {
+      ctx.beginPath();
+      ctx.moveTo(5.8, k * 1);
+      ctx.quadraticCurveTo(7.2, k * 1.4, 7.4, k * 0.3);
+      ctx.stroke();
+    }
+    ell(3.2, 0, 3, 2.4, 0.55);
+    ctx.shadowBlur = 0;
+    ctx.fillStyle = '#ff9a55';
+    for (const k of [-1, 1]) {
+      ctx.beginPath();
+      ctx.arc(4.1, k * 1.9, 0.55, 0, TAU);
+      ctx.fill();
+    }
+    ctx.restore();
+    ctx.restore();
+  }
+
+  /* ---------- Loop & events ---------- */
+  let last = 0;
+  let isHeroVisible = true;
+
+  if ('IntersectionObserver' in window && stage) {
+    const heroObserver = new IntersectionObserver((entries) => {
+      entries.forEach((e) => { isHeroVisible = e.isIntersecting; });
+    }, { threshold: 0.05 });
+    heroObserver.observe(stage);
+  }
+
+  function frame(now) {
+    const dt = Math.min(0.05, (now - last) / 1000 || 0);
+    last = now;
+    if (total && isHeroVisible) step(dt);
+    requestAnimationFrame(frame);
+  }
+
+  function rebuild() { build(); }
+
+  if (window.ResizeObserver && stage) {
+    new ResizeObserver(rebuild).observe(stage);
+  }
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(rebuild);
+  }
+  window.addEventListener('load', rebuild);
+  window.setTimeout(rebuild, 350);
+  window.setTimeout(rebuild, 1200);
+
+  rebuild();
+
+  let tmo;
+  window.addEventListener('pointermove', (e) => {
+    if (!cv) return;
+    const r = cv.getBoundingClientRect();
+    ptr = { x: e.clientX - r.left, y: e.clientY - r.top };
+    clearTimeout(tmo);
+    if (e.pointerType === 'touch') tmo = setTimeout(() => { ptr = null; }, 1500);
+  }, { passive: true });
+
+  window.addEventListener('pointerdown', (e) => {
+    if (!cv) return;
+    const r = cv.getBoundingClientRect();
+    ptr = { x: e.clientX - r.left, y: e.clientY - r.top };
+    clearTimeout(tmo);
+    if (e.pointerType === 'touch') tmo = setTimeout(() => { ptr = null; }, 1500);
+  }, { passive: true });
+
+  document.addEventListener('pointerleave', () => { ptr = null; });
+  window.addEventListener('blur', () => { ptr = null; });
+
+  requestAnimationFrame(frame);
+})();
+
+/* ============================================================
    [NEW ANIMATION / අලුතින් එක් කළ කොටස]
    Top-edge Robot Mascot Scroll Animation Logic
    (පිටුව scroll කරද්දී Robot Mascot එක smoothව දුවන JavaScript කොටස)
