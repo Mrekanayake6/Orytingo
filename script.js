@@ -1691,3 +1691,458 @@
   else init();
 })();
 /* ============ /ROBOT TRAIN SCROLLBAR JS ============ */
+
+
+/* ============================================================
+   ORYTINGO — Modern Interactive Hero Section Scripts
+   (Interactive Grid Canvas + Variable Font Text Pressure Lockup)
+============================================================ */
+(() => {
+  function initInteractiveHero() {
+    const heroSection = document.getElementById("home");
+    const canvas = document.getElementById("interactiveGridCanvas");
+    const container = document.getElementById("heroCanvasWrap");
+    if (!heroSection || !canvas || !container) return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    /* --- 1. Interactive Grid Canvas --- */
+    const config = {
+      color: "#FF813E",
+      cellSize: 70,
+      mobileCellSize: 36,
+      tabletCellSize: 50,
+      radius: 160,
+      mobileRadius: 85,
+      tabletRadius: 115,
+      holdTime: 400,
+      fadeDuration: 800,
+      lineWidth: 1.45,
+      maxOpacity: 0.9,
+      fillOpacity: 0.055,
+      gridOpacity: 0.05,
+      clickPulse: true,
+      pulseSpeed: 620,
+      reducedMotion: prefersReduced
+    };
+
+    const smoothstep = (t) => t * t * (3 - 2 * t);
+
+    function parseHexRgb(hex) {
+      const clean = hex.replace("#", "");
+      const normalized = clean.length === 3
+        ? clean.split("").map((c) => c + c).join("")
+        : clean;
+      const num = parseInt(normalized.slice(0, 6), 16);
+      return [(num >> 16) & 255, (num >> 8) & 255, num & 255];
+    }
+
+    const [r, g, b] = parseHexRgb(config.color);
+
+    let width = 0;
+    let height = 0;
+    let cols = 0;
+    let rows = 0;
+    let offsetX = 0;
+    let offsetY = 0;
+    let activeCellSize = config.cellSize;
+    let activeRadius = config.radius;
+    let intensities = new Float32Array(0);
+    let timestamps = new Float64Array(0);
+    const pulses = [];
+    let rafId = 0;
+    let isRunning = false;
+    let lastTime = 0;
+
+    const getCellCenter = (index) => [
+      offsetX + (index % cols) * activeCellSize + activeCellSize / 2,
+      offsetY + Math.floor(index / cols) * activeCellSize + activeCellSize / 2
+    ];
+
+    const resize = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      width = container.offsetWidth || heroSection.offsetWidth || window.innerWidth;
+      height = container.offsetHeight || heroSection.offsetHeight || window.innerHeight;
+      canvas.width = Math.max(1, Math.round(width * dpr));
+      canvas.height = Math.max(1, Math.round(height * dpr));
+      canvas.style.width = width + "px";
+      canvas.style.height = height + "px";
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      let cs = config.cellSize;
+      let rad = config.radius;
+      if (width < 640) {
+        cs = config.mobileCellSize;
+        rad = config.mobileRadius;
+      } else if (width < 1024) {
+        cs = config.tabletCellSize;
+        rad = config.tabletRadius;
+      }
+
+      activeCellSize = cs;
+      activeRadius = rad;
+      cols = Math.ceil(width / activeCellSize) + 1;
+      rows = Math.ceil(height / activeCellSize) + 1;
+      offsetX = (width - cols * activeCellSize) / 2;
+      offsetY = (height - rows * activeCellSize) / 2;
+      intensities = new Float32Array(cols * rows);
+      timestamps = new Float64Array(cols * rows);
+    };
+
+    const illuminateAt = (px, py, multiplier = 1) => {
+      if (config.reducedMotion) return;
+      const rad = Math.max(activeRadius, 1);
+      const now = performance.now();
+
+      const minCol = Math.max(0, Math.floor((px - rad - offsetX) / activeCellSize));
+      const maxCol = Math.min(cols - 1, Math.floor((px + rad - offsetX) / activeCellSize));
+      const minRow = Math.max(0, Math.floor((py - rad - offsetY) / activeCellSize));
+      const maxRow = Math.min(rows - 1, Math.floor((py + rad - offsetY) / activeCellSize));
+
+      for (let rIdx = minRow; rIdx <= maxRow; rIdx++) {
+        for (let c = minCol; c <= maxCol; c++) {
+          const idx = rIdx * cols + c;
+          const [cx, cy] = getCellCenter(idx);
+          const dist = Math.hypot(cx - px, cy - py);
+          if (dist > rad) continue;
+
+          const val = smoothstep(1 - dist / rad) * config.maxOpacity * multiplier;
+          if (val > intensities[idx]) {
+            intensities[idx] = val;
+            timestamps[idx] = now;
+          } else if (val > 0) {
+            timestamps[idx] = now;
+          }
+        }
+      }
+    };
+
+    const renderFrame = (now) => {
+      const dt = Math.min(now - lastTime, 50);
+      lastTime = now;
+
+      ctx.clearRect(0, 0, width, height);
+
+      // Subtle resting architectural grid lines
+      if (config.gridOpacity > 0) {
+        ctx.strokeStyle = "rgba(245, 245, 245, " + config.gridOpacity + ")";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        for (let c = 0; c <= cols; c++) {
+          const x = Math.round(offsetX + c * activeCellSize) + 0.5;
+          ctx.moveTo(x, 0);
+          ctx.lineTo(x, height);
+        }
+        for (let row = 0; row <= rows; row++) {
+          const y = Math.round(offsetY + row * activeCellSize) + 0.5;
+          ctx.moveTo(0, y);
+          ctx.lineTo(width, y);
+        }
+        ctx.stroke();
+      }
+
+      // Expanding click/tap pulse waves
+      const maxDiag = Math.hypot(width, height);
+      for (let i = pulses.length - 1; i >= 0; i--) {
+        const pulse = pulses[i];
+        const radiusNow = ((now - pulse.t0) / 1000) * config.pulseSpeed;
+        if (radiusNow > maxDiag) {
+          pulses.splice(i, 1);
+          continue;
+        }
+        const band = activeCellSize;
+        const minCol = Math.max(0, Math.floor((pulse.x - radiusNow - band - offsetX) / activeCellSize));
+        const maxCol = Math.min(cols - 1, Math.floor((pulse.x + radiusNow + band - offsetX) / activeCellSize));
+        const minRow = Math.max(0, Math.floor((pulse.y - radiusNow - band - offsetY) / activeCellSize));
+        const maxRow = Math.min(rows - 1, Math.floor((pulse.y + radiusNow + band - offsetY) / activeCellSize));
+
+        for (let row = minRow; row <= maxRow; row++) {
+          for (let col = minCol; col <= maxCol; col++) {
+            const idx = row * cols + col;
+            const [cx, cy] = getCellCenter(idx);
+            if (Math.abs(Math.hypot(cx - pulse.x, cy - pulse.y) - radiusNow) < band / 2) {
+              if (config.maxOpacity > intensities[idx]) {
+                intensities[idx] = config.maxOpacity * 0.75;
+                timestamps[idx] = now;
+              }
+            }
+          }
+        }
+      }
+
+      let hasActive = pulses.length > 0;
+      const fadeStep = dt / Math.max(config.fadeDuration, 16);
+      const halfCell = activeCellSize / 2;
+
+      for (let i = 0; i < intensities.length; i++) {
+        let val = intensities[i];
+        if (val <= 0) continue;
+
+        if (now - timestamps[i] > config.holdTime) {
+          val = Math.max(0, val - fadeStep);
+          intensities[i] = val;
+          if (val <= 0) continue;
+        }
+
+        hasActive = true;
+        const [cx, cy] = getCellCenter(i);
+        const grad = ctx.createRadialGradient(cx, cy, halfCell * 0.1, cx, cy, activeCellSize);
+        grad.addColorStop(0, "rgba(" + r + "," + g + "," + b + "," + val + ")");
+        grad.addColorStop(1, "rgba(" + r + "," + g + "," + b + ",0)");
+
+        const x = cx - halfCell + 0.5;
+        const y = cy - halfCell + 0.5;
+        const size = activeCellSize - 1;
+
+        ctx.beginPath();
+        ctx.rect(x, y, size, size);
+
+        if (config.fillOpacity > 0) {
+          ctx.fillStyle = "rgba(" + r + "," + g + "," + b + "," + (val * config.fillOpacity) + ")";
+          ctx.fill();
+        }
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = config.lineWidth;
+        ctx.stroke();
+      }
+
+      if (hasActive && !config.reducedMotion) {
+        rafId = requestAnimationFrame(renderFrame);
+      } else {
+        isRunning = false;
+      }
+    };
+
+    const startLoop = () => {
+      if (!isRunning) {
+        isRunning = true;
+        lastTime = performance.now();
+        rafId = requestAnimationFrame(renderFrame);
+      }
+    };
+
+    const isPointerInsideHero = (clientX, clientY) => {
+      const rect = heroSection.getBoundingClientRect();
+      return (
+        clientX >= rect.left &&
+        clientX <= rect.right &&
+        clientY >= rect.top &&
+        clientY <= rect.bottom
+      );
+    };
+
+    const handlePointerMove = (e) => {
+      if (!isPointerInsideHero(e.clientX, e.clientY)) return;
+      const rect = canvas.getBoundingClientRect();
+      illuminateAt(e.clientX - rect.left, e.clientY - rect.top);
+      startLoop();
+    };
+
+    const handlePointerDown = (e) => {
+      if (!config.clickPulse || config.reducedMotion) return;
+      if (!isPointerInsideHero(e.clientX, e.clientY)) return;
+      const rect = canvas.getBoundingClientRect();
+      pulses.push({
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
+        t0: performance.now()
+      });
+      startLoop();
+    };
+
+    const handleTouchMove = (e) => {
+      if (!e.touches || e.touches.length === 0) return;
+      const t = e.touches[0];
+      if (!isPointerInsideHero(t.clientX, t.clientY)) return;
+      const rect = canvas.getBoundingClientRect();
+      illuminateAt(t.clientX - rect.left, t.clientY - rect.top);
+      startLoop();
+    };
+
+    const handleTouchStart = (e) => {
+      if (!e.touches || e.touches.length === 0 || config.reducedMotion) return;
+      const t = e.touches[0];
+      if (!isPointerInsideHero(t.clientX, t.clientY)) return;
+      const rect = canvas.getBoundingClientRect();
+      const x = t.clientX - rect.left;
+      const y = t.clientY - rect.top;
+      if (config.clickPulse) {
+        pulses.push({ x, y, t0: performance.now() });
+      }
+      illuminateAt(x, y, 1.15);
+      startLoop();
+    };
+
+    if ("ResizeObserver" in window) {
+      const resizeObserver = new ResizeObserver(() => {
+        resize();
+        startLoop();
+      });
+      resizeObserver.observe(heroSection);
+    } else {
+      window.addEventListener("resize", () => {
+        resize();
+        startLoop();
+      }, { passive: true });
+    }
+
+    resize();
+
+    // Subtle initial entrance pulse from center on mount
+    if (!config.reducedMotion) {
+      pulses.push({
+        x: width * 0.5,
+        y: height * 0.44,
+        t0: performance.now()
+      });
+    }
+    startLoop();
+
+    window.addEventListener("pointermove", handlePointerMove, { passive: true });
+    window.addEventListener("pointerdown", handlePointerDown, { passive: true });
+    window.addEventListener("touchmove", handleTouchMove, { passive: true });
+    window.addEventListener("touchstart", handleTouchStart, { passive: true });
+
+
+    /* --- 2. TextPressureLockup (Variable Font Proximity Reaction) --- */
+    const lockupContainer = document.getElementById("heroLockupContainer");
+    const wordmarkTitle = document.getElementById("heroWordmark");
+    const charSpans = document.querySelectorAll("#heroCharsWrap .orytingo-char-span");
+    const desktopSuffix = document.getElementById("heroDesktopLogoSuffix");
+    const desktopBox = document.getElementById("heroDesktopLogoBox");
+
+    if (lockupContainer && wordmarkTitle && charSpans.length) {
+      const minFontSize = 34;
+      let fontSize = minFontSize;
+      const chars = Array.from(charSpans);
+
+      const mouse = { x: 0, y: 0 };
+      const cursor = { x: 0, y: 0 };
+      let hasPointerInteracted = false;
+      const mountTime = performance.now();
+
+      const distBetween = (a, b) => Math.hypot(b.x - a.x, b.y - a.y);
+
+      const getAttr = (distance, maxDist, minVal, maxVal) => {
+        const t = Math.max(0, Math.min(1, 1 - distance / Math.max(maxDist, 1)));
+        const smooth = t * t * (3 - 2 * t);
+        return minVal + smooth * (maxVal - minVal);
+      };
+
+      const updateLockupSize = () => {
+        const rect = lockupContainer.getBoundingClientRect();
+        const w = rect.width;
+        if (w <= 0) return;
+
+        const isDesktop = window.innerWidth >= 1025;
+        const suffixRatio = isDesktop ? 1.85 : 0;
+        const totalUnits = chars.length + suffixRatio;
+        const computed = Math.max(minFontSize, Math.min(148, w / (totalUnits * 0.72)));
+        fontSize = Math.round(computed);
+
+        wordmarkTitle.style.fontSize = fontSize + "px";
+
+        if (desktopBox) {
+          const desktopLogoHeight = Math.round(fontSize * 1.48);
+          const desktopLogoWidth = Math.round(desktopLogoHeight * 1.12);
+          desktopBox.style.height = desktopLogoHeight + "px";
+          desktopBox.style.width = desktopLogoWidth + "px";
+        }
+      };
+
+      updateLockupSize();
+      window.addEventListener("resize", updateLockupSize, { passive: true });
+
+      const onPointerMoveWordmark = (e) => {
+        cursor.x = e.clientX;
+        cursor.y = e.clientY;
+        hasPointerInteracted = true;
+      };
+
+      const onTouchMoveWordmark = (e) => {
+        if (e.touches && e.touches.length > 0) {
+          cursor.x = e.touches[0].clientX;
+          cursor.y = e.touches[0].clientY;
+          hasPointerInteracted = true;
+        }
+      };
+
+      window.addEventListener("mousemove", onPointerMoveWordmark, { passive: true });
+      window.addEventListener("touchmove", onTouchMoveWordmark, { passive: true });
+      window.addEventListener("touchstart", onTouchMoveWordmark, { passive: true });
+
+      if (prefersReduced) {
+        chars.forEach((span) => {
+          span.style.fontVariationSettings = '"wght" 700';
+          span.style.transform = "translate3d(0,0,0) scale(1,1)";
+        });
+        if (desktopSuffix) desktopSuffix.style.transform = "scale(1)";
+      } else {
+        const animateWordmark = (now) => {
+          const heroRect = heroSection.getBoundingClientRect();
+          if (heroRect.bottom > 0 && heroRect.top < window.innerHeight) {
+            if (!hasPointerInteracted) {
+              const elapsed = (now - mountTime) / 1000;
+              if (elapsed < 1.6) {
+                const progress = Math.min(1, elapsed / 1.45);
+                const eased = progress * progress * (3 - 2 * progress);
+                cursor.x = heroRect.left + heroRect.width * eased;
+                cursor.y = heroRect.top + heroRect.height * 0.45;
+              } else {
+                const wave = 0.52 + Math.sin((elapsed - 1.6) * 0.8) * 0.35;
+                cursor.x = heroRect.left + heroRect.width * wave;
+                cursor.y = heroRect.top + heroRect.height * 0.45;
+              }
+            }
+
+            mouse.x += (cursor.x - mouse.x) * 0.15;
+            mouse.y += (cursor.y - mouse.y) * 0.15;
+
+            const titleRect = wordmarkTitle.getBoundingClientRect();
+            const maxDist = Math.max(titleRect.width / 2.5, 220);
+
+            chars.forEach((span) => {
+              const r = span.getBoundingClientRect();
+              const charCenter = { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+              const d = distBetween(mouse, charCenter);
+
+              const wght = Math.round(getAttr(d, maxDist, 220, 800));
+              const sx = getAttr(d, maxDist, 0.94, 1.07);
+              const sy = getAttr(d, maxDist, 0.96, 1.04);
+
+              const fvs = '"wght" ' + wght;
+              if (span.style.fontVariationSettings !== fvs) {
+                span.style.fontVariationSettings = fvs;
+              }
+              span.style.transform = "translate3d(0,0,0) scale(" + sx.toFixed(3) + "," + sy.toFixed(3) + ")";
+            });
+
+            if (desktopSuffix) {
+              const sr = desktopSuffix.getBoundingClientRect();
+              if (sr.width > 0) {
+                const logoCenter = { x: sr.left + sr.width / 2, y: sr.top + sr.height / 2 };
+                const d = distBetween(mouse, logoCenter);
+                const scale = getAttr(d, maxDist, 1, 1.08);
+                const dy = getAttr(d, maxDist, 0, -4);
+                desktopSuffix.style.transform = "translate3d(0," + dy.toFixed(2) + "px,0) scale(" + scale.toFixed(3) + ")";
+              }
+            }
+          }
+
+          requestAnimationFrame(animateWordmark);
+        };
+
+        requestAnimationFrame(animateWordmark);
+      }
+    }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initInteractiveHero);
+  } else {
+    initInteractiveHero();
+  }
+})();

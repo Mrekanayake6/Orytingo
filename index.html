@@ -38,7 +38,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Sora:wght@400;500;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Sora:wght@100..800&display=swap"
     rel="stylesheet">
   <link rel="icon" href="android-chrome-512x512.png" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -233,127 +233,107 @@
   <main>
 
     <!-- HERO -->
-    <section class="hero" id="home">
-      <div class="hero-inner">
-        <div class="hero-copy">
-          <p class="hero-kicker">OryTingo Networks &amp; Software Solutions</p>
-          <h1 class="hero-headline">
-            Networks &amp; Software Solutions for<br> <span class="hlp"> Modern Businesses.</span>
-          </h1>
-          <p class="hero-desc">
-            OryTingo provides custom software, web applications, business systems,
-            networking, Wi-Fi, CCTV and IT infrastructure solutions for businesses
-            across Sri Lanka.
-          </p>
-          <div class="hero-actions">
-            <a href="#software" class="btn btn-blue">
-              <i class="fa-solid fa-code"></i> Explore Software
-            </a>
-            <a href="#networking" class="btn btn-violet">
-              <i class="fa-solid fa-network-wired"></i> Explore Networking
-            </a>
+    <section class="hero hero-interactive" id="home">
+      <!-- Interactive Grid Canvas Background (proximity glow + click pulse) -->
+      <div class="hero-canvas-wrap" id="heroCanvasWrap" aria-hidden="true">
+        <canvas id="interactiveGridCanvas" class="hero-canvas"></canvas>
+      </div>
+
+      <!-- Top Curved Horizon SVG Accent -->
+      <div class="hero-curve-top" aria-hidden="true">
+        <svg viewBox="0 0 1440 80" fill="none" preserveAspectRatio="none">
+          <path d="M0,0 L1440,0 L1440,18 Q720,68 0,18 Z" fill="#0E1014" fill-opacity="0.65" />
+          <path d="M0,18 Q720,68 1440,18" stroke="url(#orytingoCurveTop)" stroke-width="1.75" fill="none" />
+          <defs>
+            <linearGradient id="orytingoCurveTop" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#FF813E" stop-opacity="0.08" />
+              <stop offset="25%" stop-color="#FF813E" stop-opacity="0.7" />
+              <stop offset="50%" stop-color="#FF9C67" stop-opacity="0.95" />
+              <stop offset="75%" stop-color="#FF813E" stop-opacity="0.7" />
+              <stop offset="100%" stop-color="#FF813E" stop-opacity="0.08" />
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+
+      <!-- Center Hero Stage -->
+      <div class="hero-stage">
+        <!-- Brand Identity Kicker -->
+        <p class="hero-stage-kicker">ORYTINGO Networks &amp; Software Solutions</p>
+
+        <!-- Monumental Interactive Brand Lockup (ORYTINGO + Emblem Logo) -->
+        <div class="hero-lockup-container" id="heroLockupContainer">
+          <!-- Mobile & Tablet Logo (<= 1024px) -->
+          <div class="hero-logo-mobile">
+            <div class="hero-logo-mobile-box">
+              <div class="hero-logo-glow" aria-hidden="true"></div>
+              <img src="assets/hero-logo.png" alt="ORYTINGO Networks &amp; Software Solutions logo" class="hero-logo-img" width="160" height="160" decoding="async">
+            </div>
           </div>
 
-          <div class="hero-stats">
-            <div class="stat"><span class="stat-num">10+</span><span class="stat-label">Systems delivered</span></div>
-            <div class="stat"><span class="stat-num">5+</span><span class="stat-label">Networks deployed</span></div>
-            <div class="stat"><span class="stat-num">15+</span><span class="stat-label">Business Solutions</span></div>
+          <!-- Monumental Proximity-Reactive Wordmark + Inline Desktop Logo Lockup -->
+          <div class="hero-wordmark" id="heroWordmark" aria-label="ORYTINGO">
+            <span class="hero-chars-wrap" id="heroCharsWrap">
+              <span class="orytingo-char-span" data-char="O" style="color:#F5F5F5;">O</span>
+              <span class="orytingo-char-span" data-char="R" style="color:#F5F5F5;">R</span>
+              <span class="orytingo-char-span" data-char="Y" style="color:#F5F5F5;">Y</span>
+              <span class="orytingo-char-span" data-char="T" style="color:#FF813E;">T</span>
+              <span class="orytingo-char-span" data-char="I" style="color:#FF813E;">I</span>
+              <span class="orytingo-char-span" data-char="N" style="color:#FF813E;">N</span>
+              <span class="orytingo-char-span" data-char="G" style="color:#FF813E;">G</span>
+              <span class="orytingo-char-span" data-char="O" style="color:#FF813E;">O</span>
+            </span>
+
+            <!-- Desktop Inline Logo Suffix (>= 1025px) -->
+            <span class="hero-logo-desktop" id="heroDesktopLogoSuffix">
+              <div class="hero-logo-desktop-box" id="heroDesktopLogoBox">
+                <div class="hero-logo-glow" aria-hidden="true"></div>
+                <img src="assets/hero-logo.png" alt="ORYTINGO Networks &amp; Software Solutions logo" class="hero-logo-img" width="180" height="160" decoding="async">
+              </div>
+            </span>
           </div>
         </div>
 
-        <div class="hero-visual">
+        <!-- Headline, Supporting Description & Primary/Secondary CTAs -->
+        <div class="hero-headline-wrap">
+          <h1 class="hero-stage-headline">
+            Engineering Ideas Into <span class="highlight-amber">Digital Reality.</span>
+          </h1>
 
-          <svg viewBox="0 0 560 520" class="hero-svg" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <p class="hero-stage-desc">
+            We build intelligent software solutions, modern websites, and reliable
+            technology infrastructure that help businesses move forward.
+          </p>
 
-            <defs>
+          <div class="hero-stage-actions">
+            <a href="#software" class="hero-btn-primary">
+              <span>Explore Our Solutions</span>
+              <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+            </a>
 
-              <linearGradient id="edgeBlue" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0" stop-color="#ff813e" />
-                <stop offset="1" stop-color="#ff9c67" />
-              </linearGradient>
-
-              <linearGradient id="edgeViolet" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0" stop-color="#ff9c67" />
-                <stop offset="1" stop-color="#ff813e" />
-              </linearGradient>
-
-            </defs>
-
-            <!-- NETWORK LINES -->
-            <g class="net-lines" stroke="url(#edgeViolet)" stroke-width="1.4">
-              <line x1="330" y1="120" x2="440" y2="80" />
-              <line x1="330" y1="120" x2="470" y2="180" />
-              <line x1="330" y1="120" x2="400" y2="230" />
-              <line x1="400" y1="230" x2="470" y2="180" />
-              <line x1="400" y1="230" x2="440" y2="320" />
-              <line x1="470" y1="180" x2="500" y2="290" />
-              <line x1="440" y1="320" x2="500" y2="290" />
-              <line x1="440" y1="320" x2="380" y2="400" />
-            </g>
-
-            <!-- NETWORK NODES -->
-            <g class="net-nodes" fill="#0e1014" stroke="url(#edgeViolet)" stroke-width="1.6">
-              <circle cx="330" cy="120" r="7" />
-              <circle cx="440" cy="80" r="5" />
-              <circle cx="470" cy="180" r="6" />
-              <circle cx="400" cy="230" r="6" />
-              <circle cx="500" cy="290" r="5" />
-              <circle cx="440" cy="320" r="6" />
-              <circle cx="380" cy="400" r="5" />
-            </g>
-
-            <!-- CODE PANEL -->
-            <rect x="60" y="140" width="270" height="230" rx="16" class="code-panel" />
-
-            <!-- CODE DOTS -->
-            <circle cx="83" cy="163" r="4" fill="#ff813e" class="code-dot" />
-            <circle cx="97" cy="163" r="4" fill="#ff9c67" class="code-dot" />
-            <circle cx="111" cy="163" r="4" fill="#6d727d" class="code-dot" />
-
-            <!-- CODE -->
-            <text x="82" y="198" class="code-text orange">const</text>
-            <text x="125" y="198" class="code-text">solution =</text>
-            <text x="82" y="220" class="code-text">build("smart");</text>
-            <text x="82" y="250" class="code-text orange">network</text>
-            <text x="138" y="250" class="code-text">.connect();</text>
-            <text x="82" y="282" class="code-text">system.status</text>
-            <text x="190" y="282" class="code-text orange">= "online";</text>
-            <text x="82" y="320" class="code-text">security.enable();</text>
-            <text x="82" y="350" class="code-text orange">// ORYTINGO</text>
-
-            <!-- ANIMATED BRIDGE -->
-            <path d="M 300 250 C 340 260, 340 200, 380 210" stroke="url(#edgeBlue)" stroke-width="2" fill="none"
-              class="bridge-line" />
-
-            <circle cx="380" cy="210" r="4" fill="#ff9c67" />
-
-            <!-- PULSE DOTS -->
-            <circle cx="120" cy="430" r="3" fill="#ff813e" class="pulse-dot" />
-            <circle cx="200" cy="450" r="3" fill="#ff9c67" class="pulse-dot"
-              style="animation-delay:.6s;-webkit-animation-delay:.6s" />
-            <circle cx="470" cy="410" r="3" fill="#ff9c67" class="pulse-dot"
-              style="animation-delay:1.1s;-webkit-animation-delay:1.1s" />
-
-          </svg>
-
-          <div class="floating-card one">
-            <div class="floating-card-title">
-              <span class="status-dot"></span>
-              Network Online
-            </div>
+            <a href="#contact" class="hero-btn-secondary">
+              Let's Talk
+            </a>
           </div>
-
-          <div class="floating-card two">
-            <div class="floating-card-title">
-              <span class="status-dot"></span>
-              Systems Connected
-            </div>
-          </div>
-
         </div>
       </div>
 
-      <div class="scroll-cue" aria-hidden="true"><span></span></div>
+      <!-- Bottom Curved Horizon SVG Accent -->
+      <div class="hero-curve-bottom" aria-hidden="true">
+        <svg viewBox="0 0 1440 90" fill="none" preserveAspectRatio="none">
+          <path d="M0,90 L1440,90 L1440,65 Q720,10 0,65 Z" fill="#08090B" />
+          <path d="M0,65 Q720,10 1440,65" stroke="url(#orytingoCurveBottom)" stroke-width="2" fill="none" />
+          <defs>
+            <linearGradient id="orytingoCurveBottom" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#FF813E" stop-opacity="0.1" />
+              <stop offset="25%" stop-color="#FF813E" stop-opacity="0.75" />
+              <stop offset="50%" stop-color="#FF9C67" stop-opacity="0.95" />
+              <stop offset="75%" stop-color="#FF813E" stop-opacity="0.75" />
+              <stop offset="100%" stop-color="#FF813E" stop-opacity="0.1" />
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
     </section>
 
 
@@ -562,7 +542,7 @@
     <section class="services-block services-networking" id="networking-services">
       <div class="section-inner">
         <div class="section-head">
-          <p class="eyebrow-violet">Networking Solutions</p>
+          <p class="eyebrow-orange">Networking Solutions</p>
           <h2>Infrastructure that keeps you connected</h2>
         </div>
         <div class="service-grid">
