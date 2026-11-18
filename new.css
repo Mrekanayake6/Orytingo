@@ -4339,38 +4339,39 @@ body.mobile-sheet-open {
   }
 }
 
-.hero-stage-headline {
-  font-family: 'Sora', sans-serif;
-  font-size: clamp(1.4rem, 4.5vw, 2.625rem);
-  font-weight: 700;
-  line-height: 1.15;
-  letter-spacing: -0.025em;
-  color: #F5F5F5;
-  text-wrap: balance;
-  margin: 0;
-}
-
-.hero-stage-headline .highlight-amber {
-  color: #FF9C67;
-}
-
-.hero-stage-desc {
-  margin-top: 14px;
-  max-width: 36rem;
+/* Tagline (CODE . INNOVATE . ELEVATE) */
+.hero-stage-tagline {
+  margin: 0 0 22px;
   font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
-  font-size: 0.95rem;
-  line-height: 1.6;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
   color: #A3A9B6;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  white-space: nowrap;
 }
 @media (min-width: 640px) {
-  .hero-stage-desc {
-    font-size: 1.05rem;
+  .hero-stage-tagline {
+    margin-bottom: 28px;
+    font-size: 13px;
+    letter-spacing: 0.32em;
+    gap: 12px;
   }
+}
+
+.hero-stage-tagline .tagline-dot {
+  color: #FF813E;
+  font-weight: 700;
+  opacity: 0.9;
 }
 
 /* CTAs */
 .hero-stage-actions {
-  margin-top: 22px;
+  margin-top: 0;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -4379,7 +4380,7 @@ body.mobile-sheet-open {
 }
 @media (min-width: 640px) {
   .hero-stage-actions {
-    margin-top: 28px;
+    margin-top: 0;
     gap: 14px;
   }
 }
