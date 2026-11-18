@@ -1712,9 +1712,9 @@
     /* --- 1. Interactive Grid Canvas --- */
     const config = {
       color: "#FF813E",
-      cellSize: 70,
-      mobileCellSize: 36,
-      tabletCellSize: 50,
+      cellSize: 56,
+      mobileCellSize: 28,
+      tabletCellSize: 56,
       radius: 160,
       mobileRadius: 85,
       tabletRadius: 115,
@@ -1723,7 +1723,7 @@
       lineWidth: 1.45,
       maxOpacity: 0.9,
       fillOpacity: 0.055,
-      gridOpacity: 0.05,
+      gridOpacity: 0,
       clickPulse: true,
       pulseSpeed: 620,
       reducedMotion: prefersReduced

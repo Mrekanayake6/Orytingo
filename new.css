@@ -4087,11 +4087,11 @@ body.mobile-sheet-open {
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  background-color: #08090B;
-  background-image: radial-gradient(ellipse 70% 45% at 50% 32%, rgba(255, 129, 62, 0.055) 0%, rgba(8, 9, 11, 0) 70%);
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
   padding: 0 !important;
   margin: 0;
-  z-index: 10;
 }
 
 @media (max-width: 1024px) {
