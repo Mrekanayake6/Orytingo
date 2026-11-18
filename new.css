@@ -3072,10 +3072,6 @@ section {
   transition-delay: var(--reveal-delay, 0ms), var(--reveal-delay, 0ms), 0s, 0s;
 }
 
-/* ------------------------------------------------------------
-   Section Head Choreographed Motion (DartCodes / Linear style)
-   h2 and p animate with smooth upward float & staggered elegance
------------------------------------------------------------- */
 
 /* 1. Eyebrow badge */
 .reveal-item[class*="eyebrow"],
@@ -3723,9 +3719,7 @@ html.page-loading .rbs-rail {
   }
 }
 
-/* ============================================================
-   DARTCODES-STYLE FLOATING BOTTOM NAVIGATION DOCK & SHEET
-============================================================ */
+
 .mobile-dock {
   display: none;
 }
@@ -4073,10 +4067,6 @@ body.mobile-sheet-open {
 }
 
 
-/* ============================================================
-   ORYTINGO — Modern Interactive Hero Section (DartCodes-Style)
-   Matching #08090B Dark Horizon Background
-============================================================ */
 .hero.hero-interactive {
   position: relative;
   width: 100%;
@@ -4510,12 +4500,4 @@ body.mobile-sheet-open {
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .hero-stage-kicker,
-  .hero-lockup-container,
-  .hero-headline-wrap {
-    animation: none !important;
-    opacity: 1 !important;
-    transform: none !important;
-  }
-}
+

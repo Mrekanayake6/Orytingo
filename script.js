@@ -1725,8 +1725,7 @@
       fillOpacity: 0.055,
       gridOpacity: 0,
       clickPulse: true,
-      pulseSpeed: 620,
-      reducedMotion: prefersReduced
+      pulseSpeed: 620
     };
 
     const smoothstep = (t) => t * t * (3 - 2 * t);
@@ -1763,7 +1762,7 @@
     ];
 
     const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const dpr = Math.min(window.devicePixelRatio || 1, 2.5);
       width = container.offsetWidth || heroSection.offsetWidth || window.innerWidth;
       height = container.offsetHeight || heroSection.offsetHeight || window.innerHeight;
       canvas.width = Math.max(1, Math.round(width * dpr));
@@ -1793,7 +1792,6 @@
     };
 
     const illuminateAt = (px, py, multiplier = 1) => {
-      if (config.reducedMotion) return;
       const rad = Math.max(activeRadius, 1);
       const now = performance.now();
 
@@ -1909,7 +1907,7 @@
         ctx.stroke();
       }
 
-      if (hasActive && !config.reducedMotion) {
+      if (hasActive) {
         rafId = requestAnimationFrame(renderFrame);
       } else {
         isRunning = false;
@@ -1942,7 +1940,7 @@
     };
 
     const handlePointerDown = (e) => {
-      if (!config.clickPulse || config.reducedMotion) return;
+      if (!config.clickPulse) return;
       if (!isPointerInsideHero(e.clientX, e.clientY)) return;
       const rect = canvas.getBoundingClientRect();
       pulses.push({
@@ -1963,7 +1961,7 @@
     };
 
     const handleTouchStart = (e) => {
-      if (!e.touches || e.touches.length === 0 || config.reducedMotion) return;
+      if (!e.touches || e.touches.length === 0) return;
       const t = e.touches[0];
       if (!isPointerInsideHero(t.clientX, t.clientY)) return;
       const rect = canvas.getBoundingClientRect();
@@ -1991,14 +1989,12 @@
 
     resize();
 
-    // Subtle initial entrance pulse from center on mount
-    if (!config.reducedMotion) {
-      pulses.push({
-        x: width * 0.5,
-        y: height * 0.44,
-        t0: performance.now()
-      });
-    }
+    // Entrance pulse from center on mount
+    pulses.push({
+      x: width * 0.5,
+      y: height * 0.44,
+      t0: performance.now()
+    });
     startLoop();
 
     window.addEventListener("pointermove", handlePointerMove, { passive: true });
@@ -2078,65 +2074,66 @@
       window.addEventListener("pointermove", onPointerMoveWordmark, { passive: true });
       window.addEventListener("touchmove", onTouchMoveWordmark, { passive: true });
       window.addEventListener("touchstart", onTouchMoveWordmark, { passive: true });
+      window.addEventListener("touchend", () => { lastTouchTime = performance.now(); }, { passive: true });
+      window.addEventListener("touchcancel", () => { lastTouchTime = performance.now(); }, { passive: true });
+      window.addEventListener("pointerup", () => { lastTouchTime = performance.now(); }, { passive: true });
 
-      if (prefersReduced) {
-        chars.forEach((span) => {
-          span.style.fontVariationSettings = '"wght" 700';
-          span.style.transform = "translate3d(0,0,0) scale(1,1)";
-        });
-        if (desktopSuffix) desktopSuffix.style.transform = "scale(1)";
-      } else {
-        const animateWordmark = (now) => {
-          const heroRect = heroSection.getBoundingClientRect();
-          if (heroRect.bottom > 0 && heroRect.top < window.innerHeight) {
-            const idleTime = now - lastTouchTime;
-            // On mobile or idle desktop: if no pointer interaction for 1.4s, run smooth ambient wave
-            if (!hasPointerInteracted || idleTime > 1400) {
-              const elapsed = (now - mountTime) / 1000;
-              const wave = 0.5 + Math.sin(elapsed * 1.15) * 0.42;
-              cursor.x = heroRect.left + heroRect.width * wave;
-              cursor.y = heroRect.top + heroRect.height * 0.45;
-            }
-
-            mouse.x += (cursor.x - mouse.x) * 0.15;
-            mouse.y += (cursor.y - mouse.y) * 0.15;
-
-            const titleRect = wordmarkTitle.getBoundingClientRect();
-            const maxDist = Math.max(titleRect.width / 2.5, 140);
-
-            chars.forEach((span) => {
-              const r = span.getBoundingClientRect();
-              const charCenter = { x: r.left + r.width / 2, y: r.top + r.height / 2 };
-              const d = distBetween(mouse, charCenter);
-
-              const wght = Math.round(getAttr(d, maxDist, 220, 800));
-              const sx = getAttr(d, maxDist, 0.94, 1.07);
-              const sy = getAttr(d, maxDist, 0.96, 1.04);
-
-              const fvs = '"wght" ' + wght;
-              if (span.style.fontVariationSettings !== fvs) {
-                span.style.fontVariationSettings = fvs;
-              }
-              span.style.transform = "translate3d(0,0,0) scale(" + sx.toFixed(3) + "," + sy.toFixed(3) + ")";
-            });
-
-            if (desktopSuffix) {
-              const sr = desktopSuffix.getBoundingClientRect();
-              if (sr.width > 0) {
-                const logoCenter = { x: sr.left + sr.width / 2, y: sr.top + sr.height / 2 };
-                const d = distBetween(mouse, logoCenter);
-                const scale = getAttr(d, maxDist, 1, 1.08);
-                const dy = getAttr(d, maxDist, 0, -4);
-                desktopSuffix.style.transform = "translate3d(0," + dy.toFixed(2) + "px,0) scale(" + scale.toFixed(3) + ")";
-              }
-            }
+      const animateWordmark = (now) => {
+        const heroRect = heroSection.getBoundingClientRect();
+        if (heroRect.bottom > 0 && heroRect.top < window.innerHeight) {
+          const idleTime = now - lastTouchTime;
+          // Runs continuously in all motion states, gracefully tracking touches and breathing ambiently
+          if (!hasPointerInteracted || idleTime > 1400) {
+            const elapsed = (now - mountTime) / 1000;
+            const wave = 0.5 + Math.sin(elapsed * 1.15) * 0.42;
+            cursor.x = heroRect.left + heroRect.width * wave;
+            cursor.y = heroRect.top + heroRect.height * 0.45;
           }
 
-          requestAnimationFrame(animateWordmark);
-        };
+          mouse.x += (cursor.x - mouse.x) * 0.15;
+          mouse.y += (cursor.y - mouse.y) * 0.15;
+
+          const titleRect = wordmarkTitle.getBoundingClientRect();
+          const maxDist = Math.max(titleRect.width / 2.5, 140);
+
+          chars.forEach((span) => {
+            const r = span.getBoundingClientRect();
+            const charCenter = { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+            const d = distBetween(mouse, charCenter);
+
+            const wght = Math.round(getAttr(d, maxDist, 220, 800));
+            const sx = getAttr(d, maxDist, 0.94, 1.07);
+            const sy = getAttr(d, maxDist, 0.96, 1.04);
+
+            span.style.fontWeight = String(wght);
+            const fvs = '"wght" ' + wght;
+            if (span.style.fontVariationSettings !== fvs) {
+              span.style.webkitFontVariationSettings = fvs;
+              span.style.fontVariationSettings = fvs;
+            }
+            const trans = "translate3d(0,0,0) scale(" + sx.toFixed(3) + "," + sy.toFixed(3) + ")";
+            span.style.webkitTransform = trans;
+            span.style.transform = trans;
+          });
+
+          if (desktopSuffix) {
+            const sr = desktopSuffix.getBoundingClientRect();
+            if (sr.width > 0) {
+              const logoCenter = { x: sr.left + sr.width / 2, y: sr.top + sr.height / 2 };
+              const d = distBetween(mouse, logoCenter);
+              const scale = getAttr(d, maxDist, 1, 1.08);
+              const dy = getAttr(d, maxDist, 0, -4);
+              const logoTrans = "translate3d(0," + dy.toFixed(2) + "px,0) scale(" + scale.toFixed(3) + ")";
+              desktopSuffix.style.webkitTransform = logoTrans;
+              desktopSuffix.style.transform = logoTrans;
+            }
+          }
+        }
 
         requestAnimationFrame(animateWordmark);
-      }
+      };
+
+      requestAnimationFrame(animateWordmark);
     }
   }
 
