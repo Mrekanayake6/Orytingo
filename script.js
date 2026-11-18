@@ -2015,13 +2015,14 @@
     const desktopBox = document.getElementById("heroDesktopLogoBox");
 
     if (lockupContainer && wordmarkTitle && charSpans.length) {
-      const minFontSize = 34;
+      const minFontSize = 20;
       let fontSize = minFontSize;
       const chars = Array.from(charSpans);
 
       const mouse = { x: 0, y: 0 };
       const cursor = { x: 0, y: 0 };
       let hasPointerInteracted = false;
+      let lastTouchTime = 0;
       const mountTime = performance.now();
 
       const distBetween = (a, b) => Math.hypot(b.x - a.x, b.y - a.y);
@@ -2037,8 +2038,8 @@
         const w = rect.width;
         if (w <= 0) return;
 
-        const isDesktop = window.innerWidth >= 1025;
-        const suffixRatio = isDesktop ? 1.85 : 0;
+        // Keep emblem logo inline across all screens (mobile, tablet, desktop)
+        const suffixRatio = 1.6;
         const totalUnits = chars.length + suffixRatio;
         const computed = Math.max(minFontSize, Math.min(148, w / (totalUnits * 0.72)));
         fontSize = Math.round(computed);
@@ -2046,8 +2047,8 @@
         wordmarkTitle.style.fontSize = fontSize + "px";
 
         if (desktopBox) {
-          const desktopLogoHeight = Math.round(fontSize * 1.48);
-          const desktopLogoWidth = Math.round(desktopLogoHeight * 1.12);
+          const desktopLogoHeight = Math.round(fontSize * 1.36);
+          const desktopLogoWidth = Math.round(desktopLogoHeight * 1.1);
           desktopBox.style.height = desktopLogoHeight + "px";
           desktopBox.style.width = desktopLogoWidth + "px";
         }
@@ -2056,21 +2057,25 @@
       updateLockupSize();
       window.addEventListener("resize", updateLockupSize, { passive: true });
 
-      const onPointerMoveWordmark = (e) => {
-        cursor.x = e.clientX;
-        cursor.y = e.clientY;
+      const updatePointer = (clientX, clientY) => {
+        cursor.x = clientX;
+        cursor.y = clientY;
         hasPointerInteracted = true;
+        lastTouchTime = performance.now();
+      };
+
+      const onPointerMoveWordmark = (e) => {
+        updatePointer(e.clientX, e.clientY);
       };
 
       const onTouchMoveWordmark = (e) => {
         if (e.touches && e.touches.length > 0) {
-          cursor.x = e.touches[0].clientX;
-          cursor.y = e.touches[0].clientY;
-          hasPointerInteracted = true;
+          updatePointer(e.touches[0].clientX, e.touches[0].clientY);
         }
       };
 
       window.addEventListener("mousemove", onPointerMoveWordmark, { passive: true });
+      window.addEventListener("pointermove", onPointerMoveWordmark, { passive: true });
       window.addEventListener("touchmove", onTouchMoveWordmark, { passive: true });
       window.addEventListener("touchstart", onTouchMoveWordmark, { passive: true });
 
@@ -2084,25 +2089,20 @@
         const animateWordmark = (now) => {
           const heroRect = heroSection.getBoundingClientRect();
           if (heroRect.bottom > 0 && heroRect.top < window.innerHeight) {
-            if (!hasPointerInteracted) {
+            const idleTime = now - lastTouchTime;
+            // On mobile or idle desktop: if no pointer interaction for 1.4s, run smooth ambient wave
+            if (!hasPointerInteracted || idleTime > 1400) {
               const elapsed = (now - mountTime) / 1000;
-              if (elapsed < 1.6) {
-                const progress = Math.min(1, elapsed / 1.45);
-                const eased = progress * progress * (3 - 2 * progress);
-                cursor.x = heroRect.left + heroRect.width * eased;
-                cursor.y = heroRect.top + heroRect.height * 0.45;
-              } else {
-                const wave = 0.52 + Math.sin((elapsed - 1.6) * 0.8) * 0.35;
-                cursor.x = heroRect.left + heroRect.width * wave;
-                cursor.y = heroRect.top + heroRect.height * 0.45;
-              }
+              const wave = 0.5 + Math.sin(elapsed * 1.15) * 0.42;
+              cursor.x = heroRect.left + heroRect.width * wave;
+              cursor.y = heroRect.top + heroRect.height * 0.45;
             }
 
             mouse.x += (cursor.x - mouse.x) * 0.15;
             mouse.y += (cursor.y - mouse.y) * 0.15;
 
             const titleRect = wordmarkTitle.getBoundingClientRect();
-            const maxDist = Math.max(titleRect.width / 2.5, 220);
+            const maxDist = Math.max(titleRect.width / 2.5, 140);
 
             chars.forEach((span) => {
               const r = span.getBoundingClientRect();

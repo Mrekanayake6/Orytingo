@@ -4183,7 +4183,7 @@ body.mobile-sheet-open {
   width: 100%;
   max-width: 1240px;
   margin: 0 auto;
-  padding: 56px 20px 80px;
+  padding: 40px 14px 84px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -4203,9 +4203,9 @@ body.mobile-sheet-open {
 
 /* Brand Identity Kicker */
 .hero-stage-kicker {
-  margin-bottom: 16px;
+  margin-bottom: 14px;
   font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -4231,48 +4231,13 @@ body.mobile-sheet-open {
   animation: heroLockupFade 0.7s 0.08s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-/* Mobile & Tablet Logo (<= 1024px) */
-.hero-logo-mobile {
-  margin-bottom: 12px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  pointer-events: auto;
-}
-@media (min-width: 1025px) {
-  .hero-logo-mobile {
-    display: none !important;
-  }
-}
-
-.hero-logo-mobile-box {
-  position: relative;
-  display: flex;
-  width: 112px;
-  height: 112px;
-  align-items: center;
-  justify-content: center;
-}
-@media (min-width: 640px) {
-  .hero-logo-mobile-box {
-    width: 144px;
-    height: 144px;
-  }
-}
-@media (min-width: 768px) {
-  .hero-logo-mobile-box {
-    width: 160px;
-    height: 160px;
-  }
-}
-
+/* Ambient Logo Glow */
 .hero-logo-glow {
   pointer-events: none;
   position: absolute;
-  bottom: 4px;
+  bottom: 2px;
   left: 50%;
-  height: 12px;
+  height: 10px;
   width: 60%;
   transform: translateX(-50%);
   border-radius: 9999px;
@@ -4286,11 +4251,8 @@ body.mobile-sheet-open {
   object-fit: contain;
   pointer-events: none;
 }
-.hero-logo-mobile-box .hero-logo-img {
-  filter: drop-shadow(0 6px 18px rgba(255, 129, 62, 0.28));
-}
 
-/* Proximity-Reactive Wordmark */
+/* Proximity-Reactive Wordmark (Unified Desktop + Mobile Inline Layout) */
 .hero-wordmark {
   font-family: 'Sora', sans-serif;
   display: flex;
@@ -4301,6 +4263,7 @@ body.mobile-sheet-open {
   letter-spacing: -0.05em;
   text-align: center;
   line-height: 0.96;
+  flex-wrap: nowrap;
 }
 
 .hero-chars-wrap {
@@ -4309,6 +4272,17 @@ body.mobile-sheet-open {
   align-items: center;
   justify-content: space-between;
   will-change: transform;
+  padding-right: 8px;
+}
+@media (min-width: 480px) {
+  .hero-chars-wrap {
+    padding-right: 14px;
+  }
+}
+@media (min-width: 640px) {
+  .hero-chars-wrap {
+    padding-right: 18px;
+  }
 }
 @media (min-width: 1025px) {
   .hero-chars-wrap {
@@ -4322,11 +4296,13 @@ body.mobile-sheet-open {
   transform: translateZ(0);
   text-align: center;
   font-weight: 500;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
-/* Desktop Inline Logo Suffix (>= 1025px) */
+/* Inline Emblem Logo Suffix (Active Across All Screen Sizes) */
 .hero-logo-desktop {
-  display: none;
+  display: inline-flex !important;
   flex-shrink: 0;
   align-items: center;
   justify-content: center;
@@ -4334,11 +4310,6 @@ body.mobile-sheet-open {
   pointer-events: auto;
   will-change: transform;
   line-height: 1;
-}
-@media (min-width: 1025px) {
-  .hero-logo-desktop {
-    display: inline-flex;
-  }
 }
 
 .hero-logo-desktop-box {
@@ -4370,9 +4341,9 @@ body.mobile-sheet-open {
 
 .hero-stage-headline {
   font-family: 'Sora', sans-serif;
-  font-size: clamp(1.625rem, 3vw, 2.625rem);
+  font-size: clamp(1.4rem, 4.5vw, 2.625rem);
   font-weight: 700;
-  line-height: 1.14;
+  line-height: 1.15;
   letter-spacing: -0.025em;
   color: #F5F5F5;
   text-wrap: balance;
@@ -4399,12 +4370,18 @@ body.mobile-sheet-open {
 
 /* CTAs */
 .hero-stage-actions {
-  margin-top: 28px;
+  margin-top: 22px;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 14px;
+  gap: 10px;
+}
+@media (min-width: 640px) {
+  .hero-stage-actions {
+    margin-top: 28px;
+    gap: 14px;
+  }
 }
 
 .hero-btn-primary {
@@ -4415,9 +4392,9 @@ body.mobile-sheet-open {
   gap: 8px;
   border-radius: 6px;
   background-color: #FF813E;
-  padding: 10px 24px;
+  padding: 10px 18px;
   font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
-  font-size: 0.875rem;
+  font-size: 0.85rem;
   font-weight: 600;
   color: #08090B !important;
   white-space: nowrap;
@@ -4426,6 +4403,12 @@ body.mobile-sheet-open {
   transition: background-color 0.15s ease, transform 0.15s ease;
   cursor: pointer;
   border: none;
+}
+@media (min-width: 640px) {
+  .hero-btn-primary {
+    padding: 10px 24px;
+    font-size: 0.875rem;
+  }
 }
 .hero-btn-primary:hover {
   background-color: #FF9C67;
@@ -4447,6 +4430,27 @@ body.mobile-sheet-open {
   display: inline-flex;
   min-height: 44px;
   align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background-color: rgba(14, 16, 20, 0.85);
+  padding: 10px 18px;
+  font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #F5F5F5 !important;
+  white-space: nowrap;
+  flex-shrink: 0;
+  text-decoration: none;
+  transition: border-color 0.15s ease, color 0.15s ease;
+  cursor: pointer;
+}
+@media (min-width: 640px) {
+  .hero-btn-secondary {
+    padding: 10px 24px;
+    font-size: 0.875rem;
+  }
+}
   justify-content: center;
   border-radius: 6px;
   border: 1px solid rgba(255, 255, 255, 0.15);
