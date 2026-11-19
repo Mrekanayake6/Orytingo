@@ -1951,6 +1951,23 @@
       let hasActive = pulses.length > 0;
       const fadeStep = dt / Math.max(config.fadeDuration, 16);
 
+      // Clip canvas drawing to exact curved aperture so grid cells never bleed outside
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(0, getCurveTopY(0));
+      const clipSteps = 36;
+      for (let s = 1; s <= clipSteps; s++) {
+        const px = (s / clipSteps) * width;
+        ctx.lineTo(px, getCurveTopY(px));
+      }
+      ctx.lineTo(width, getCurveBottomY(width));
+      for (let s = clipSteps - 1; s >= 0; s--) {
+        const px = (s / clipSteps) * width;
+        ctx.lineTo(px, getCurveBottomY(px));
+      }
+      ctx.closePath();
+      ctx.clip();
+
       for (let i = 0; i < intensities.length; i++) {
         let val = intensities[i];
         if (val <= 0) continue;
@@ -1979,6 +1996,8 @@
         ctx.lineWidth = config.lineWidth;
         ctx.stroke();
       }
+
+      ctx.restore();
 
       if (hasActive) {
         rafId = requestAnimationFrame(renderFrame);
