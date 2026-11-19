@@ -1828,8 +1828,7 @@
     let lastHeight = 0;
     let topSvgHeight = 64;
     let bottomSvgHeight = 80;
-    let colTopY = new Float32Array(0);
-    let colBottomY = new Float32Array(0);
+    let cachedClipPath = null;
 
     const getCurveTopY = (px) => {
       const u = Math.max(0, Math.min(1, px / Math.max(width, 1)));
@@ -1842,10 +1841,7 @@
       return height - bottomSvgHeight + (normY * bottomSvgHeight);
     };
 
-    const isInsideCurves = (cx, cy, colIdx) => {
-      if (colIdx !== undefined && colIdx >= 0 && colIdx < colTopY.length) {
-        return cy >= colTopY[colIdx] && cy <= colBottomY[colIdx];
-      }
+    const isInsideCurves = (cx, cy) => {
       return cy >= getCurveTopY(cx) && cy <= getCurveBottomY(cx);
     };
 
@@ -1866,8 +1862,7 @@
       topSvgHeight = topSvg ? topSvg.clientHeight : (newWidth < 640 ? 32 : (newWidth < 1024 ? 56 : 64));
       bottomSvgHeight = bottomSvg ? bottomSvg.clientHeight : (newWidth < 640 ? 40 : (newWidth < 1024 ? 64 : 80));
 
-      const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-      const maxDpr = isMobile ? 1.25 : (isSafari ? 1.5 : 1.75);
+      const maxDpr = isMobile ? 1.5 : 2.0;
       const dpr = Math.min(window.devicePixelRatio || 1, maxDpr);
 
       lastWidth = newWidth;
@@ -1900,13 +1895,21 @@
       intensities = new Float32Array(cols * rows);
       timestamps = new Float64Array(cols * rows);
 
-      // Precompute column boundary curves once per resize for zero per-frame math overhead
-      colTopY = new Float32Array(cols);
-      colBottomY = new Float32Array(cols);
-      for (let c = 0; c < cols; c++) {
-        const cx = offsetX + c * activeCellSize + halfCell;
-        colTopY[c] = getCurveTopY(cx);
-        colBottomY[c] = getCurveBottomY(cx);
+      // Precompute Path2D clip so renderFrame never recalculates 72 polygon coordinates on every frame
+      if (typeof Path2D !== "undefined" && width > 0 && height > 0) {
+        cachedClipPath = new Path2D();
+        cachedClipPath.moveTo(0, getCurveTopY(0));
+        const clipSteps = 32;
+        for (let s = 1; s <= clipSteps; s++) {
+          const px = (s / clipSteps) * width;
+          cachedClipPath.lineTo(px, getCurveTopY(px));
+        }
+        cachedClipPath.lineTo(width, getCurveBottomY(width));
+        for (let s = clipSteps - 1; s >= 0; s--) {
+          const px = (s / clipSteps) * width;
+          cachedClipPath.lineTo(px, getCurveBottomY(px));
+        }
+        cachedClipPath.closePath();
       }
 
       updateCachedHeroRect();
@@ -1927,9 +1930,9 @@
         const dy = cy - py;
         const dySq = dy * dy;
         for (let c = minCol; c <= maxCol; c++) {
-          if (!isInsideCurves(0, cy, c)) continue;
-
           const cx = offsetX + c * activeCellSize + halfCell;
+          if (!isInsideCurves(cx, cy)) continue;
+
           const dx = cx - px;
           const distSq = dx * dx + dySq;
           if (distSq > radSq) continue;
@@ -1948,13 +1951,6 @@
     };
 
     const renderFrame = (now) => {
-      // Pause canvas loop when hero is scrolled completely out of view
-      const heroRect = cachedHeroRect;
-      if (heroRect.bottom <= 0 || heroRect.top >= window.innerHeight) {
-        isRunning = false;
-        return;
-      }
-
       const dt = Math.min(now - lastTime, 50);
       lastTime = now;
 
@@ -1998,10 +1994,10 @@
           const dy = cy - pulse.y;
           const dySq = dy * dy;
           for (let col = minCol; col <= maxCol; col++) {
-            if (!isInsideCurves(0, cy, col)) continue;
+            const cx = offsetX + col * activeCellSize + halfCell;
+            if (!isInsideCurves(cx, cy)) continue;
 
             const idx = row * cols + col;
-            const cx = offsetX + col * activeCellSize + halfCell;
             const dx = cx - pulse.x;
             const dist = Math.sqrt(dx * dx + dySq);
             if (Math.abs(dist - radiusNow) < band / 2) {
@@ -2017,40 +2013,42 @@
       let hasActive = pulses.length > 0;
       const fadeStep = dt / Math.max(config.fadeDuration, 16);
 
-      // Hardware-accelerated direct GPU rendering on Metal & WebKit:
-      // Single state setup outside loop + native fillRect/strokeRect with zero string allocations
-      ctx.lineWidth = config.lineWidth;
-      ctx.strokeStyle = config.color;
-      ctx.fillStyle = config.color;
+      // Clip canvas drawing to exact curved aperture so grid cells never bleed outside
+      ctx.save();
+      if (cachedClipPath) {
+        ctx.clip(cachedClipPath);
+      }
 
       for (let i = 0; i < intensities.length; i++) {
         let val = intensities[i];
-        if (val <= 0.005) continue;
+        if (val <= 0) continue;
 
         if (now - timestamps[i] > config.holdTime) {
           val = Math.max(0, val - fadeStep);
           intensities[i] = val;
-          if (val <= 0.005) continue;
+          if (val <= 0) continue;
         }
 
         hasActive = true;
-        const col = i % cols;
-        const row = (i / cols) | 0;
-        const cx = offsetX + col * activeCellSize + halfCell;
-        const cy = offsetY + row * activeCellSize + halfCell;
+        const cx = getCellCenterX(i);
+        const cy = getCellCenterY(i);
         const x = cx - halfCell + 0.5;
         const y = cy - halfCell + 0.5;
         const size = activeCellSize - 1;
 
+        ctx.beginPath();
+        ctx.rect(x, y, size, size);
+
         if (config.fillOpacity > 0) {
-          ctx.globalAlpha = val * config.fillOpacity;
-          ctx.fillRect(x, y, size, size);
+          ctx.fillStyle = "rgba(" + r + "," + g + "," + b + "," + (val * config.fillOpacity).toFixed(3) + ")";
+          ctx.fill();
         }
-        ctx.globalAlpha = val;
-        ctx.strokeRect(x, y, size, size);
+        ctx.strokeStyle = "rgba(" + r + "," + g + "," + b + "," + val.toFixed(3) + ")";
+        ctx.lineWidth = config.lineWidth;
+        ctx.stroke();
       }
 
-      ctx.globalAlpha = 1.0;
+      ctx.restore();
 
       if (hasActive) {
         rafId = requestAnimationFrame(renderFrame);

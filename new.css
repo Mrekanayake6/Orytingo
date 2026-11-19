@@ -3809,9 +3809,6 @@ body.mobile-sheet-open {
   overflow: hidden;
   user-select: none;
   z-index: 1;
-  contain: strict;
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
 }
 
 .hero-canvas {
@@ -3820,9 +3817,6 @@ body.mobile-sheet-open {
   height: 100%;
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  will-change: contents;
 }
 
 /* Top Curved Horizon SVG Accent */
