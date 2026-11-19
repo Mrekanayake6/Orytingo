@@ -83,7 +83,7 @@
     updateUI(100);
     if (robot) robot.classList.remove("run");
 
-    window.setTimeout(() => {
+    requestAnimationFrame(() => {
       loader.classList.add("is-hiding");
       root.classList.remove("page-loading");
 
@@ -98,7 +98,7 @@
         if (event.target === loader) cleanUp();
       }, { once: true });
       window.setTimeout(cleanUp, 260);
-    }, 40);
+    });
   };
 
   const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -108,22 +108,22 @@
   }
 
   const startTime = performance.now();
-  const minDuration = 260; // ms minimum duration: snappy and swift
-  const maxTimeout = 1100; // ms safety timeout: never stall on mobile!
+  const minDuration = 180; // ms minimum duration: snappy and swift
+  const maxTimeout = 650; // ms safety timeout: never stall on mobile!
 
   const step = (now) => {
     const elapsed = now - startTime;
 
     if (isPageLoaded && elapsed >= minDuration) {
-      currentPercent += 8.5;
+      currentPercent += 10.5;
     } else if (isPageLoaded) {
-      currentPercent += 5.5;
+      currentPercent += 7.0;
     } else {
       // Snappy progressive advance even on slow mobile networks
-      if (currentPercent < 45) currentPercent += 3.8;
-      else if (currentPercent < 75) currentPercent += 3.0;
-      else if (currentPercent < 92) currentPercent += 2.2;
-      else currentPercent += 1.6;
+      if (currentPercent < 45) currentPercent += 4.5;
+      else if (currentPercent < 75) currentPercent += 3.8;
+      else if (currentPercent < 92) currentPercent += 3.0;
+      else currentPercent += 2.4;
     }
 
     if (currentPercent >= 100 || elapsed >= maxTimeout) {
@@ -1216,7 +1216,7 @@
   const slopeAt = (x) => -amp * Math.cos(((x - x0) / wl) * Math.PI * 2) * (Math.PI * 2 / wl);
   const targetX = () => x0 + (maxScroll ? readY() / maxScroll : 0) * (x1 - x0);
 
-  /* [LOADER FIX] පිටුව සම්පූර්ණයෙන්ම load වී loader එක අයින් වූ පසු පමණක් robot පෙන්වීම */
+  /* [LOADER FIX] පිටුව load වූ වහාම robot smoothව පෙන්වීම */
   function revealMascot() {
     if (hasRevealed) return;
     if (root.classList.contains('page-loading')) {
@@ -1224,22 +1224,20 @@
         if (!root.classList.contains('page-loading')) {
           observer.disconnect();
           hasRevealed = true;
-          setTimeout(() => layer.classList.add('ready'), 180);
+          layer.classList.add('ready');
         }
       });
       observer.observe(root, { attributes: true, attributeFilter: ['class'] });
 
       window.addEventListener('load', () => {
-        setTimeout(() => {
-          if (!hasRevealed) {
-            hasRevealed = true;
-            layer.classList.add('ready');
-          }
-        }, 300);
+        if (!hasRevealed) {
+          hasRevealed = true;
+          layer.classList.add('ready');
+        }
       }, { once: true });
     } else {
       hasRevealed = true;
-      setTimeout(() => layer.classList.add('ready'), 100);
+      layer.classList.add('ready');
     }
   }
 
@@ -1828,7 +1826,8 @@
     let lastHeight = 0;
     let topSvgHeight = 64;
     let bottomSvgHeight = 80;
-    let cachedClipPath = null;
+    let colTopY = new Float32Array(0);
+    let colBottomY = new Float32Array(0);
 
     const getCurveTopY = (px) => {
       const u = Math.max(0, Math.min(1, px / Math.max(width, 1)));
@@ -1841,7 +1840,10 @@
       return height - bottomSvgHeight + (normY * bottomSvgHeight);
     };
 
-    const isInsideCurves = (cx, cy) => {
+    const isInsideCurves = (cx, cy, colIdx) => {
+      if (colIdx !== undefined && colIdx >= 0 && colIdx < colTopY.length) {
+        return cy >= colTopY[colIdx] && cy <= colBottomY[colIdx];
+      }
       return cy >= getCurveTopY(cx) && cy <= getCurveBottomY(cx);
     };
 
@@ -1862,7 +1864,8 @@
       topSvgHeight = topSvg ? topSvg.clientHeight : (newWidth < 640 ? 32 : (newWidth < 1024 ? 56 : 64));
       bottomSvgHeight = bottomSvg ? bottomSvg.clientHeight : (newWidth < 640 ? 40 : (newWidth < 1024 ? 64 : 80));
 
-      const maxDpr = isMobile ? 1.5 : 2.0;
+      const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+      const maxDpr = isMobile ? 1.25 : (isSafari ? 1.5 : 1.75);
       const dpr = Math.min(window.devicePixelRatio || 1, maxDpr);
 
       lastWidth = newWidth;
@@ -1895,21 +1898,13 @@
       intensities = new Float32Array(cols * rows);
       timestamps = new Float64Array(cols * rows);
 
-      // Precompute Path2D clip so renderFrame never recalculates 72 polygon coordinates on every frame
-      if (typeof Path2D !== "undefined" && width > 0 && height > 0) {
-        cachedClipPath = new Path2D();
-        cachedClipPath.moveTo(0, getCurveTopY(0));
-        const clipSteps = 32;
-        for (let s = 1; s <= clipSteps; s++) {
-          const px = (s / clipSteps) * width;
-          cachedClipPath.lineTo(px, getCurveTopY(px));
-        }
-        cachedClipPath.lineTo(width, getCurveBottomY(width));
-        for (let s = clipSteps - 1; s >= 0; s--) {
-          const px = (s / clipSteps) * width;
-          cachedClipPath.lineTo(px, getCurveBottomY(px));
-        }
-        cachedClipPath.closePath();
+      // Precompute column boundary curves once per resize for zero per-frame math overhead
+      colTopY = new Float32Array(cols);
+      colBottomY = new Float32Array(cols);
+      for (let c = 0; c < cols; c++) {
+        const cx = offsetX + c * activeCellSize + halfCell;
+        colTopY[c] = getCurveTopY(cx);
+        colBottomY[c] = getCurveBottomY(cx);
       }
 
       updateCachedHeroRect();
@@ -1930,9 +1925,9 @@
         const dy = cy - py;
         const dySq = dy * dy;
         for (let c = minCol; c <= maxCol; c++) {
-          const cx = offsetX + c * activeCellSize + halfCell;
-          if (!isInsideCurves(cx, cy)) continue;
+          if (!isInsideCurves(0, cy, c)) continue;
 
+          const cx = offsetX + c * activeCellSize + halfCell;
           const dx = cx - px;
           const distSq = dx * dx + dySq;
           if (distSq > radSq) continue;
@@ -1951,6 +1946,13 @@
     };
 
     const renderFrame = (now) => {
+      // Pause canvas loop when hero is scrolled completely out of view
+      const heroRect = cachedHeroRect;
+      if (heroRect.bottom <= 0 || heroRect.top >= window.innerHeight) {
+        isRunning = false;
+        return;
+      }
+
       const dt = Math.min(now - lastTime, 50);
       lastTime = now;
 
@@ -1994,10 +1996,10 @@
           const dy = cy - pulse.y;
           const dySq = dy * dy;
           for (let col = minCol; col <= maxCol; col++) {
-            const cx = offsetX + col * activeCellSize + halfCell;
-            if (!isInsideCurves(cx, cy)) continue;
+            if (!isInsideCurves(0, cy, col)) continue;
 
             const idx = row * cols + col;
+            const cx = offsetX + col * activeCellSize + halfCell;
             const dx = cx - pulse.x;
             const dist = Math.sqrt(dx * dx + dySq);
             if (Math.abs(dist - radiusNow) < band / 2) {
@@ -2013,42 +2015,40 @@
       let hasActive = pulses.length > 0;
       const fadeStep = dt / Math.max(config.fadeDuration, 16);
 
-      // Clip canvas drawing to exact curved aperture so grid cells never bleed outside
-      ctx.save();
-      if (cachedClipPath) {
-        ctx.clip(cachedClipPath);
-      }
+      // Hardware-accelerated direct GPU rendering on Metal & WebKit:
+      // Single state setup outside loop + native fillRect/strokeRect with zero string allocations
+      ctx.lineWidth = config.lineWidth;
+      ctx.strokeStyle = config.color;
+      ctx.fillStyle = config.color;
 
       for (let i = 0; i < intensities.length; i++) {
         let val = intensities[i];
-        if (val <= 0) continue;
+        if (val <= 0.005) continue;
 
         if (now - timestamps[i] > config.holdTime) {
           val = Math.max(0, val - fadeStep);
           intensities[i] = val;
-          if (val <= 0) continue;
+          if (val <= 0.005) continue;
         }
 
         hasActive = true;
-        const cx = getCellCenterX(i);
-        const cy = getCellCenterY(i);
+        const col = i % cols;
+        const row = (i / cols) | 0;
+        const cx = offsetX + col * activeCellSize + halfCell;
+        const cy = offsetY + row * activeCellSize + halfCell;
         const x = cx - halfCell + 0.5;
         const y = cy - halfCell + 0.5;
         const size = activeCellSize - 1;
 
-        ctx.beginPath();
-        ctx.rect(x, y, size, size);
-
         if (config.fillOpacity > 0) {
-          ctx.fillStyle = "rgba(" + r + "," + g + "," + b + "," + (val * config.fillOpacity).toFixed(3) + ")";
-          ctx.fill();
+          ctx.globalAlpha = val * config.fillOpacity;
+          ctx.fillRect(x, y, size, size);
         }
-        ctx.strokeStyle = "rgba(" + r + "," + g + "," + b + "," + val.toFixed(3) + ")";
-        ctx.lineWidth = config.lineWidth;
-        ctx.stroke();
+        ctx.globalAlpha = val;
+        ctx.strokeRect(x, y, size, size);
       }
 
-      ctx.restore();
+      ctx.globalAlpha = 1.0;
 
       if (hasActive) {
         rafId = requestAnimationFrame(renderFrame);
@@ -2320,7 +2320,7 @@
         });
         loaderObs.observe(root, { attributes: true, attributeFilter: ["class"] });
         // Safety timeout in case loader is removed abruptly
-        setTimeout(startHeroLoop, 800);
+        setTimeout(startHeroLoop, 450);
       } else {
         startHeroLoop();
       }
