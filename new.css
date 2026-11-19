@@ -3774,7 +3774,7 @@ body.mobile-sheet-open {
   position: relative;
   width: 100%;
   min-height: calc(100vh - 4.5rem);
-  min-height: calc(100dvh - 4.5rem);
+  min-height: calc(100svh - 4.5rem);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -3791,7 +3791,7 @@ body.mobile-sheet-open {
   .hero.hero-interactive {
     padding: 0 !important;
     min-height: calc(100vh - 4rem);
-    min-height: calc(100dvh - 4rem);
+    min-height: calc(100svh - 4rem);
   }
 }
 
@@ -3825,6 +3825,7 @@ body.mobile-sheet-open {
   overflow: hidden;
   line-height: 0;
   z-index: 20;
+  transform: translateZ(0);
 }
 
 .hero-curve-top svg {
@@ -3853,6 +3854,7 @@ body.mobile-sheet-open {
   overflow: hidden;
   line-height: 0;
   z-index: 20;
+  transform: translateZ(0);
 }
 
 .hero-curve-bottom svg {
