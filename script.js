@@ -1799,7 +1799,7 @@
     };
 
     const isInsideCurves = (cx, cy) => {
-      return cy >= getCurveTopY(cx) && cy <= getCurveBottomY(cx);
+      return cy >= getCurveTopY(cx) - halfCell && cy <= getCurveBottomY(cx) + halfCell;
     };
 
     const resize = () => {
@@ -1951,22 +1951,17 @@
       let hasActive = pulses.length > 0;
       const fadeStep = dt / Math.max(config.fadeDuration, 16);
 
-      // Clip canvas drawing to exact curved aperture so grid cells never bleed outside
+      // Native mathematical Bezier clip to curved horizon aperture
       ctx.save();
       ctx.beginPath();
-      ctx.moveTo(0, getCurveTopY(0));
-      const clipSteps = 36;
-      for (let s = 1; s <= clipSteps; s++) {
-        const px = (s / clipSteps) * width;
-        ctx.lineTo(px, getCurveTopY(px));
-      }
-      ctx.lineTo(width, getCurveBottomY(width));
-      for (let s = clipSteps - 1; s >= 0; s--) {
-        const px = (s / clipSteps) * width;
-        ctx.lineTo(px, getCurveBottomY(px));
-      }
+      ctx.moveTo(0, (18 / 80) * topSvgHeight);
+      ctx.quadraticCurveTo(width * 0.5, (68 / 80) * topSvgHeight, width, (18 / 80) * topSvgHeight);
+      ctx.lineTo(width, height - (25 / 90) * bottomSvgHeight);
+      ctx.quadraticCurveTo(width * 0.5, height - (80 / 90) * bottomSvgHeight, 0, height - (25 / 90) * bottomSvgHeight);
       ctx.closePath();
       ctx.clip();
+
+      const fadeZone = activeCellSize * 1.25;
 
       for (let i = 0; i < intensities.length; i++) {
         let val = intensities[i];
@@ -1978,9 +1973,31 @@
           if (val <= 0) continue;
         }
 
-        hasActive = true;
         const cx = getCellCenterX(i);
         const cy = getCellCenterY(i);
+
+        const topY = getCurveTopY(cx);
+        const bottomY = getCurveBottomY(cx);
+        const distTop = cy - topY;
+        const distBottom = bottomY - cy;
+
+        // Skip cells fully outside the curve
+        if (distTop < -halfCell * 0.4 || distBottom < -halfCell * 0.4) continue;
+
+        // Smooth cubic edge feathering towards both curves
+        let edgeFactor = 1.0;
+        if (distTop < fadeZone) {
+          edgeFactor = Math.min(edgeFactor, Math.max(0, distTop / fadeZone));
+        }
+        if (distBottom < fadeZone) {
+          edgeFactor = Math.min(edgeFactor, Math.max(0, distBottom / fadeZone));
+        }
+
+        const smoothEdge = edgeFactor * edgeFactor * (3 - 2 * edgeFactor);
+        const cellAlpha = val * smoothEdge;
+        if (cellAlpha <= 0.005) continue;
+
+        hasActive = true;
         const x = cx - halfCell + 0.5;
         const y = cy - halfCell + 0.5;
         const size = activeCellSize - 1;
@@ -1989,10 +2006,10 @@
         ctx.rect(x, y, size, size);
 
         if (config.fillOpacity > 0) {
-          ctx.fillStyle = "rgba(" + r + "," + g + "," + b + "," + (val * config.fillOpacity).toFixed(3) + ")";
+          ctx.fillStyle = "rgba(" + r + "," + g + "," + b + "," + (cellAlpha * config.fillOpacity).toFixed(3) + ")";
           ctx.fill();
         }
-        ctx.strokeStyle = "rgba(" + r + "," + g + "," + b + "," + val.toFixed(3) + ")";
+        ctx.strokeStyle = "rgba(" + r + "," + g + "," + b + "," + cellAlpha.toFixed(3) + ")";
         ctx.lineWidth = config.lineWidth;
         ctx.stroke();
       }
