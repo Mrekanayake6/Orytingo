@@ -97,8 +97,8 @@
       loader.addEventListener("transitionend", (event) => {
         if (event.target === loader) cleanUp();
       }, { once: true });
-      window.setTimeout(cleanUp, 350);
-    }, 80);
+      window.setTimeout(cleanUp, 260);
+    }, 40);
   };
 
   const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -108,21 +108,21 @@
   }
 
   const startTime = performance.now();
-  const minDuration = 450; // ms minimum duration: snappy, responsive, no freezing
-  const maxTimeout = 2500; // ms safety timeout
+  const minDuration = 320; // ms minimum duration: snappy and swift
+  const maxTimeout = 1600; // ms safety timeout
 
   const step = (now) => {
     const elapsed = now - startTime;
 
     if (isPageLoaded && elapsed >= minDuration) {
-      currentPercent += 5.5;
+      currentPercent += 7.0;
     } else if (isPageLoaded) {
-      currentPercent += 3.2;
+      currentPercent += 4.2;
     } else {
-      if (currentPercent < 30) currentPercent += 2.0;
-      else if (currentPercent < 60) currentPercent += 1.4;
-      else if (currentPercent < 85) currentPercent += 0.8;
-      else if (currentPercent < 94) currentPercent += 0.25;
+      if (currentPercent < 35) currentPercent += 2.8;
+      else if (currentPercent < 70) currentPercent += 2.0;
+      else if (currentPercent < 90) currentPercent += 1.4;
+      else currentPercent += 0.9;
     }
 
     if (currentPercent >= 100 || elapsed >= maxTimeout) {
@@ -140,9 +140,14 @@
     isPageLoaded = true;
   };
 
-  if (document.readyState === "complete") {
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(markPageLoaded);
+  }
+
+  if (document.readyState === "interactive" || document.readyState === "complete") {
     markPageLoaded();
   } else {
+    document.addEventListener("DOMContentLoaded", markPageLoaded, { once: true });
     window.addEventListener("load", markPageLoaded, { once: true });
   }
 
@@ -2053,11 +2058,16 @@
         logo: null // { relX, relY } relative to heroSection
       };
 
-      const mouse = { x: 0, y: 0 };
-      const cursor = { x: 0, y: 0 };
+      // Initialize cursor directly at hero center so animation has zero startup delay
+      const initialHeroRect = heroSection.getBoundingClientRect();
+      const initialCenterX = initialHeroRect.left + (initialHeroRect.width > 0 ? initialHeroRect.width * 0.5 : window.innerWidth * 0.5);
+      const initialCenterY = initialHeroRect.top + (initialHeroRect.height > 0 ? initialHeroRect.height * 0.45 : window.innerHeight * 0.35);
+
+      const mouse = { x: initialCenterX, y: initialCenterY };
+      const cursor = { x: initialCenterX, y: initialCenterY };
       let hasPointerInteracted = false;
       let lastTouchTime = 0;
-      const mountTime = performance.now();
+      let animStartTime = 0;
 
       const distBetween = (a, b) => Math.hypot(b.x - a.x, b.y - a.y);
 
@@ -2165,6 +2175,9 @@
       const startHeroLoop = () => {
         if (isHeroActive) return;
         isHeroActive = true;
+        animStartTime = performance.now();
+        updateLockupSize();
+        updateCharMetrics();
         triggerEntrancePulse();
         requestAnimationFrame(animateWordmark);
       };
@@ -2174,16 +2187,12 @@
         const loaderObs = new MutationObserver(() => {
           if (!root.classList.contains("page-loading")) {
             loaderObs.disconnect();
-            setTimeout(() => {
-              updateLockupSize();
-              resize();
-              startHeroLoop();
-            }, 60);
+            startHeroLoop();
           }
         });
         loaderObs.observe(root, { attributes: true, attributeFilter: ["class"] });
         // Safety timeout in case loader is removed abruptly
-        setTimeout(startHeroLoop, 1200);
+        setTimeout(startHeroLoop, 800);
       } else {
         startHeroLoop();
       }
@@ -2228,7 +2237,7 @@
           const idleTime = now - lastTouchTime;
           // Runs continuously in all motion states, gracefully tracking touches and breathing ambiently
           if (!hasPointerInteracted || idleTime > 1400) {
-            const elapsed = (now - mountTime) / 1000;
+            const elapsed = (now - (animStartTime || now)) / 1000;
             const wave = 0.5 + Math.sin(elapsed * 1.15) * 0.42;
             cursor.x = heroRect.left + heroRect.width * wave;
             cursor.y = heroRect.top + heroRect.height * 0.45;

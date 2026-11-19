@@ -131,10 +131,10 @@ button {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
-  transition: opacity 380ms cubic-bezier(0.16, 1, 0.3, 1),
-              visibility 0s linear 380ms,
-              transform 380ms cubic-bezier(0.16, 1, 0.3, 1),
-              filter 380ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 250ms cubic-bezier(0.16, 1, 0.3, 1),
+              visibility 0s linear 250ms,
+              transform 250ms cubic-bezier(0.16, 1, 0.3, 1),
+              filter 250ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .page-loader.is-hiding {
@@ -3903,7 +3903,7 @@ body.mobile-sheet-open {
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: #A3A9B6;
-  animation: heroKickerFade 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: heroKickerFade 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 @media (min-width: 640px) {
   .hero-stage-kicker {
@@ -3917,11 +3917,13 @@ body.mobile-sheet-open {
   position: relative;
   display: flex;
   width: 100%;
+  max-width: 100%;
+  overflow: visible;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   user-select: none;
-  animation: heroLockupFade 0.7s 0.08s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: heroLockupFade 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 /* Ambient Logo Glow */
@@ -4030,7 +4032,7 @@ body.mobile-sheet-open {
   max-width: 42rem;
   flex-direction: column;
   align-items: center;
-  animation: heroHeadlineFade 0.7s 0.24s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: heroHeadlineFade 0.45s 0.05s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 @media (min-width: 640px) {
   .hero-headline-wrap {
