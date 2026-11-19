@@ -108,22 +108,21 @@
   }
 
   const startTime = performance.now();
-  const minDuration = 260; // ms minimum duration: ultra-snappy
-  const maxTimeout = 1100; // ms safety timeout: never stall on mobile!
+  const minDuration = 320; // ms minimum duration: snappy and swift
+  const maxTimeout = 1600; // ms safety timeout
 
   const step = (now) => {
     const elapsed = now - startTime;
 
     if (isPageLoaded && elapsed >= minDuration) {
-      currentPercent += 8.5;
+      currentPercent += 7.0;
     } else if (isPageLoaded) {
-      currentPercent += 5.5;
+      currentPercent += 4.2;
     } else {
-      // Snappy progressive advance even on slow mobile networks
-      if (currentPercent < 45) currentPercent += 3.8;
-      else if (currentPercent < 75) currentPercent += 3.0;
-      else if (currentPercent < 92) currentPercent += 2.2;
-      else currentPercent += 1.6;
+      if (currentPercent < 35) currentPercent += 2.8;
+      else if (currentPercent < 70) currentPercent += 2.0;
+      else if (currentPercent < 90) currentPercent += 1.4;
+      else currentPercent += 0.9;
     }
 
     if (currentPercent >= 100 || elapsed >= maxTimeout) {
@@ -141,8 +140,10 @@
     isPageLoaded = true;
   };
 
-  // Do not block loader on external webfonts over slow mobile networks;
-  // finish as soon as DOM is ready so the user is never stuck waiting!
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(markPageLoaded);
+  }
+
   if (document.readyState === "interactive" || document.readyState === "complete") {
     markPageLoaded();
   } else {
@@ -1292,7 +1293,7 @@
   }
 
   function spawn(x, y, now) {
-    if (!dots.length || vw < 640 || now - lastSpawn < 100) return;
+    if (!dots.length || now - lastSpawn < 70) return;
     lastSpawn = now;
     const c = dots[di++ % dots.length];
     c.setAttribute('cx', x - dir * Wr * 0.3);
@@ -1314,7 +1315,7 @@
     const start = dir > 0 ? Math.max(0, l - t) : l;
     const len = dir > 0 ? l - start : Math.min(t, total - l);
     glow.style.strokeDasharray = `0 ${start} ${len} ${total + 10}`;
-    if (!force && running && vw >= 640) spawn(cur, y, performance.now());
+    if (!force && running) spawn(cur, y, performance.now());
   }
 
   function frame(t) {
@@ -1508,11 +1509,6 @@
   }
 
   function init() {
-    // On mobile devices (<= 768px), disable custom train scrollbar to guarantee 100% native 120Hz smooth touch scrolling
-    if (window.innerWidth <= 768) {
-      window.__otRobotBus = { refresh: function () {} };
-      return;
-    }
     var doc = document.documentElement;
     var body = document.body;
     if (!body || document.querySelector('.rbs-rail')) return;
@@ -2274,28 +2270,14 @@
 
       // 6. Start hero animations only after page loader finishes to keep loading 100% smooth
       let isHeroActive = false;
-      let isWordmarkActive = false;
-      let wordmarkRafId = 0;
-
-      const scheduleWordmark = () => {
-        if (!isWordmarkActive) {
-          isWordmarkActive = true;
-          wordmarkRafId = requestAnimationFrame(animateWordmark);
-        }
-      };
-
       const startHeroLoop = () => {
         if (isHeroActive) return;
         isHeroActive = true;
         animStartTime = performance.now();
-        lastTouchTime = performance.now();
         updateLockupSize();
         updateCharMetrics();
-        // Give 100ms for loader fade-out transition to complete smoothly before triggering entrance canvas pulse
-        setTimeout(() => {
-          triggerEntrancePulse();
-          scheduleWordmark();
-        }, 100);
+        triggerEntrancePulse();
+        requestAnimationFrame(animateWordmark);
       };
 
       const root = document.documentElement;
@@ -2322,7 +2304,6 @@
         cursor.y = clientY;
         hasPointerInteracted = true;
         lastTouchTime = performance.now();
-        scheduleWordmark();
       };
 
       const onPointerMoveWordmark = (e) => {
@@ -2337,54 +2318,26 @@
 
       if (window.PointerEvent) {
         window.addEventListener("pointermove", onPointerMoveWordmark, { passive: true });
-        window.addEventListener("pointerup", () => { lastTouchTime = performance.now(); scheduleWordmark(); }, { passive: true });
+        window.addEventListener("pointerup", () => { lastTouchTime = performance.now(); }, { passive: true });
         window.addEventListener("pointercancel", () => { lastTouchTime = performance.now(); }, { passive: true });
       } else {
         window.addEventListener("mousemove", onPointerMoveWordmark, { passive: true });
         window.addEventListener("touchmove", onTouchMoveWordmark, { passive: true });
         window.addEventListener("touchstart", onTouchMoveWordmark, { passive: true });
-        window.addEventListener("touchend", () => { lastTouchTime = performance.now(); scheduleWordmark(); }, { passive: true });
+        window.addEventListener("touchend", () => { lastTouchTime = performance.now(); }, { passive: true });
       }
 
       const animateWordmark = (now) => {
         if (document.hidden) {
-          if (isWordmarkActive) wordmarkRafId = requestAnimationFrame(animateWordmark);
+          requestAnimationFrame(animateWordmark);
           return;
         }
 
         const heroRect = cachedHeroRect;
-        const isMobileScreen = window.innerWidth <= 1024;
-        const idleTime = now - lastTouchTime;
-
-        // On mobile, if user hasn't interacted for 1.2s, pause the loop and rest to save 100% CPU
-        if (isMobileScreen && hasPointerInteracted && idleTime > 1200) {
-          for (let i = 0; i < chars.length; i++) {
-            const span = chars[i];
-            span.style.fontVariationSettings = '"wght" 550';
-            span.style.webkitFontVariationSettings = '"wght" 550';
-            span.style.transform = 'translate3d(0,0,0) scale(1,1)';
-          }
-          if (desktopSuffix) {
-            desktopSuffix.style.transform = 'translate3d(0,0,0) scale(1)';
-          }
-          isWordmarkActive = false;
-          return;
-        }
-
         if (heroRect.bottom > 0 && heroRect.top < window.innerHeight) {
-          // If on desktop or during initial intro on mobile, animate ambient wave
+          const idleTime = now - lastTouchTime;
+          // Runs continuously in all motion states, gracefully tracking touches and breathing ambiently
           if (!hasPointerInteracted || idleTime > 1400) {
-            if (isMobileScreen && (now - animStartTime > 1600)) {
-              // After intro finishes on mobile, rest at normal weight and pause until touched
-              for (let i = 0; i < chars.length; i++) {
-                const span = chars[i];
-                span.style.fontVariationSettings = '"wght" 550';
-                span.style.webkitFontVariationSettings = '"wght" 550';
-                span.style.transform = 'translate3d(0,0,0) scale(1,1)';
-              }
-              isWordmarkActive = false;
-              return;
-            }
             const elapsed = (now - (animStartTime || now)) / 1000;
             const wave = 0.5 + Math.sin(elapsed * 1.15) * 0.42;
             cursor.x = heroRect.left + heroRect.width * wave;
@@ -2398,6 +2351,7 @@
 
           // Pure write phase — ZERO getBoundingClientRect() inside the loop!
           if (cachedMetrics.chars.length === chars.length) {
+            const isMobileScreen = window.innerWidth < 640;
             const weightStep = isMobileScreen ? 75 : 25;
 
             for (let i = 0; i < chars.length; i++) {
@@ -2448,7 +2402,7 @@
           }
         }
 
-        wordmarkRafId = requestAnimationFrame(animateWordmark);
+        requestAnimationFrame(animateWordmark);
       };
     }
   }
