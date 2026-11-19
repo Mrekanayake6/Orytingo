@@ -1719,6 +1719,13 @@
     const container = document.getElementById("heroCanvasWrap");
     if (!heroSection || !canvas || !container) return;
 
+    let cachedHeroRect = heroSection.getBoundingClientRect();
+    const updateCachedHeroRect = () => {
+      cachedHeroRect = heroSection.getBoundingClientRect();
+    };
+    window.addEventListener("scroll", updateCachedHeroRect, { passive: true });
+    window.addEventListener("resize", updateCachedHeroRect, { passive: true });
+
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
@@ -1763,6 +1770,7 @@
     let offsetX = 0;
     let offsetY = 0;
     let activeCellSize = config.cellSize;
+    let halfCell = config.cellSize / 2;
     let activeRadius = config.radius;
     let intensities = new Float32Array(0);
     let timestamps = new Float64Array(0);
@@ -1771,10 +1779,8 @@
     let isRunning = false;
     let lastTime = 0;
 
-    const getCellCenter = (index) => [
-      offsetX + (index % cols) * activeCellSize + activeCellSize / 2,
-      offsetY + Math.floor(index / cols) * activeCellSize + activeCellSize / 2
-    ];
+    const getCellCenterX = (index) => offsetX + (index % cols) * activeCellSize + halfCell;
+    const getCellCenterY = (index) => offsetY + Math.floor(index / cols) * activeCellSize + halfCell;
 
     let lastWidth = 0;
     let lastHeight = 0;
@@ -1783,12 +1789,13 @@
       const newWidth = container.offsetWidth || heroSection.offsetWidth || window.innerWidth;
       const newHeight = container.offsetHeight || heroSection.offsetHeight || window.innerHeight;
 
-      // Ignore trivial micro-resizes on mobile caused by dynamic address bar (less than 4px height and 2px width difference)
-      if (lastWidth > 0 && Math.abs(newWidth - lastWidth) < 2 && Math.abs(newHeight - lastHeight) < 4) {
+      // Ignore iOS Safari dynamic address bar changes (< 120px on mobile)
+      const isMobile = newWidth < 640;
+      const heightThreshold = isMobile ? 120 : 6;
+      if (lastWidth > 0 && Math.abs(newWidth - lastWidth) < 3 && Math.abs(newHeight - lastHeight) < heightThreshold) {
         return;
       }
 
-      const isMobile = newWidth < 640;
       const maxDpr = isMobile ? 1.5 : 2.0;
       const dpr = Math.min(window.devicePixelRatio || 1, maxDpr);
 
@@ -1813,6 +1820,7 @@
       }
 
       activeCellSize = cs;
+      halfCell = cs / 2;
       activeRadius = rad;
       cols = Math.ceil(width / activeCellSize) + 1;
       rows = Math.ceil(height / activeCellSize) + 1;
@@ -1820,10 +1828,12 @@
       offsetY = (height - rows * activeCellSize) / 2;
       intensities = new Float32Array(cols * rows);
       timestamps = new Float64Array(cols * rows);
+      updateCachedHeroRect();
     };
 
     const illuminateAt = (px, py, multiplier = 1) => {
       const rad = Math.max(activeRadius, 1);
+      const radSq = rad * rad;
       const now = performance.now();
 
       const minCol = Math.max(0, Math.floor((px - rad - offsetX) / activeCellSize));
@@ -1832,13 +1842,18 @@
       const maxRow = Math.min(rows - 1, Math.floor((py + rad - offsetY) / activeCellSize));
 
       for (let rIdx = minRow; rIdx <= maxRow; rIdx++) {
+        const cy = offsetY + rIdx * activeCellSize + halfCell;
+        const dy = cy - py;
+        const dySq = dy * dy;
         for (let c = minCol; c <= maxCol; c++) {
-          const idx = rIdx * cols + c;
-          const [cx, cy] = getCellCenter(idx);
-          const dist = Math.hypot(cx - px, cy - py);
-          if (dist > rad) continue;
+          const cx = offsetX + c * activeCellSize + halfCell;
+          const dx = cx - px;
+          const distSq = dx * dx + dySq;
+          if (distSq > radSq) continue;
 
+          const dist = Math.sqrt(distSq);
           const val = smoothstep(1 - dist / rad) * config.maxOpacity * multiplier;
+          const idx = rIdx * cols + c;
           if (val > intensities[idx]) {
             intensities[idx] = val;
             timestamps[idx] = now;
@@ -1889,10 +1904,15 @@
         const maxRow = Math.min(rows - 1, Math.floor((pulse.y + radiusNow + band - offsetY) / activeCellSize));
 
         for (let row = minRow; row <= maxRow; row++) {
+          const cy = offsetY + row * activeCellSize + halfCell;
+          const dy = cy - pulse.y;
+          const dySq = dy * dy;
           for (let col = minCol; col <= maxCol; col++) {
             const idx = row * cols + col;
-            const [cx, cy] = getCellCenter(idx);
-            if (Math.abs(Math.hypot(cx - pulse.x, cy - pulse.y) - radiusNow) < band / 2) {
+            const cx = offsetX + col * activeCellSize + halfCell;
+            const dx = cx - pulse.x;
+            const dist = Math.sqrt(dx * dx + dySq);
+            if (Math.abs(dist - radiusNow) < band / 2) {
               if (config.maxOpacity > intensities[idx]) {
                 intensities[idx] = config.maxOpacity * 0.75;
                 timestamps[idx] = now;
@@ -1904,7 +1924,6 @@
 
       let hasActive = pulses.length > 0;
       const fadeStep = dt / Math.max(config.fadeDuration, 16);
-      const halfCell = activeCellSize / 2;
 
       for (let i = 0; i < intensities.length; i++) {
         let val = intensities[i];
@@ -1917,11 +1936,8 @@
         }
 
         hasActive = true;
-        const [cx, cy] = getCellCenter(i);
-        const grad = ctx.createRadialGradient(cx, cy, halfCell * 0.1, cx, cy, activeCellSize);
-        grad.addColorStop(0, "rgba(" + r + "," + g + "," + b + "," + val + ")");
-        grad.addColorStop(1, "rgba(" + r + "," + g + "," + b + ",0)");
-
+        const cx = getCellCenterX(i);
+        const cy = getCellCenterY(i);
         const x = cx - halfCell + 0.5;
         const y = cy - halfCell + 0.5;
         const size = activeCellSize - 1;
@@ -1930,10 +1946,10 @@
         ctx.rect(x, y, size, size);
 
         if (config.fillOpacity > 0) {
-          ctx.fillStyle = "rgba(" + r + "," + g + "," + b + "," + (val * config.fillOpacity) + ")";
+          ctx.fillStyle = "rgba(" + r + "," + g + "," + b + "," + (val * config.fillOpacity).toFixed(3) + ")";
           ctx.fill();
         }
-        ctx.strokeStyle = grad;
+        ctx.strokeStyle = "rgba(" + r + "," + g + "," + b + "," + val.toFixed(3) + ")";
         ctx.lineWidth = config.lineWidth;
         ctx.stroke();
       }
@@ -1954,7 +1970,7 @@
     };
 
     const isPointerInsideHero = (clientX, clientY) => {
-      const rect = heroSection.getBoundingClientRect();
+      const rect = cachedHeroRect;
       return (
         clientX >= rect.left &&
         clientX <= rect.right &&
@@ -1963,48 +1979,17 @@
       );
     };
 
-    const handlePointerMove = (e) => {
-      if (!isPointerInsideHero(e.clientX, e.clientY)) return;
-      const rect = canvas.getBoundingClientRect();
-      illuminateAt(e.clientX - rect.left, e.clientY - rect.top);
-      startLoop();
-    };
-
-    const handlePointerDown = (e) => {
-      if (!config.clickPulse) return;
-      if (!isPointerInsideHero(e.clientX, e.clientY)) return;
-      const rect = canvas.getBoundingClientRect();
-      pulses.push({
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top,
-        t0: performance.now()
-      });
-      startLoop();
-    };
-
-    const handleTouchMove = (e) => {
-      if (!e.touches || e.touches.length === 0) return;
-      const t = e.touches[0];
-      if (!isPointerInsideHero(t.clientX, t.clientY)) return;
-      const rect = canvas.getBoundingClientRect();
-      illuminateAt(t.clientX - rect.left, t.clientY - rect.top);
-      startLoop();
-    };
-
     let lastPulseTime = 0;
-    const handleTouchStart = (e) => {
-      if (!e.touches || e.touches.length === 0) return;
-      const t = e.touches[0];
-      if (!isPointerInsideHero(t.clientX, t.clientY)) return;
-      const rect = canvas.getBoundingClientRect();
-      const x = t.clientX - rect.left;
-      const y = t.clientY - rect.top;
+    const triggerPulseAt = (clientX, clientY) => {
+      if (!config.clickPulse) return;
       const now = performance.now();
-      if (config.clickPulse && (now - lastPulseTime > 650)) {
-        lastPulseTime = now;
-        pulses.push({ x, y, t0: now });
-      }
-      illuminateAt(x, y, 1.15);
+      if (now - lastPulseTime < 450) return;
+      lastPulseTime = now;
+      pulses.push({
+        x: clientX - cachedHeroRect.left,
+        y: clientY - cachedHeroRect.top,
+        t0: now
+      });
       startLoop();
     };
 
@@ -2033,10 +2018,43 @@
 
     resize();
 
-    window.addEventListener("pointermove", handlePointerMove, { passive: true });
-    window.addEventListener("pointerdown", handlePointerDown, { passive: true });
-    window.addEventListener("touchmove", handleTouchMove, { passive: true });
-    window.addEventListener("touchstart", handleTouchStart, { passive: true });
+    if (window.PointerEvent) {
+      window.addEventListener("pointermove", (e) => {
+        if (!isPointerInsideHero(e.clientX, e.clientY)) return;
+        illuminateAt(e.clientX - cachedHeroRect.left, e.clientY - cachedHeroRect.top);
+        startLoop();
+      }, { passive: true });
+
+      window.addEventListener("pointerdown", (e) => {
+        if (!isPointerInsideHero(e.clientX, e.clientY)) return;
+        triggerPulseAt(e.clientX, e.clientY);
+        illuminateAt(e.clientX - cachedHeroRect.left, e.clientY - cachedHeroRect.top, 1.15);
+        startLoop();
+      }, { passive: true });
+    } else {
+      window.addEventListener("mousemove", (e) => {
+        if (!isPointerInsideHero(e.clientX, e.clientY)) return;
+        illuminateAt(e.clientX - cachedHeroRect.left, e.clientY - cachedHeroRect.top);
+        startLoop();
+      }, { passive: true });
+
+      window.addEventListener("touchmove", (e) => {
+        if (!e.touches || !e.touches[0]) return;
+        const t = e.touches[0];
+        if (!isPointerInsideHero(t.clientX, t.clientY)) return;
+        illuminateAt(t.clientX - cachedHeroRect.left, t.clientY - cachedHeroRect.top);
+        startLoop();
+      }, { passive: true });
+
+      window.addEventListener("touchstart", (e) => {
+        if (!e.touches || !e.touches[0]) return;
+        const t = e.touches[0];
+        if (!isPointerInsideHero(t.clientX, t.clientY)) return;
+        triggerPulseAt(t.clientX, t.clientY);
+        illuminateAt(t.clientX - cachedHeroRect.left, t.clientY - cachedHeroRect.top, 1.15);
+        startLoop();
+      }, { passive: true });
+    }
 
 
     /* --- 2. TextPressureLockup (Variable Font Proximity Reaction) --- */
@@ -2059,7 +2077,7 @@
       };
 
       // Initialize cursor directly at hero center so animation has zero startup delay
-      const initialHeroRect = heroSection.getBoundingClientRect();
+      const initialHeroRect = cachedHeroRect;
       const initialCenterX = initialHeroRect.left + (initialHeroRect.width > 0 ? initialHeroRect.width * 0.5 : window.innerWidth * 0.5);
       const initialCenterY = initialHeroRect.top + (initialHeroRect.height > 0 ? initialHeroRect.height * 0.45 : window.innerHeight * 0.35);
 
@@ -2078,7 +2096,7 @@
       };
 
       const updateCharMetrics = () => {
-        const heroRect = heroSection.getBoundingClientRect();
+        const heroRect = cachedHeroRect;
         const titleRect = wordmarkTitle.getBoundingClientRect();
         if (titleRect.width <= 0) return;
 
@@ -2107,6 +2125,7 @@
       };
 
       const updateLockupSize = () => {
+        updateCachedHeroRect();
         // Measure unscaled offsetWidth / clientWidth to avoid CSS transform scale distortions
         const w = lockupContainer.offsetWidth || lockupContainer.clientWidth || (heroSection.clientWidth - 28);
         if (w <= 0) return;
@@ -2218,13 +2237,16 @@
         }
       };
 
-      window.addEventListener("mousemove", onPointerMoveWordmark, { passive: true });
-      window.addEventListener("pointermove", onPointerMoveWordmark, { passive: true });
-      window.addEventListener("touchmove", onTouchMoveWordmark, { passive: true });
-      window.addEventListener("touchstart", onTouchMoveWordmark, { passive: true });
-      window.addEventListener("touchend", () => { lastTouchTime = performance.now(); }, { passive: true });
-      window.addEventListener("touchcancel", () => { lastTouchTime = performance.now(); }, { passive: true });
-      window.addEventListener("pointerup", () => { lastTouchTime = performance.now(); }, { passive: true });
+      if (window.PointerEvent) {
+        window.addEventListener("pointermove", onPointerMoveWordmark, { passive: true });
+        window.addEventListener("pointerup", () => { lastTouchTime = performance.now(); }, { passive: true });
+        window.addEventListener("pointercancel", () => { lastTouchTime = performance.now(); }, { passive: true });
+      } else {
+        window.addEventListener("mousemove", onPointerMoveWordmark, { passive: true });
+        window.addEventListener("touchmove", onTouchMoveWordmark, { passive: true });
+        window.addEventListener("touchstart", onTouchMoveWordmark, { passive: true });
+        window.addEventListener("touchend", () => { lastTouchTime = performance.now(); }, { passive: true });
+      }
 
       const animateWordmark = (now) => {
         if (document.hidden) {
@@ -2232,7 +2254,7 @@
           return;
         }
 
-        const heroRect = heroSection.getBoundingClientRect();
+        const heroRect = cachedHeroRect;
         if (heroRect.bottom > 0 && heroRect.top < window.innerHeight) {
           const idleTime = now - lastTouchTime;
           // Runs continuously in all motion states, gracefully tracking touches and breathing ambiently
@@ -2250,6 +2272,9 @@
 
           // Pure write phase — ZERO getBoundingClientRect() inside the loop!
           if (cachedMetrics.chars.length === chars.length) {
+            const isMobileScreen = window.innerWidth < 640;
+            const weightStep = isMobileScreen ? 75 : 25;
+
             for (let i = 0; i < chars.length; i++) {
               const span = chars[i];
               const pt = cachedMetrics.chars[i];
@@ -2260,12 +2285,10 @@
               const d = distBetween(mouse, charCenter);
 
               const rawWght = getAttr(d, maxDist, 220, 800);
-              // Stepping weight in 25-step increments eliminates continuous CPU font rasterization chokepoints
-              const steppedWght = Math.round(rawWght / 25) * 25;
+              const steppedWght = Math.round(rawWght / weightStep) * weightStep;
               const fvs = '"wght" ' + steppedWght;
               if (span.dataset.fvs !== fvs) {
                 span.dataset.fvs = fvs;
-                span.style.fontWeight = String(steppedWght);
                 span.style.fontVariationSettings = fvs;
                 span.style.webkitFontVariationSettings = fvs;
               }
@@ -2273,8 +2296,11 @@
               const sx = getAttr(d, maxDist, 0.94, 1.07);
               const sy = getAttr(d, maxDist, 0.96, 1.04);
               const trans = "translate3d(0,0,0) scale(" + sx.toFixed(3) + "," + sy.toFixed(3) + ")";
-              span.style.webkitTransform = trans;
-              span.style.transform = trans;
+              if (span.dataset.trans !== trans) {
+                span.dataset.trans = trans;
+                span.style.transform = trans;
+                span.style.webkitTransform = trans;
+              }
             }
           } else {
             updateCharMetrics();
@@ -2289,8 +2315,11 @@
             const scale = getAttr(d, maxDist, 1, 1.08);
             const dy = getAttr(d, maxDist, 0, -4);
             const logoTrans = "translate3d(0," + dy.toFixed(2) + "px,0) scale(" + scale.toFixed(3) + ")";
-            desktopSuffix.style.webkitTransform = logoTrans;
-            desktopSuffix.style.transform = logoTrans;
+            if (desktopSuffix.dataset.trans !== logoTrans) {
+              desktopSuffix.dataset.trans = logoTrans;
+              desktopSuffix.style.transform = logoTrans;
+              desktopSuffix.style.webkitTransform = logoTrans;
+            }
           }
         }
 

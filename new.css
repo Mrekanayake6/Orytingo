@@ -3805,6 +3805,7 @@ body.mobile-sheet-open {
   overflow: hidden;
   user-select: none;
   z-index: 1;
+  transform: translateZ(0);
 }
 
 .hero-canvas {
@@ -3934,7 +3935,7 @@ body.mobile-sheet-open {
   left: 50%;
   height: 10px;
   width: 60%;
-  transform: translateX(-50%);
+  transform: translateX(-50%) translateZ(0);
   border-radius: 9999px;
   background: radial-gradient(ellipse at center, rgba(255, 129, 62, 0.42) 0%, rgba(255, 156, 103, 0.14) 55%, transparent 80%);
   filter: blur(4px);
