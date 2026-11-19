@@ -3387,8 +3387,13 @@ html.page-loading .rbs-rail {
 @media (max-width: 1024px) {
   .rbs-rail { --rbs-w: 19px; --rbs-bus-w: 17px; --rbs-pad: 6px; }
 }
+@media (max-width: 768px) {
+  /* On mobile phones, hide the train scrollbar to eliminate GPU/CPU touch overhead and ensure buttery native 120Hz scrolling */
+  .rbs-rail {
+    display: none !important;
+  }
+}
 @media (max-width: 600px) {
-  .rbs-rail { --rbs-w: 16px; --rbs-bus-w: 14px; --rbs-pad: 4px; }
   .rbs-track {
     width: 2px;
     left: 0;
