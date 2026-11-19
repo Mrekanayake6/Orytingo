@@ -3987,7 +3987,7 @@ body.mobile-sheet-open {
 
 .orytingo-char-span {
   display: inline-block;
-  will-change: font-variation-settings, transform;
+  will-change: transform;
   transform: translateZ(0);
   text-align: center;
   font-weight: 500;

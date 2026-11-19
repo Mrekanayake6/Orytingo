@@ -41,13 +41,23 @@
     { threshold: 100, text: "ALL SYSTEMS ONLINE" }
   ];
 
+  let cachedTravel = -1;
+  const getTravel = () => {
+    if (cachedTravel >= 0) return cachedTravel;
+    if (runner && stage) {
+      cachedTravel = Math.max(0, stage.clientWidth - runner.clientWidth);
+      return cachedTravel;
+    }
+    return 0;
+  };
+
   const updateUI = (pct) => {
     const rounded = Math.min(100, Math.max(0, Math.floor(pct)));
     if (percentEl) percentEl.textContent = String(rounded);
     if (trackFill) trackFill.style.width = `${rounded}%`;
 
-    if (runner && stage) {
-      const travel = Math.max(0, stage.clientWidth - runner.clientWidth);
+    if (runner) {
+      const travel = getTravel();
       runner.style.transform = `translateX(${(travel * (rounded / 100)).toFixed(1)}px)`;
     }
 
@@ -87,8 +97,8 @@
       loader.addEventListener("transitionend", (event) => {
         if (event.target === loader) cleanUp();
       }, { once: true });
-      window.setTimeout(cleanUp, 450);
-    }, 240);
+      window.setTimeout(cleanUp, 350);
+    }, 80);
   };
 
   const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -98,21 +108,21 @@
   }
 
   const startTime = performance.now();
-  const minDuration = 1100; // ms minimum duration to clearly see the mascot mini-run
-  const maxTimeout = 4000; // ms safety timeout
+  const minDuration = 450; // ms minimum duration: snappy, responsive, no freezing
+  const maxTimeout = 2500; // ms safety timeout
 
   const step = (now) => {
     const elapsed = now - startTime;
 
     if (isPageLoaded && elapsed >= minDuration) {
-      currentPercent += 3.4;
+      currentPercent += 5.5;
     } else if (isPageLoaded) {
-      currentPercent += 1.4;
+      currentPercent += 3.2;
     } else {
-      if (currentPercent < 30) currentPercent += 1.2;
-      else if (currentPercent < 60) currentPercent += 0.7;
-      else if (currentPercent < 85) currentPercent += 0.35;
-      else if (currentPercent < 94) currentPercent += 0.08;
+      if (currentPercent < 30) currentPercent += 2.0;
+      else if (currentPercent < 60) currentPercent += 1.4;
+      else if (currentPercent < 85) currentPercent += 0.8;
+      else if (currentPercent < 94) currentPercent += 0.25;
     }
 
     if (currentPercent >= 100 || elapsed >= maxTimeout) {
@@ -1713,16 +1723,16 @@
     const config = {
       color: "#FF813E",
       cellSize: 56,
-      mobileCellSize: 28,
+      mobileCellSize: 50,
       tabletCellSize: 56,
       radius: 160,
-      mobileRadius: 85,
-      tabletRadius: 115,
-      holdTime: 400,
-      fadeDuration: 800,
-      lineWidth: 1.45,
+      mobileRadius: 95,
+      tabletRadius: 120,
+      holdTime: 350,
+      fadeDuration: 650,
+      lineWidth: 1.4,
       maxOpacity: 0.9,
-      fillOpacity: 0.055,
+      fillOpacity: 0.05,
       gridOpacity: 0,
       clickPulse: true,
       pulseSpeed: 620
@@ -1765,7 +1775,6 @@
     let lastHeight = 0;
 
     const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2.5);
       const newWidth = container.offsetWidth || heroSection.offsetWidth || window.innerWidth;
       const newHeight = container.offsetHeight || heroSection.offsetHeight || window.innerHeight;
 
@@ -1773,6 +1782,10 @@
       if (lastWidth > 0 && Math.abs(newWidth - lastWidth) < 2 && Math.abs(newHeight - lastHeight) < 4) {
         return;
       }
+
+      const isMobile = newWidth < 640;
+      const maxDpr = isMobile ? 1.5 : 2.0;
+      const dpr = Math.min(window.devicePixelRatio || 1, maxDpr);
 
       lastWidth = newWidth;
       lastHeight = newHeight;
@@ -1973,6 +1986,7 @@
       startLoop();
     };
 
+    let lastPulseTime = 0;
     const handleTouchStart = (e) => {
       if (!e.touches || e.touches.length === 0) return;
       const t = e.touches[0];
@@ -1980,8 +1994,10 @@
       const rect = canvas.getBoundingClientRect();
       const x = t.clientX - rect.left;
       const y = t.clientY - rect.top;
-      if (config.clickPulse) {
-        pulses.push({ x, y, t0: performance.now() });
+      const now = performance.now();
+      if (config.clickPulse && (now - lastPulseTime > 650)) {
+        lastPulseTime = now;
+        pulses.push({ x, y, t0: now });
       }
       illuminateAt(x, y, 1.15);
       startLoop();
@@ -2144,7 +2160,15 @@
         resize();
       }, { passive: true });
 
-      // 6. Hook into Page Loader completion: re-calibrate and trigger center entrance pulse
+      // 6. Start hero animations only after page loader finishes to keep loading 100% smooth
+      let isHeroActive = false;
+      const startHeroLoop = () => {
+        if (isHeroActive) return;
+        isHeroActive = true;
+        triggerEntrancePulse();
+        requestAnimationFrame(animateWordmark);
+      };
+
       const root = document.documentElement;
       if (root.classList.contains("page-loading")) {
         const loaderObs = new MutationObserver(() => {
@@ -2153,13 +2177,15 @@
             setTimeout(() => {
               updateLockupSize();
               resize();
-              triggerEntrancePulse();
+              startHeroLoop();
             }, 60);
           }
         });
         loaderObs.observe(root, { attributes: true, attributeFilter: ["class"] });
+        // Safety timeout in case loader is removed abruptly
+        setTimeout(startHeroLoop, 1200);
       } else {
-        triggerEntrancePulse();
+        startHeroLoop();
       }
 
       // 7. Safety checks for initial layout settling on slower mobile devices
@@ -2192,6 +2218,11 @@
       window.addEventListener("pointerup", () => { lastTouchTime = performance.now(); }, { passive: true });
 
       const animateWordmark = (now) => {
+        if (document.hidden) {
+          requestAnimationFrame(animateWordmark);
+          return;
+        }
+
         const heroRect = heroSection.getBoundingClientRect();
         if (heroRect.bottom > 0 && heroRect.top < window.innerHeight) {
           const idleTime = now - lastTouchTime;
@@ -2219,16 +2250,19 @@
               };
               const d = distBetween(mouse, charCenter);
 
-              const wght = Math.round(getAttr(d, maxDist, 220, 800));
+              const rawWght = getAttr(d, maxDist, 220, 800);
+              // Stepping weight in 25-step increments eliminates continuous CPU font rasterization chokepoints
+              const steppedWght = Math.round(rawWght / 25) * 25;
+              const fvs = '"wght" ' + steppedWght;
+              if (span.dataset.fvs !== fvs) {
+                span.dataset.fvs = fvs;
+                span.style.fontWeight = String(steppedWght);
+                span.style.fontVariationSettings = fvs;
+                span.style.webkitFontVariationSettings = fvs;
+              }
+
               const sx = getAttr(d, maxDist, 0.94, 1.07);
               const sy = getAttr(d, maxDist, 0.96, 1.04);
-
-              span.style.fontWeight = String(wght);
-              const fvs = '"wght" ' + wght;
-              if (span.style.fontVariationSettings !== fvs) {
-                span.style.webkitFontVariationSettings = fvs;
-                span.style.fontVariationSettings = fvs;
-              }
               const trans = "translate3d(0,0,0) scale(" + sx.toFixed(3) + "," + sy.toFixed(3) + ")";
               span.style.webkitTransform = trans;
               span.style.transform = trans;
@@ -2253,8 +2287,6 @@
 
         requestAnimationFrame(animateWordmark);
       };
-
-      requestAnimationFrame(animateWordmark);
     }
   }
 
