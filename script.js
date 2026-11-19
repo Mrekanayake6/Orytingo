@@ -1761,10 +1761,23 @@
       offsetY + Math.floor(index / cols) * activeCellSize + activeCellSize / 2
     ];
 
+    let lastWidth = 0;
+    let lastHeight = 0;
+
     const resize = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 2.5);
-      width = container.offsetWidth || heroSection.offsetWidth || window.innerWidth;
-      height = container.offsetHeight || heroSection.offsetHeight || window.innerHeight;
+      const newWidth = container.offsetWidth || heroSection.offsetWidth || window.innerWidth;
+      const newHeight = container.offsetHeight || heroSection.offsetHeight || window.innerHeight;
+
+      // Ignore trivial micro-resizes on mobile caused by dynamic address bar (less than 4px height and 2px width difference)
+      if (lastWidth > 0 && Math.abs(newWidth - lastWidth) < 2 && Math.abs(newHeight - lastHeight) < 4) {
+        return;
+      }
+
+      lastWidth = newWidth;
+      lastHeight = newHeight;
+      width = newWidth;
+      height = newHeight;
       canvas.width = Math.max(1, Math.round(width * dpr));
       canvas.height = Math.max(1, Math.round(height * dpr));
       canvas.style.width = width + "px";
@@ -1974,6 +1987,16 @@
       startLoop();
     };
 
+    const triggerEntrancePulse = () => {
+      if (width <= 0 || height <= 0) return;
+      pulses.push({
+        x: width * 0.5,
+        y: height * 0.44,
+        t0: performance.now()
+      });
+      startLoop();
+    };
+
     if ("ResizeObserver" in window) {
       const resizeObserver = new ResizeObserver(() => {
         resize();
@@ -1989,14 +2012,6 @@
 
     resize();
 
-    // Entrance pulse from center on mount
-    pulses.push({
-      x: width * 0.5,
-      y: height * 0.44,
-      t0: performance.now()
-    });
-    startLoop();
-
     window.addEventListener("pointermove", handlePointerMove, { passive: true });
     window.addEventListener("pointerdown", handlePointerDown, { passive: true });
     window.addEventListener("touchmove", handleTouchMove, { passive: true });
@@ -2011,9 +2026,16 @@
     const desktopBox = document.getElementById("heroDesktopLogoBox");
 
     if (lockupContainer && wordmarkTitle && charSpans.length) {
-      const minFontSize = 20;
+      const minFontSize = 24;
       let fontSize = minFontSize;
       const chars = Array.from(charSpans);
+
+      // Relative metrics cache: completely eliminates forced layout thrashing inside requestAnimationFrame
+      const cachedMetrics = {
+        maxDist: 140,
+        chars: [], // array of { relX, relY } relative to heroSection
+        logo: null // { relX, relY } relative to heroSection
+      };
 
       const mouse = { x: 0, y: 0 };
       const cursor = { x: 0, y: 0 };
@@ -2029,29 +2051,120 @@
         return minVal + smooth * (maxVal - minVal);
       };
 
+      const updateCharMetrics = () => {
+        const heroRect = heroSection.getBoundingClientRect();
+        const titleRect = wordmarkTitle.getBoundingClientRect();
+        if (titleRect.width <= 0) return;
+
+        cachedMetrics.maxDist = Math.max(titleRect.width / 2.5, 140);
+
+        // Batch all reads outside RAF loops
+        cachedMetrics.chars = chars.map((span) => {
+          const r = span.getBoundingClientRect();
+          return {
+            relX: (r.left + r.width / 2) - heroRect.left,
+            relY: (r.top + r.height / 2) - heroRect.top
+          };
+        });
+
+        if (desktopSuffix) {
+          const sr = desktopSuffix.getBoundingClientRect();
+          if (sr.width > 0) {
+            cachedMetrics.logo = {
+              relX: (sr.left + sr.width / 2) - heroRect.left,
+              relY: (sr.top + sr.height / 2) - heroRect.top
+            };
+          } else {
+            cachedMetrics.logo = null;
+          }
+        }
+      };
+
       const updateLockupSize = () => {
-        const rect = lockupContainer.getBoundingClientRect();
-        const w = rect.width;
+        // Measure unscaled offsetWidth / clientWidth to avoid CSS transform scale distortions
+        const w = lockupContainer.offsetWidth || lockupContainer.clientWidth || (heroSection.clientWidth - 28);
         if (w <= 0) return;
 
-        // Keep emblem logo inline across all screens (mobile, tablet, desktop)
-        const suffixRatio = 1.6;
+        const isMobile = w < 640;
+        const suffixRatio = isMobile ? 1.5 : 1.6;
+        const divisor = isMobile ? 0.77 : 0.72;
         const totalUnits = chars.length + suffixRatio;
-        const computed = Math.max(minFontSize, Math.min(148, w / (totalUnits * 0.72)));
+        const computed = Math.max(minFontSize, Math.min(148, w / (totalUnits * divisor)));
         fontSize = Math.round(computed);
 
         wordmarkTitle.style.fontSize = fontSize + "px";
 
         if (desktopBox) {
-          const desktopLogoHeight = Math.round(fontSize * 1.36);
+          const desktopLogoHeight = Math.round(fontSize * (isMobile ? 1.30 : 1.36));
           const desktopLogoWidth = Math.round(desktopLogoHeight * 1.1);
           desktopBox.style.height = desktopLogoHeight + "px";
           desktopBox.style.width = desktopLogoWidth + "px";
         }
+
+        // Cache positions right after reflow
+        requestAnimationFrame(updateCharMetrics);
       };
 
       updateLockupSize();
-      window.addEventListener("resize", updateLockupSize, { passive: true });
+
+      // 1. ResizeObserver on lockupContainer (handles mobile container changes, rotation, font swap)
+      if ("ResizeObserver" in window) {
+        const lockupObserver = new ResizeObserver(() => {
+          updateLockupSize();
+        });
+        lockupObserver.observe(lockupContainer);
+      } else {
+        window.addEventListener("resize", updateLockupSize, { passive: true });
+      }
+
+      // 2. Window load event (when external assets, images, and fonts finish completely)
+      window.addEventListener("load", () => {
+        updateLockupSize();
+        resize();
+      }, { passive: true });
+
+      // 3. Web fonts ready event (when variable font Sora finishes downloading over network)
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(() => {
+          updateLockupSize();
+        });
+      }
+
+      // 4. Orientation change (mobile landscape/portrait rotation)
+      window.addEventListener("orientationchange", () => {
+        setTimeout(() => {
+          updateLockupSize();
+          resize();
+        }, 120);
+      }, { passive: true });
+
+      // 5. Back/forward cache and page refresh
+      window.addEventListener("pageshow", () => {
+        updateLockupSize();
+        resize();
+      }, { passive: true });
+
+      // 6. Hook into Page Loader completion: re-calibrate and trigger center entrance pulse
+      const root = document.documentElement;
+      if (root.classList.contains("page-loading")) {
+        const loaderObs = new MutationObserver(() => {
+          if (!root.classList.contains("page-loading")) {
+            loaderObs.disconnect();
+            setTimeout(() => {
+              updateLockupSize();
+              resize();
+              triggerEntrancePulse();
+            }, 60);
+          }
+        });
+        loaderObs.observe(root, { attributes: true, attributeFilter: ["class"] });
+      } else {
+        triggerEntrancePulse();
+      }
+
+      // 7. Safety checks for initial layout settling on slower mobile devices
+      setTimeout(updateLockupSize, 200);
+      setTimeout(updateLockupSize, 600);
 
       const updatePointer = (clientX, clientY) => {
         cursor.x = clientX;
@@ -2093,40 +2206,48 @@
           mouse.x += (cursor.x - mouse.x) * 0.15;
           mouse.y += (cursor.y - mouse.y) * 0.15;
 
-          const titleRect = wordmarkTitle.getBoundingClientRect();
-          const maxDist = Math.max(titleRect.width / 2.5, 140);
+          const maxDist = cachedMetrics.maxDist || 140;
 
-          chars.forEach((span) => {
-            const r = span.getBoundingClientRect();
-            const charCenter = { x: r.left + r.width / 2, y: r.top + r.height / 2 };
-            const d = distBetween(mouse, charCenter);
+          // Pure write phase — ZERO getBoundingClientRect() inside the loop!
+          if (cachedMetrics.chars.length === chars.length) {
+            for (let i = 0; i < chars.length; i++) {
+              const span = chars[i];
+              const pt = cachedMetrics.chars[i];
+              const charCenter = {
+                x: heroRect.left + pt.relX,
+                y: heroRect.top + pt.relY
+              };
+              const d = distBetween(mouse, charCenter);
 
-            const wght = Math.round(getAttr(d, maxDist, 220, 800));
-            const sx = getAttr(d, maxDist, 0.94, 1.07);
-            const sy = getAttr(d, maxDist, 0.96, 1.04);
+              const wght = Math.round(getAttr(d, maxDist, 220, 800));
+              const sx = getAttr(d, maxDist, 0.94, 1.07);
+              const sy = getAttr(d, maxDist, 0.96, 1.04);
 
-            span.style.fontWeight = String(wght);
-            const fvs = '"wght" ' + wght;
-            if (span.style.fontVariationSettings !== fvs) {
-              span.style.webkitFontVariationSettings = fvs;
-              span.style.fontVariationSettings = fvs;
+              span.style.fontWeight = String(wght);
+              const fvs = '"wght" ' + wght;
+              if (span.style.fontVariationSettings !== fvs) {
+                span.style.webkitFontVariationSettings = fvs;
+                span.style.fontVariationSettings = fvs;
+              }
+              const trans = "translate3d(0,0,0) scale(" + sx.toFixed(3) + "," + sy.toFixed(3) + ")";
+              span.style.webkitTransform = trans;
+              span.style.transform = trans;
             }
-            const trans = "translate3d(0,0,0) scale(" + sx.toFixed(3) + "," + sy.toFixed(3) + ")";
-            span.style.webkitTransform = trans;
-            span.style.transform = trans;
-          });
+          } else {
+            updateCharMetrics();
+          }
 
-          if (desktopSuffix) {
-            const sr = desktopSuffix.getBoundingClientRect();
-            if (sr.width > 0) {
-              const logoCenter = { x: sr.left + sr.width / 2, y: sr.top + sr.height / 2 };
-              const d = distBetween(mouse, logoCenter);
-              const scale = getAttr(d, maxDist, 1, 1.08);
-              const dy = getAttr(d, maxDist, 0, -4);
-              const logoTrans = "translate3d(0," + dy.toFixed(2) + "px,0) scale(" + scale.toFixed(3) + ")";
-              desktopSuffix.style.webkitTransform = logoTrans;
-              desktopSuffix.style.transform = logoTrans;
-            }
+          if (desktopSuffix && cachedMetrics.logo) {
+            const logoCenter = {
+              x: heroRect.left + cachedMetrics.logo.relX,
+              y: heroRect.top + cachedMetrics.logo.relY
+            };
+            const d = distBetween(mouse, logoCenter);
+            const scale = getAttr(d, maxDist, 1, 1.08);
+            const dy = getAttr(d, maxDist, 0, -4);
+            const logoTrans = "translate3d(0," + dy.toFixed(2) + "px,0) scale(" + scale.toFixed(3) + ")";
+            desktopSuffix.style.webkitTransform = logoTrans;
+            desktopSuffix.style.transform = logoTrans;
           }
         }
 
