@@ -1784,6 +1784,23 @@
 
     let lastWidth = 0;
     let lastHeight = 0;
+    let topSvgHeight = 64;
+    let bottomSvgHeight = 80;
+
+    const getCurveTopY = (px) => {
+      const u = Math.max(0, Math.min(1, px / Math.max(width, 1)));
+      return ((18 + 100 * u * (1 - u)) / 80) * topSvgHeight;
+    };
+
+    const getCurveBottomY = (px) => {
+      const u = Math.max(0, Math.min(1, px / Math.max(width, 1)));
+      const normY = (65 - 110 * u * (1 - u)) / 90;
+      return height - bottomSvgHeight + (normY * bottomSvgHeight);
+    };
+
+    const isInsideCurves = (cx, cy) => {
+      return cy >= getCurveTopY(cx) && cy <= getCurveBottomY(cx);
+    };
 
     const resize = () => {
       const newWidth = container.offsetWidth || heroSection.offsetWidth || window.innerWidth;
@@ -1795,6 +1812,11 @@
       if (lastWidth > 0 && Math.abs(newWidth - lastWidth) < 3 && Math.abs(newHeight - lastHeight) < heightThreshold) {
         return;
       }
+
+      const topSvg = document.querySelector(".hero-curve-top svg");
+      const bottomSvg = document.querySelector(".hero-curve-bottom svg");
+      topSvgHeight = topSvg ? topSvg.clientHeight : (newWidth < 640 ? 32 : (newWidth < 1024 ? 56 : 64));
+      bottomSvgHeight = bottomSvg ? bottomSvg.clientHeight : (newWidth < 640 ? 40 : (newWidth < 1024 ? 64 : 80));
 
       const maxDpr = isMobile ? 1.5 : 2.0;
       const dpr = Math.min(window.devicePixelRatio || 1, maxDpr);
@@ -1847,6 +1869,8 @@
         const dySq = dy * dy;
         for (let c = minCol; c <= maxCol; c++) {
           const cx = offsetX + c * activeCellSize + halfCell;
+          if (!isInsideCurves(cx, cy)) continue;
+
           const dx = cx - px;
           const distSq = dx * dx + dySq;
           if (distSq > radSq) continue;
@@ -1908,8 +1932,10 @@
           const dy = cy - pulse.y;
           const dySq = dy * dy;
           for (let col = minCol; col <= maxCol; col++) {
-            const idx = row * cols + col;
             const cx = offsetX + col * activeCellSize + halfCell;
+            if (!isInsideCurves(cx, cy)) continue;
+
+            const idx = row * cols + col;
             const dx = cx - pulse.x;
             const dist = Math.sqrt(dx * dx + dySq);
             if (Math.abs(dist - radiusNow) < band / 2) {
@@ -1971,12 +1997,15 @@
 
     const isPointerInsideHero = (clientX, clientY) => {
       const rect = cachedHeroRect;
-      return (
-        clientX >= rect.left &&
-        clientX <= rect.right &&
-        clientY >= rect.top &&
-        clientY <= rect.bottom
-      );
+      if (
+        clientX < rect.left ||
+        clientX > rect.right ||
+        clientY < rect.top ||
+        clientY > rect.bottom
+      ) {
+        return false;
+      }
+      return isInsideCurves(clientX - rect.left, clientY - rect.top);
     };
 
     let lastPulseTime = 0;
