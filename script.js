@@ -108,21 +108,22 @@
   }
 
   const startTime = performance.now();
-  const minDuration = 320; // ms minimum duration: snappy and swift
-  const maxTimeout = 1600; // ms safety timeout
+  const minDuration = 260; // ms minimum duration: snappy and swift
+  const maxTimeout = 1100; // ms safety timeout: never stall on mobile!
 
   const step = (now) => {
     const elapsed = now - startTime;
 
     if (isPageLoaded && elapsed >= minDuration) {
-      currentPercent += 7.0;
+      currentPercent += 8.5;
     } else if (isPageLoaded) {
-      currentPercent += 4.2;
+      currentPercent += 5.5;
     } else {
-      if (currentPercent < 35) currentPercent += 2.8;
-      else if (currentPercent < 70) currentPercent += 2.0;
-      else if (currentPercent < 90) currentPercent += 1.4;
-      else currentPercent += 0.9;
+      // Snappy progressive advance even on slow mobile networks
+      if (currentPercent < 45) currentPercent += 3.8;
+      else if (currentPercent < 75) currentPercent += 3.0;
+      else if (currentPercent < 92) currentPercent += 2.2;
+      else currentPercent += 1.6;
     }
 
     if (currentPercent >= 100 || elapsed >= maxTimeout) {
@@ -140,10 +141,8 @@
     isPageLoaded = true;
   };
 
-  if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(markPageLoaded);
-  }
-
+  // Do not block loader on external webfonts over slow mobile networks;
+  // finish as soon as DOM is ready so the user is never stuck waiting!
   if (document.readyState === "interactive" || document.readyState === "complete") {
     markPageLoaded();
   } else {
@@ -1293,7 +1292,8 @@
   }
 
   function spawn(x, y, now) {
-    if (!dots.length || now - lastSpawn < 70) return;
+    const minSpawnInterval = (vw < 640) ? 120 : 70;
+    if (!dots.length || now - lastSpawn < minSpawnInterval) return;
     lastSpawn = now;
     const c = dots[di++ % dots.length];
     c.setAttribute('cx', x - dir * Wr * 0.3);
@@ -1530,6 +1530,14 @@
     var hit = rail.querySelector('.rbs-hit');
     var bus = rail.querySelector('.rbs-bus');
     var wheels = rail.querySelectorAll('.rbs-wheel');
+    var wheelsList = [];
+    for (var wi = 0; wi < wheels.length; wi++) {
+      wheelsList.push({
+        el: wheels[wi],
+        cx: wheels[wi].getAttribute('data-cx'),
+        cy: wheels[wi].getAttribute('data-cy')
+      });
+    }
 
     var maxScroll = 0, laneH = 0, busH = 0, travel = 0, wheelPx = 4.6;
     var cur = 0, target = 0, curY = 0, prevY = 0;
@@ -1615,9 +1623,9 @@
 
       var deg = (curY / wheelPx) * 57.29578;
       var a = (facingUp ? -deg : deg).toFixed(2);
-      for (var i = 0; i < wheels.length; i++) {
-        var w = wheels[i];
-        w.setAttribute('transform', 'rotate(' + a + ' ' + w.getAttribute('data-cx') + ' ' + w.getAttribute('data-cy') + ')');
+      for (var i = 0; i < wheelsList.length; i++) {
+        var w = wheelsList[i];
+        w.el.setAttribute('transform', 'rotate(' + a + ' ' + w.cx + ' ' + w.cy + ')');
       }
 
       var dy = curY - prevY;
@@ -1749,9 +1757,13 @@
       }, 200);
     }, { passive: true });
 
+    let scheduleWordmark = null;
     let cachedHeroRect = heroSection.getBoundingClientRect();
     const updateCachedHeroRect = () => {
       cachedHeroRect = heroSection.getBoundingClientRect();
+      if (typeof scheduleWordmark === "function" && cachedHeroRect.bottom > 0 && cachedHeroRect.top < window.innerHeight) {
+        scheduleWordmark();
+      }
     };
     window.addEventListener("scroll", updateCachedHeroRect, { passive: true });
     window.addEventListener("resize", updateCachedHeroRect, { passive: true });
@@ -1816,6 +1828,7 @@
     let lastHeight = 0;
     let topSvgHeight = 64;
     let bottomSvgHeight = 80;
+    let cachedClipPath = null;
 
     const getCurveTopY = (px) => {
       const u = Math.max(0, Math.min(1, px / Math.max(width, 1)));
@@ -1881,6 +1894,24 @@
       offsetY = (height - rows * activeCellSize) / 2;
       intensities = new Float32Array(cols * rows);
       timestamps = new Float64Array(cols * rows);
+
+      // Precompute Path2D clip so renderFrame never recalculates 72 polygon coordinates on every frame
+      if (typeof Path2D !== "undefined" && width > 0 && height > 0) {
+        cachedClipPath = new Path2D();
+        cachedClipPath.moveTo(0, getCurveTopY(0));
+        const clipSteps = 32;
+        for (let s = 1; s <= clipSteps; s++) {
+          const px = (s / clipSteps) * width;
+          cachedClipPath.lineTo(px, getCurveTopY(px));
+        }
+        cachedClipPath.lineTo(width, getCurveBottomY(width));
+        for (let s = clipSteps - 1; s >= 0; s--) {
+          const px = (s / clipSteps) * width;
+          cachedClipPath.lineTo(px, getCurveBottomY(px));
+        }
+        cachedClipPath.closePath();
+      }
+
       updateCachedHeroRect();
     };
 
@@ -1984,20 +2015,9 @@
 
       // Clip canvas drawing to exact curved aperture so grid cells never bleed outside
       ctx.save();
-      ctx.beginPath();
-      ctx.moveTo(0, getCurveTopY(0));
-      const clipSteps = 36;
-      for (let s = 1; s <= clipSteps; s++) {
-        const px = (s / clipSteps) * width;
-        ctx.lineTo(px, getCurveTopY(px));
+      if (cachedClipPath) {
+        ctx.clip(cachedClipPath);
       }
-      ctx.lineTo(width, getCurveBottomY(width));
-      for (let s = clipSteps - 1; s >= 0; s--) {
-        const px = (s / clipSteps) * width;
-        ctx.lineTo(px, getCurveBottomY(px));
-      }
-      ctx.closePath();
-      ctx.clip();
 
       for (let i = 0; i < intensities.length; i++) {
         let val = intensities[i];
@@ -2270,14 +2290,24 @@
 
       // 6. Start hero animations only after page loader finishes to keep loading 100% smooth
       let isHeroActive = false;
+      let isWordmarkActive = false;
+
+      scheduleWordmark = () => {
+        if (!isWordmarkActive) {
+          isWordmarkActive = true;
+          requestAnimationFrame(animateWordmark);
+        }
+      };
+
       const startHeroLoop = () => {
         if (isHeroActive) return;
         isHeroActive = true;
         animStartTime = performance.now();
+        lastTouchTime = performance.now();
         updateLockupSize();
         updateCharMetrics();
         triggerEntrancePulse();
-        requestAnimationFrame(animateWordmark);
+        scheduleWordmark();
       };
 
       const root = document.documentElement;
@@ -2304,6 +2334,7 @@
         cursor.y = clientY;
         hasPointerInteracted = true;
         lastTouchTime = performance.now();
+        scheduleWordmark();
       };
 
       const onPointerMoveWordmark = (e) => {
@@ -2318,87 +2349,92 @@
 
       if (window.PointerEvent) {
         window.addEventListener("pointermove", onPointerMoveWordmark, { passive: true });
-        window.addEventListener("pointerup", () => { lastTouchTime = performance.now(); }, { passive: true });
+        window.addEventListener("pointerup", () => { lastTouchTime = performance.now(); scheduleWordmark(); }, { passive: true });
         window.addEventListener("pointercancel", () => { lastTouchTime = performance.now(); }, { passive: true });
       } else {
         window.addEventListener("mousemove", onPointerMoveWordmark, { passive: true });
         window.addEventListener("touchmove", onTouchMoveWordmark, { passive: true });
         window.addEventListener("touchstart", onTouchMoveWordmark, { passive: true });
-        window.addEventListener("touchend", () => { lastTouchTime = performance.now(); }, { passive: true });
+        window.addEventListener("touchend", () => { lastTouchTime = performance.now(); scheduleWordmark(); }, { passive: true });
       }
 
       const animateWordmark = (now) => {
         if (document.hidden) {
-          requestAnimationFrame(animateWordmark);
+          if (isWordmarkActive) requestAnimationFrame(animateWordmark);
           return;
         }
 
         const heroRect = cachedHeroRect;
-        if (heroRect.bottom > 0 && heroRect.top < window.innerHeight) {
-          const idleTime = now - lastTouchTime;
-          // Runs continuously in all motion states, gracefully tracking touches and breathing ambiently
-          if (!hasPointerInteracted || idleTime > 1400) {
-            const elapsed = (now - (animStartTime || now)) / 1000;
-            const wave = 0.5 + Math.sin(elapsed * 1.15) * 0.42;
-            cursor.x = heroRect.left + heroRect.width * wave;
-            cursor.y = heroRect.top + heroRect.height * 0.45;
-          }
+        // Pause animation when hero is scrolled completely off-screen, freeing 100% CPU for the rest of the page
+        if (heroRect.bottom <= 0 || heroRect.top >= window.innerHeight) {
+          isWordmarkActive = false;
+          return;
+        }
 
-          mouse.x += (cursor.x - mouse.x) * 0.15;
-          mouse.y += (cursor.y - mouse.y) * 0.15;
+        const idleTime = now - lastTouchTime;
+        // Runs continuously in all motion states, gracefully tracking touches and breathing ambiently
+        if (!hasPointerInteracted || idleTime > 1400) {
+          const elapsed = (now - (animStartTime || now)) / 1000;
+          const wave = 0.5 + Math.sin(elapsed * 1.15) * 0.42;
+          cursor.x = heroRect.left + heroRect.width * wave;
+          cursor.y = heroRect.top + heroRect.height * 0.45;
+        }
 
-          const maxDist = cachedMetrics.maxDist || 140;
+        mouse.x += (cursor.x - mouse.x) * 0.15;
+        mouse.y += (cursor.y - mouse.y) * 0.15;
 
-          // Pure write phase — ZERO getBoundingClientRect() inside the loop!
-          if (cachedMetrics.chars.length === chars.length) {
-            const isMobileScreen = window.innerWidth < 640;
-            const weightStep = isMobileScreen ? 75 : 25;
+        const maxDist = cachedMetrics.maxDist || 140;
 
-            for (let i = 0; i < chars.length; i++) {
-              const span = chars[i];
-              const pt = cachedMetrics.chars[i];
-              const charCenter = {
-                x: heroRect.left + pt.relX,
-                y: heroRect.top + pt.relY
-              };
-              const d = distBetween(mouse, charCenter);
+        // Pure write phase — ZERO getBoundingClientRect() inside the loop!
+        if (cachedMetrics.chars.length === chars.length) {
+          const isMobileScreen = window.innerWidth <= 1024;
+          const isActivelyTouching = hasPointerInteracted && (idleTime < 800);
+          const weightStep = isActivelyTouching ? 40 : (isMobileScreen ? 85 : 25);
 
-              const rawWght = getAttr(d, maxDist, 220, 800);
-              const steppedWght = Math.round(rawWght / weightStep) * weightStep;
-              const fvs = '"wght" ' + steppedWght;
-              if (span.dataset.fvs !== fvs) {
-                span.dataset.fvs = fvs;
-                span.style.fontVariationSettings = fvs;
-                span.style.webkitFontVariationSettings = fvs;
-              }
-
-              const sx = getAttr(d, maxDist, 0.94, 1.07);
-              const sy = getAttr(d, maxDist, 0.96, 1.04);
-              const trans = "translate3d(0,0,0) scale(" + sx.toFixed(3) + "," + sy.toFixed(3) + ")";
-              if (span.dataset.trans !== trans) {
-                span.dataset.trans = trans;
-                span.style.transform = trans;
-                span.style.webkitTransform = trans;
-              }
-            }
-          } else {
-            updateCharMetrics();
-          }
-
-          if (desktopSuffix && cachedMetrics.logo) {
-            const logoCenter = {
-              x: heroRect.left + cachedMetrics.logo.relX,
-              y: heroRect.top + cachedMetrics.logo.relY
+          for (let i = 0; i < chars.length; i++) {
+            const span = chars[i];
+            const pt = cachedMetrics.chars[i];
+            const charCenter = {
+              x: heroRect.left + pt.relX,
+              y: heroRect.top + pt.relY
             };
-            const d = distBetween(mouse, logoCenter);
-            const scale = getAttr(d, maxDist, 1, 1.08);
-            const dy = getAttr(d, maxDist, 0, -4);
-            const logoTrans = "translate3d(0," + dy.toFixed(2) + "px,0) scale(" + scale.toFixed(3) + ")";
-            if (desktopSuffix.dataset.trans !== logoTrans) {
-              desktopSuffix.dataset.trans = logoTrans;
-              desktopSuffix.style.transform = logoTrans;
-              desktopSuffix.style.webkitTransform = logoTrans;
+            const d = distBetween(mouse, charCenter);
+
+            const rawWght = getAttr(d, maxDist, 220, 800);
+            const steppedWght = Math.round(rawWght / weightStep) * weightStep;
+            const fvs = '"wght" ' + steppedWght;
+            if (span.dataset.fvs !== fvs) {
+              span.dataset.fvs = fvs;
+              span.style.fontVariationSettings = fvs;
+              span.style.webkitFontVariationSettings = fvs;
             }
+
+            const sx = getAttr(d, maxDist, 0.94, 1.07);
+            const sy = getAttr(d, maxDist, 0.96, 1.04);
+            const trans = "translate3d(0,0,0) scale(" + sx.toFixed(3) + "," + sy.toFixed(3) + ")";
+            if (span.dataset.trans !== trans) {
+              span.dataset.trans = trans;
+              span.style.transform = trans;
+              span.style.webkitTransform = trans;
+            }
+          }
+        } else {
+          updateCharMetrics();
+        }
+
+        if (desktopSuffix && cachedMetrics.logo) {
+          const logoCenter = {
+            x: heroRect.left + cachedMetrics.logo.relX,
+            y: heroRect.top + cachedMetrics.logo.relY
+          };
+          const d = distBetween(mouse, logoCenter);
+          const scale = getAttr(d, maxDist, 1, 1.08);
+          const dy = getAttr(d, maxDist, 0, -4);
+          const logoTrans = "translate3d(0," + dy.toFixed(2) + "px,0) scale(" + scale.toFixed(3) + ")";
+          if (desktopSuffix.dataset.trans !== logoTrans) {
+            desktopSuffix.dataset.trans = logoTrans;
+            desktopSuffix.style.transform = logoTrans;
+            desktopSuffix.style.webkitTransform = logoTrans;
           }
         }
 
