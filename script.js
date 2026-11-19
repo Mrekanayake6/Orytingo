@@ -2387,9 +2387,12 @@
 
         // Pure write phase — ZERO getBoundingClientRect() inside the loop!
         if (cachedMetrics.chars.length === chars.length) {
+          const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
           const isMobileScreen = window.innerWidth <= 1024;
           const isActivelyTouching = hasPointerInteracted && (idleTime < 800);
-          const weightStep = isActivelyTouching ? 40 : (isMobileScreen ? 85 : 25);
+          const weightStep = isSafari
+            ? (isActivelyTouching ? 50 : 90)
+            : (isActivelyTouching ? 40 : (isMobileScreen ? 80 : 25));
 
           for (let i = 0; i < chars.length; i++) {
             const span = chars[i];
