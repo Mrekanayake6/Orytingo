@@ -1719,6 +1719,36 @@
     const container = document.getElementById("heroCanvasWrap");
     if (!heroSection || !canvas || !container) return;
 
+    /* Lock hero height on mobile once on load to prevent address-bar scroll jumping across all browsers */
+    const lockMobileHeroHeight = () => {
+      if (window.innerWidth <= 1024) {
+        const nav = document.querySelector(".navbar") || document.querySelector(".site-header");
+        const navH = nav ? nav.offsetHeight : 64;
+        const availableH = window.innerHeight - navH;
+        const targetH = Math.max(availableH, 480);
+        document.documentElement.style.setProperty("--hero-locked-height", targetH + "px");
+      } else {
+        document.documentElement.style.removeProperty("--hero-locked-height");
+      }
+    };
+    lockMobileHeroHeight();
+
+    let lastHeroLockWidth = window.innerWidth;
+    window.addEventListener("resize", () => {
+      if (Math.abs(window.innerWidth - lastHeroLockWidth) > 30) {
+        lastHeroLockWidth = window.innerWidth;
+        lockMobileHeroHeight();
+      }
+    }, { passive: true });
+
+    window.addEventListener("orientationchange", () => {
+      setTimeout(() => {
+        lastHeroLockWidth = window.innerWidth;
+        lockMobileHeroHeight();
+        if (typeof resize === "function") resize();
+      }, 200);
+    }, { passive: true });
+
     let cachedHeroRect = heroSection.getBoundingClientRect();
     const updateCachedHeroRect = () => {
       cachedHeroRect = heroSection.getBoundingClientRect();
@@ -1806,9 +1836,10 @@
       const newWidth = container.offsetWidth || heroSection.offsetWidth || window.innerWidth;
       const newHeight = container.offsetHeight || heroSection.offsetHeight || window.innerHeight;
 
-      // Ignore iOS Safari dynamic address bar changes (< 120px on mobile)
+      // Ignore mobile address bar dynamic changes (< 120px) across all phones & tablets
       const isMobile = newWidth < 640;
-      const heightThreshold = isMobile ? 120 : 6;
+      const isMobileOrTablet = newWidth <= 1024;
+      const heightThreshold = isMobileOrTablet ? 120 : 6;
       if (lastWidth > 0 && Math.abs(newWidth - lastWidth) < 3 && Math.abs(newHeight - lastHeight) < heightThreshold) {
         return;
       }

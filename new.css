@@ -3785,6 +3785,8 @@ body.mobile-sheet-open {
   background-image: none !important;
   padding: 0 !important;
   margin: 0;
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
 }
 
 @media (max-width: 1024px) {
@@ -3792,6 +3794,8 @@ body.mobile-sheet-open {
     padding: 0 !important;
     min-height: calc(100vh - 4rem);
     min-height: calc(100svh - 4rem);
+    min-height: var(--hero-locked-height, calc(100svh - 4rem));
+    height: var(--hero-locked-height, auto);
   }
 }
 
@@ -3805,7 +3809,6 @@ body.mobile-sheet-open {
   overflow: hidden;
   user-select: none;
   z-index: 1;
-  transform: translateZ(0);
 }
 
 .hero-canvas {
@@ -3825,7 +3828,8 @@ body.mobile-sheet-open {
   overflow: hidden;
   line-height: 0;
   z-index: 20;
-  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .hero-curve-top svg {
@@ -3847,14 +3851,15 @@ body.mobile-sheet-open {
 .hero-curve-bottom {
   pointer-events: none;
   position: absolute;
-  bottom: 0;
+  bottom: -0.5px;
   left: 0;
   right: 0;
   width: 100%;
   overflow: hidden;
   line-height: 0;
   z-index: 20;
-  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .hero-curve-bottom svg {
