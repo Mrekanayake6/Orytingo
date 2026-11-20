@@ -1846,7 +1846,7 @@
     const isInsideCurves = (cx, cy, colIdx) => {
       const topY = (colIdx !== undefined && colIdx >= 0 && colIdx < colTopY.length) ? colTopY[colIdx] : getCurveTopY(cx);
       const bottomY = (colIdx !== undefined && colIdx >= 0 && colIdx < colBottomY.length) ? colBottomY[colIdx] : getCurveBottomY(cx);
-      return cy >= topY - halfCell * 0.5 && cy <= bottomY + halfCell * 0.5;
+      return cy >= topY - halfCell - 1 && cy <= bottomY + halfCell + 1;
     };
 
     const resize = () => {
