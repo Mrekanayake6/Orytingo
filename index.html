@@ -285,7 +285,7 @@
       (function(){
         try {
           if (window.innerWidth <= 1024) {
-            var nav = document.querySelector('.navbar') || document.querySelector('.site-header');
+            var nav = document.querySelector('.nav-bar, .navbar') || document.querySelector('.site-header');
             var navH = nav ? nav.offsetHeight : 64;
             var h = Math.max(window.innerHeight - navH, 480);
             document.documentElement.style.setProperty('--hero-locked-height', h + 'px');
