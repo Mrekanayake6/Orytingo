@@ -581,21 +581,44 @@ button {
     left: 50%;
     transform: translateX(-50%);
     white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 26px;
+    padding: 7px 24px;
+    border-radius: 9999px;
+    background: rgba(14, 16, 22, 0.72);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    box-shadow:
+      0 10px 30px -5px rgba(0, 0, 0, 0.5),
+      0 4px 12px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    transition: border-color 0.3s var(--ease), box-shadow 0.3s var(--ease);
+  }
+
+  .nav-links:hover {
+    border-color: rgba(255, 129, 62, 0.22);
+    box-shadow:
+      0 12px 36px -4px rgba(0, 0, 0, 0.6),
+      0 0 20px rgba(255, 129, 62, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.16);
   }
 }
 
 @media (max-width: 1140px) and (min-width: 1025px) {
   .nav-links {
-    gap: 20px;
+    gap: 18px;
+    padding: 6px 18px;
   }
 }
 
 .nav-links a {
-  font-size: 0.93rem;
+  font-size: 0.92rem;
   font-weight: 500;
   color: var(--text-muted);
   position: relative;
-  padding: 4px 0;
+  padding: 4px 2px;
   transition: color .2s var(--ease);
 }
 
@@ -615,6 +638,14 @@ button {
 }
 
 .nav-links a:hover::after {
+  width: 100%;
+}
+
+.nav-links a.active {
+  color: var(--text);
+}
+
+.nav-links a.active::after {
   width: 100%;
 }
 
