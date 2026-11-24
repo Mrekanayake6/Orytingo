@@ -729,11 +729,7 @@
 ============================================================ */
 
 .nav-links a.active {
-    color: var(--text);
-}
-
-.nav-links a.active::after {
-    width: 100%;
+    color: #FFFFFF;
 }
 
 
