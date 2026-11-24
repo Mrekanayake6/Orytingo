@@ -724,7 +724,7 @@
 ============================================================ */
 
 .nav-links a.active {
-    color: #FFFFFF;
+    color: var(--orange, #ff813e);
 }
 
 
