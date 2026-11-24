@@ -539,6 +539,7 @@ button {
 }
 
 .nav-inner {
+  position: relative;
   max-width: var(--container);
   margin: 0 auto;
   padding: 0 32px;
@@ -572,6 +573,21 @@ button {
   display: flex;
   align-items: center;
   gap: 30px;
+}
+
+@media (min-width: 1025px) {
+  .nav-links {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 1140px) and (min-width: 1025px) {
+  .nav-links {
+    gap: 20px;
+  }
 }
 
 .nav-links a {
