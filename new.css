@@ -1284,6 +1284,124 @@ section {
   font-size: 1.02rem;
 }
 
+/* ============================================================
+   About — Vision & Mission Cards
+============================================================ */
+.about-vm-wrapper {
+  margin-top: 48px;
+}
+
+.about-vm-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px;
+}
+
+.about-vm-card {
+  position: relative;
+  padding: 36px 32px;
+  border-radius: var(--radius-lg);
+  background: var(--card);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  transition: transform .35s var(--ease), border-color .35s var(--ease), box-shadow .35s var(--ease);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.about-vm-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--orange), transparent);
+  opacity: 0;
+  transition: opacity .35s var(--ease);
+}
+
+.about-vm-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 129, 62, 0.35);
+  box-shadow: 0 16px 36px -12px rgba(255, 129, 62, 0.12);
+}
+
+.about-vm-card:hover::before {
+  opacity: 1;
+}
+
+.about-vm-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.about-vm-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 129, 62, 0.12);
+  border: 1px solid rgba(255, 129, 62, 0.25);
+  color: var(--orange-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+}
+
+.about-vm-eyebrow {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--orange-light);
+}
+
+.about-vm-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(1.22rem, 1.8vw, 1.42rem);
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--text);
+  margin: 0 0 12px 0;
+}
+
+.about-vm-highlight {
+  font-size: 0.98rem;
+  font-weight: 500;
+  color: #e2e8f0;
+  line-height: 1.6;
+  margin: 0 0 12px 0;
+}
+
+.about-vm-desc {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+  margin: 0;
+  margin-top: auto;
+}
+
+@media (max-width: 768px) {
+  .about-vm-wrapper {
+    margin-top: 36px;
+  }
+
+  .about-vm-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .about-vm-card {
+    padding: 28px 24px;
+  }
+}
+
 
 
 
