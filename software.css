@@ -240,6 +240,11 @@
     left: 4%;
 }
 
+.software-node-8 {
+    top: 47%;
+    left: -2%;
+}
+
 
 /* =========================================================
    INTRO
@@ -927,6 +932,10 @@
         right: -3%;
     }
 
+    .software-node-8 {
+        left: -3%;
+    }
+
     .software-service-card,
     .package-card,
     .benefit-card {
@@ -1056,6 +1065,10 @@
 
 .software-node-5 {
     animation-delay: 2.8s;
+}
+
+.software-node-8 {
+    animation-delay: 3.5s;
 }
 
 @keyframes softwareNodeFloat {
