@@ -1288,27 +1288,54 @@ section {
    About — Vision & Mission Cards
 ============================================================ */
 .about-vm-wrapper {
-  margin-top: 48px;
+  margin-top: 84px;
+  position: relative;
+}
+
+.about-vm-wrapper::before {
+  content: '';
+  position: absolute;
+  top: -42px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(720px, 92%);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 129, 62, 0.25), rgba(255, 156, 103, 0.5), rgba(255, 129, 62, 0.25), transparent);
 }
 
 .about-vm-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 28px;
+  gap: 32px;
 }
 
 .about-vm-card {
   position: relative;
-  padding: 36px 32px;
+  padding: 40px 36px;
   border-radius: var(--radius-lg);
-  background: var(--card);
-  border: 1px solid var(--border);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  transition: transform .35s var(--ease), border-color .35s var(--ease), box-shadow .35s var(--ease);
+  background: linear-gradient(155deg, rgba(18, 22, 29, 0.92) 0%, rgba(11, 13, 17, 0.96) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 16px 36px -12px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  transition: transform .4s var(--ease), border-color .4s var(--ease), box-shadow .4s var(--ease);
   overflow: hidden;
   display: flex;
   flex-direction: column;
+}
+
+.about-vm-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle, rgba(255, 129, 62, 0.12), transparent 70%);
+  pointer-events: none;
+  filter: blur(20px);
+  opacity: 0.7;
+  transition: opacity .4s var(--ease);
 }
 
 .about-vm-card::before {
@@ -1318,87 +1345,122 @@ section {
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(90deg, transparent, var(--orange), transparent);
-  opacity: 0;
-  transition: opacity .35s var(--ease);
+  background: linear-gradient(90deg, transparent, var(--orange), var(--orange-light), transparent);
+  opacity: 0.35;
+  transition: opacity .4s var(--ease);
 }
 
 .about-vm-card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(255, 129, 62, 0.35);
-  box-shadow: 0 16px 36px -12px rgba(255, 129, 62, 0.12);
+  transform: translateY(-6px);
+  border-color: rgba(255, 129, 62, 0.4);
+  box-shadow: 0 24px 50px -14px rgba(255, 129, 62, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .about-vm-card:hover::before {
   opacity: 1;
 }
 
+.about-vm-card:hover::after {
+  opacity: 1;
+}
+
 .about-vm-head {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 18px;
+  gap: 14px;
+  margin-bottom: 22px;
 }
 
 .about-vm-icon {
-  width: 42px;
-  height: 42px;
+  width: 48px;
+  height: 48px;
   border-radius: var(--radius-sm);
-  background: rgba(255, 129, 62, 0.12);
-  border: 1px solid rgba(255, 129, 62, 0.25);
+  background: linear-gradient(135deg, rgba(255, 129, 62, 0.22), rgba(255, 129, 62, 0.06));
+  border: 1px solid rgba(255, 129, 62, 0.35);
+  box-shadow: 0 0 20px rgba(255, 129, 62, 0.22);
   color: var(--orange-light);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.1rem;
+  font-size: 1.25rem;
+  transition: transform .35s var(--ease);
+}
+
+.about-vm-card:hover .about-vm-icon {
+  transform: scale(1.08);
 }
 
 .about-vm-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(255, 129, 62, 0.09);
+  border: 1px solid rgba(255, 129, 62, 0.24);
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 0.76rem;
+  font-size: 0.72rem;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--orange-light);
 }
 
+.about-vm-eyebrow::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--orange);
+  box-shadow: 0 0 6px var(--orange);
+}
+
 .about-vm-title {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: clamp(1.22rem, 1.8vw, 1.42rem);
+  font-size: clamp(1.28rem, 2vw, 1.55rem);
   font-weight: 700;
-  line-height: 1.35;
-  color: var(--text);
-  margin: 0 0 12px 0;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  margin: 0 0 14px 0;
 }
 
 .about-vm-highlight {
   font-size: 0.98rem;
   font-weight: 500;
-  color: #e2e8f0;
+  color: #e6ebf2;
   line-height: 1.6;
-  margin: 0 0 12px 0;
+  padding: 10px 14px;
+  background: rgba(255, 129, 62, 0.05);
+  border-left: 2.5px solid var(--orange);
+  border-radius: 0 8px 8px 0;
+  margin: 0 0 16px 0;
 }
 
 .about-vm-desc {
-  font-size: 0.92rem;
+  font-size: 0.93rem;
   color: var(--text-muted);
-  line-height: 1.7;
+  line-height: 1.75;
   margin: 0;
   margin-top: auto;
 }
 
 @media (max-width: 768px) {
   .about-vm-wrapper {
-    margin-top: 36px;
+    margin-top: 52px;
+  }
+
+  .about-vm-wrapper::before {
+    top: -26px;
   }
 
   .about-vm-grid {
     grid-template-columns: 1fr;
-    gap: 20px;
+    gap: 22px;
   }
 
   .about-vm-card {
-    padding: 28px 24px;
+    padding: 30px 24px;
   }
 }
 
