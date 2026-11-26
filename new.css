@@ -1425,18 +1425,6 @@ section {
   margin: 0 0 14px 0;
 }
 
-.about-vm-highlight {
-  font-size: 0.98rem;
-  font-weight: 500;
-  color: #e6ebf2;
-  line-height: 1.6;
-  padding: 10px 14px;
-  background: rgba(255, 129, 62, 0.05);
-  border-left: 2.5px solid var(--orange);
-  border-radius: 0 8px 8px 0;
-  margin: 0 0 16px 0;
-}
-
 .about-vm-desc {
   font-size: 0.93rem;
   color: var(--text-muted);
