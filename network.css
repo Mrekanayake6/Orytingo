@@ -1094,3 +1094,67 @@
         bottom: 17px;
     }
 }
+
+/* =========================================================
+   HERO ENTRANCE ANIMATION
+   ========================================================= */
+
+.network-hero-copy {
+    animation: networkHeroLeft .9s cubic-bezier(.22, 1, .36, 1) both;
+}
+
+.network-visual {
+    animation: networkHeroRight 1s cubic-bezier(.22, 1, .36, 1) .12s both;
+}
+
+@keyframes networkHeroLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-35px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes networkHeroRight {
+    from {
+        opacity: 0;
+        transform: translateX(35px) scale(.96);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+}
+
+@media (max-width: 768px) {
+    @keyframes networkHeroRight {
+        from {
+            opacity: 0;
+            transform: translateY(25px) scale(.82);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(.9);
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    @keyframes networkHeroRight {
+        from {
+            opacity: 0;
+            transform: translateY(20px) scale(.7);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(.78);
+        }
+    }
+}
