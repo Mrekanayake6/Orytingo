@@ -2917,8 +2917,9 @@ section {
   will-change: opacity, transform;
 }
 
-.reveal-item.pillar-card {
-  transition: opacity 440ms cubic-bezier(0.16, 1, 0.3, 1), transform 440ms cubic-bezier(0.16, 1, 0.3, 1), border-color .3s var(--ease), box-shadow .3s var(--ease);
+.reveal-item.pillar-card,
+.reveal-item.about-vm-card {
+  transition: opacity 440ms cubic-bezier(0.16, 1, 0.3, 1), transform 440ms cubic-bezier(0.16, 1, 0.3, 1), border-color .35s var(--ease), box-shadow .35s var(--ease);
   transition-delay: var(--reveal-delay, 0ms), var(--reveal-delay, 0ms), 0s, 0s;
 }
 

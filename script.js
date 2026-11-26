@@ -475,7 +475,7 @@
     ".cta-inner [class*='eyebrow'], .cta-inner h2, .cta-inner p, .cta-actions",
     false
   );
-  addRevealGroup(".pillar-card, .why-card, .service-card, .timeline li, .tech-badges > span", true);
+  addRevealGroup(".pillar-card, .why-card, .service-card, .about-vm-card, .timeline li, .tech-badges > span", true);
   addRevealGroup(".modern-tech-marquee, .about-visual, .ot-carousel");
   addRevealGroup(
     ".software-service-card, .project-card, .package-card, .benefit-card, " +
